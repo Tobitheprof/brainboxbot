@@ -2,3 +2,5 @@ html.html
 env
 __pycache__
 .env
+wallet_tracking_data.json
+data.json
