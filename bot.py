@@ -3,7 +3,7 @@ import requests
 import logging
 import aiohttp
 import discord
-# from discord import discord.Option
+from discord import Option
 from discord.ext import commands
 from discord.ext import commands, tasks
 from tweeterpy import TweeterPy
@@ -208,13 +208,13 @@ async def help_command(ctx):
         icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg",
     )
 
-    await ctx.send(embed=embed, view=DeleteView(author_id=ctx.author.id), ephemeral=True)  # Make response visible only to the command caller
+    await ctx.respond(embed=embed, view=DeleteView(author_id=ctx.author.id), ephemeral=True)  # Make response visible only to the command caller
 
 @bot.command(
     name="xhistory",
     description="Get previous usernames associated with the specified X (Twitter) account",
 )
-async def xhistory(ctx: discord.ApplicationContext, username: discord.Option(str, "X (Twitter) Username")):  # type: ignore
+async def xhistory(ctx: discord.ApplicationContext, username: Option(str, "X (Twitter) Username")):  # type: ignore
     try:
 
         await ctx.defer()
@@ -342,9 +342,9 @@ async def satsvb(ctx: discord.ApplicationContext):
 )
 async def floor(
     ctx: discord.ApplicationContext,
-    asset_type: discord.Option(str, "Select asset type", choices=["runes", "ordinals"]),  # type: ignore
-    slug: discord.Option(str, "The slug of the asset"),  # type: ignore
-    timeframe: discord.discord.Option(
+    asset_type: Option(str, "Select asset type", choices=["runes", "ordinals"]),  # type: ignore
+    slug: Option(str, "The slug of the asset"),  # type: ignore
+    timeframe: Option(
         str,
         "Select timeframe",
         choices=["1 Day", "1 Week", "1 Month", "All Time"],
@@ -622,7 +622,7 @@ tracked_wallets = {}
     description="Set the channel for wallet tracking updates (Admin only)"
 )
 @commands.check(is_admin)
-async def setchannel(interaction: discord.Interaction, channel: discord.Option(discord.TextChannel, "Select the channel")):  # type: ignore
+async def setchannel(interaction: discord.Interaction, channel: Option(discord.TextChannel, "Select the channel")):  # type: ignore
     await interaction.response.defer(ephemeral=True)
     
     guild_id = interaction.guild.id
@@ -714,11 +714,11 @@ class AddWalletModal(Modal):
 @commands.check(is_admin)  # Limit to admins
 async def addwallet(
     ctx: discord.ApplicationContext,
-    name: discord.Option(str, "Name for the wallet"),  # type: ignore
-    wallet_address: discord.Option(str, "Taproot Wallet Address"),  # type: ignore
-    track_mint: discord.Option(bool, "Track mints (inscriptions)?", choices=[True, False]),  # type: ignore
-    track_buy: discord.Option(str, "Track buys?", choices=["true", "false", "both"]),  # type: ignore
-    track_sell: discord.Option(str, "Track sells?", choices=["true", "false", "both"]), # type: ignore
+    name: Option(str, "Name for the wallet"),  # type: ignore
+    wallet_address: Option(str, "Taproot Wallet Address"),  # type: ignore
+    track_mint: Option(bool, "Track mints (inscriptions)?", choices=[True, False]),  # type: ignore
+    track_buy: Option(str, "Track buys?", choices=["true", "false", "both"]),  # type: ignore
+    track_sell: Option(str, "Track sells?", choices=["true", "false", "both"]), # type: ignore
 ):  # type: ignore
     guild_id = ctx.guild.id
     channel_id = ctx.channel.id
@@ -755,7 +755,7 @@ async def addwallet(
 @commands.check(is_admin)
 async def deletewallet(
     ctx: discord.ApplicationContext,
-    wallet_address: discord.Option(str, "Address of the wallet to delete"),  # type: ignore
+    wallet_address: Option(str, "Address of the wallet to delete"),  # type: ignore
 ):  # type: ignore
     guild_id = ctx.guild.id
     channel_id = ctx.channel.id
@@ -1074,8 +1074,8 @@ USER WALLET LOGIC FOR PnL - START
 
 # @bot.command(name="adduserwallets", description="Add wallets",)
 # async def adduserwallets(ctx: discord.ApplicationContext,
-#                         wallet_name: discord.Option(str, "Name of the wallet"),  # type: ignore
-#                         wallet_address: discord.Option(str, "Wallet address")):  # type: ignore
+#                         wallet_name: Option(str, "Name of the wallet"),  # type: ignore
+#                         wallet_address: Option(str, "Wallet address")):  # type: ignore
 
 #     await ctx.defer(ephemeral=True)  # Defer the response to show "thinking" indicator
 
@@ -1101,7 +1101,7 @@ USER WALLET LOGIC FOR PnL - START
 # @bot.command(name="managewallets", description="Delete a wallet")
 # async def managewallets(
 #     ctx: discord.ApplicationContext,
-#     wallet_address: discord.Option(str, "Address of the wallet to delete"), # type: ignore
+#     wallet_address: Option(str, "Address of the wallet to delete"), # type: ignore
 # ):
 #     guild_id = str(ctx.guild.id)
 
@@ -1145,7 +1145,7 @@ USER WALLET LOGIC FOR PnL - START
 # @bot.command(name="viewwallets", description="View all the wallets")
 # async def viewwallets(
 #     ctx: discord.ApplicationContext,
-#     search: discord.Option(str, "Search for a wallet by name", required=False, default=""), # type: ignore
+#     search: Option(str, "Search for a wallet by name", required=False, default=""), # type: ignore
 # ):
 #     await ctx.defer()
 
@@ -1191,8 +1191,8 @@ USER WALLET LOGIC FOR PnL - START
 # )
 # async def profit(
 #     ctx: discord.ApplicationContext,
-#     asset_type: discord.Option(str, "Select asset type", choices=["rune", "ordinal"]),  # type: ignore
-#     asset_slug: discord.Option(
+#     asset_type: Option(str, "Select asset type", choices=["rune", "ordinal"]),  # type: ignore
+#     asset_slug: Option(
 #         str, "Enter the asset slug (rune name or ordinal collection symbol)"
 #     ), # type: ignore
 # ):  # type: ignore
@@ -1518,7 +1518,7 @@ def set_sent_status(guild_id, rune_id, target):
     description="Set the channel for runes mint tracking updates (Admin only)",
 )
 @commands.check(is_admin)  # Limit to admins
-async def runesmint(ctx: discord.ApplicationContext, channel: discord.Option(discord.TextChannel, "Select the channel")):  # type: ignore
+async def runesmint(ctx: discord.ApplicationContext, channel: Option(discord.TextChannel, "Select the channel")):  # type: ignore
     guild_id = str(ctx.guild.id)
     channel_id = str(channel.id)
 
