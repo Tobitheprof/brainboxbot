@@ -3,13 +3,12 @@ import requests
 import logging
 import aiohttp
 import discord
-from discord import Option
-from discord.ext import commands
+from discord.commands import Option
 from discord.ext import commands, tasks
 from tweeterpy import TweeterPy
 from collections import defaultdict
 from bs4 import BeautifulSoup
-from discord.ui import Button, View, Modal, InputText
+from discord.ui import Button, View, Modal, InputText  # Adjusted for Pycord
 from discord import Interaction
 from typing import List, Dict
 from fake_useragent import UserAgent
@@ -25,7 +24,6 @@ from helpers.functions import (
 )
 from dotenv import load_dotenv
 import json
-import os
 
 load_dotenv()
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
