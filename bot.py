@@ -455,7 +455,7 @@ async def floor(
 
             prices = price_data
 
-            price_sats_dec = f"{floor_price_sats:.3f}"
+            price_sats_dec = float(f"{floor_price_sats:.3f}")
 
             price_chart = plot_price_chart(prices, price_sats_dec)
 
@@ -1633,7 +1633,7 @@ async def runes_mint_tracker():
                 rune_id = str(rune.get("tick", ""))
                 percentage = rune.get("progress", 0)
                 target_percentages = [10, 25, 50, 80]
-                print(rune_id)
+                # print(rune_id)
 
                 for target in target_percentages:
                     if target <= percentage < target + 0.9:
