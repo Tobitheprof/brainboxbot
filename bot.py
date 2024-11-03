@@ -3,7 +3,7 @@ import requests
 import logging
 import aiohttp
 import discord
-from discord import Option
+from discord.commands import Option
 from discord.ext import commands
 from discord.ext import commands, tasks
 from tweeterpy import TweeterPy
