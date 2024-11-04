@@ -867,8 +867,19 @@ async def process_inscription_sales(wallet_address, wallet_info, item, guild_id,
         if channel:
             await channel.send(embed=embed_inscription_sales)
     
-    else:
-        pass
+    elif not transaction_history[guild_id][channel_id][wallet_address]:
+        # Send a failsafe embed if there are no inscription sales transactions
+        embed_no_transactions = discord.Embed(
+            title="No Inscription Sales Transactions Found ❌",
+            description=f"{wallet_info.get('name', 'Unknown')} did not process any Inscription Sales Transactions",
+            color=discord.Color.orange()
+        )
+        embed_no_transactions.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
+        
+        # Send the failsafe embed to the channel
+        channel = bot.get_channel(channel_id)
+        if channel:
+            await channel.send(embed=embed_no_transactions)
 
 
 async def process_inscriptions(wallet_address, wallet_info, item, guild_id, channel_id):
@@ -907,47 +918,19 @@ async def process_inscriptions(wallet_address, wallet_info, item, guild_id, chan
         if channel:
             await channel.send(embed=embed_inscription)
     
-    else:
-        pass
-
-
-async def process_brc20_transactions(wallet_address, wallet_info, item, guild_id, channel_id):
-    # Ensure the transaction_history structure is initialized
-    if guild_id not in transaction_history:
-        transaction_history[guild_id] = {}
-    if channel_id not in transaction_history[guild_id]:
-        transaction_history[guild_id][channel_id] = {}
-    if wallet_address not in transaction_history[guild_id][channel_id]:
-        transaction_history[guild_id][channel_id][wallet_address] = []
-
-    transaction_id = item['tx_id']  # Assuming 'id' is the transaction ID field
-
-    # Check if the transaction ID is already tracked
-    if transaction_id not in transaction_history[guild_id][channel_id][wallet_address]:
-        transaction_history[guild_id][channel_id][wallet_address].append(transaction_id)
-        
-        tick = item.get("tick", "Unknown")
-        amount = float(item.get("amount", 0.000))
-        psbt_price = item.get("psbt_price", 0)
-        action = "Bought" if item.get("new_wallet") == wallet_address else "Sold"
-
-        embed_brc20 = discord.Embed(
-            title=f"{wallet_info.get('name', 'Unknown')} {action} {amount} {tick}",
-            color=(discord.Color.green() if item.get("new_wallet") == wallet_address else discord.Color.red()),
+    elif not transaction_history[guild_id][channel_id][wallet_address]:
+        # Send a failsafe embed if there are no inscription sales transactions
+        embed_no_transactions = discord.Embed(
+            title="No Inscriptions Found ❌",
+            description=f"{wallet_info.get('name', 'Unknown')} did not process any Inscriptions",
+            color=discord.Color.orange()
         )
-        embed_brc20.add_field(name="Amount", value=f"{amount} units", inline=True)
-        embed_brc20.add_field(name="Price (BTC)", value=(psbt_price / 100_000_000), inline=False)
-        embed_brc20.add_field(name="Price (USD)", value=(psbt_price / 100_000_000) * get_btc_price_usd(), inline=False)
-        embed_brc20.add_field(name="Category", value="BRC20", inline=True)
-        embed_brc20.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
-
-        # Send notification to the channel
+        embed_no_transactions.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
+        
+        # Send the failsafe embed to the channel
         channel = bot.get_channel(channel_id)
         if channel:
-            await channel.send(embed=embed_brc20)
-    
-    else:
-        pass
+            await channel.send(embed=embed_no_transactions)
 
 
 async def process_rune_transactions(wallet_address, wallet_info, item, guild_id, channel_id):
@@ -987,13 +970,23 @@ async def process_rune_transactions(wallet_address, wallet_info, item, guild_id,
         if channel:
             await channel.send(embed=embed_runes)
     
-    else:
-        pass
+    elif not transaction_history[guild_id][channel_id][wallet_address]:
+        # Send a failsafe embed if there are no inscription sales transactions
+        embed_no_transactions = discord.Embed(
+            title="No Rune Transactions Found ❌",
+            description=f"{wallet_info.get('name', 'Unknown')} did not process any Rune transactions.",
+            color=discord.Color.orange()
+        )
+        embed_no_transactions.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
+        
+        # Send the failsafe embed to the channel
+        channel = bot.get_channel(channel_id)
+        if channel:
+            await channel.send(embed=embed_no_transactions)
 
 
 # Dictionary to store the most recent transactions for each wallet
 recent_transactions = defaultdict(list)
-
 @tasks.loop(seconds=5)  # Check for new transactions every 5 seconds
 async def check_wallet_transactions():
     global tracked_wallets, transaction_history, output_channels, recent_transactions
@@ -1018,44 +1011,71 @@ async def check_wallet_transactions():
                 async with session.get(inscription_sales_url, headers=headers) as response:
                     if response.status == 200:
                         data = await response.json()
-                        for item in data.get("items", [])[:1]:
-                            await process_inscription_sales(wallet_address, wallet_info, item, guild_id, channel_id)
-
-                            # Store recent transactions
-                            recent_transactions[wallet_address].append(item)
+                        items = data.get("items", [])
+                        if items:
+                            for item in items[:1]:
+                                await process_inscription_sales(wallet_address, wallet_info, item, guild_id, channel_id)
+                                recent_transactions[wallet_address].append(item)
+                        else:
+                            # No inscription sales found
+                            await send_no_transactions_message(channel_id, wallet_info, "Inscriptions")
 
                 # Fetching inscriptions
                 inscriptions_url = f"https://v2api.bestinslot.xyz/wallet/history?page=1&address={wallet_address}&activity=1"
                 async with session.get(inscriptions_url, headers=headers) as response:
                     if response.status == 200:
                         data = await response.json()
-                        for item in data.get("items", [])[:1]:
-                            await process_inscriptions(wallet_address, wallet_info, item, guild_id, channel_id)
+                        items = data.get("items", [])
+                        if items:
+                            for item in items[:1]:
+                                await process_inscriptions(wallet_address, wallet_info, item, guild_id, channel_id)
+                        else:
+                            # No inscriptions found
+                            await send_no_transactions_message(channel_id, wallet_info, "Inscriptions")
 
-                # Fetching BRC-20 transactions
-                brc20_transactions_url = f"https://v2api.bestinslot.xyz/wallet/history-brc20?page=1&address={wallet_address}"
-                async with session.get(brc20_transactions_url, headers=headers) as response:
-                    if response.status == 200:
-                        data = await response.json()
-                        for item in data.get("items", [])[:1]:
-                            await process_brc20_transactions(wallet_address, wallet_info, item, guild_id, channel_id)
-
-                            # Store recent transactions
-                            recent_transactions[wallet_address].append(item)
+                # # Fetching BRC-20 transactions
+                # brc20_transactions_url = f"https://v2api.bestinslot.xyz/wallet/history-brc20?page=1&address={wallet_address}"
+                # async with session.get(brc20_transactions_url, headers=headers) as response:
+                #     if response.status == 200:
+                #         data = await response.json()
+                #         items = data.get("items", [])
+                #         if items:
+                #             for item in items[:1]:
+                #                 await process_brc20_transactions(wallet_address, wallet_info, item, guild_id, channel_id)
+                #                 recent_transactions[wallet_address].append(item)
+                #         else:
+                #             # No BRC-20 transactions found
+                #             await send_no_transactions_message(channel_id, wallet_info, "BRC-20 transactions")
 
                 # Fetching rune transactions
                 rune_transactions_url = f"https://v2api.bestinslot.xyz/rune/activity?page=1&address={wallet_address}&include_rune=true"
                 async with session.get(rune_transactions_url, headers=headers) as response:
                     if response.status == 200:
                         data = await response.json()
-                        for item in data.get("items", [])[:1]:
-                            await process_rune_transactions(wallet_address, wallet_info, item, guild_id, channel_id)
-
-                            # Store recent transactions
-                            recent_transactions[wallet_address].append(item)
-                            # Keep only the last two transactions
-
+                        items = data.get("items", [])
+                        if items:
+                            for item in items[:1]:
+                                await process_rune_transactions(wallet_address, wallet_info, item, guild_id, channel_id)
+                                recent_transactions[wallet_address].append(item)
+                        else:
+                            # No rune transactions found
+                            await send_no_transactions_message(channel_id, wallet_info, "Rune transactions")
+    
     save_wallet_data()
+
+async def send_no_transactions_message(channel_id, wallet_info, transaction_type):
+    """Send a message indicating that no transactions of a specific type were found."""
+    embed_no_transactions = discord.Embed(
+        title=f"No {transaction_type} Found ❌",
+        description=f"{wallet_info.get('name', 'Unknown')} did not process any {transaction_type}",
+        color=discord.Color.orange()
+    )
+    embed_no_transactions.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
+
+    channel = bot.get_channel(channel_id)
+    if channel:
+        await channel.send(embed=embed_no_transactions)
+
 """
 Wallet Tracking Logic - End;
 """
