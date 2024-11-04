@@ -46,7 +46,8 @@ DEV_MODE = True
 IN-CODE SUPORTERS
 """
 # Define allowed users list in the code
-ALLOWED_USERS = ["947265286426493000", "1040550234629095464"]
+# Allowed user IDs as integers
+ALLOWED_USERS = [947265286426493000, 1040550234629095464]
 
 async def is_allowed_user(interaction: discord.Interaction):
     """Checks if the user is in the allowed users list."""
@@ -55,40 +56,77 @@ async def is_allowed_user(interaction: discord.Interaction):
 @bot.command(name="add_server", description="Add a server to the allowed list.")
 @commands.check(is_allowed_user)
 async def add_server(interaction: discord.Interaction, server_id: str):
+    # Initialize the data dictionary
+    data = {"allowed_servers": []}
+
     # Load the allowed servers from JSON
-    with open("allowed_servers.json", "r") as f:
-        data = json.load(f)
-        allowed_servers = data.get("allowed_servers", [])
-    
+    try:
+        with open("allowed_servers.json", "r") as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        # The file does not exist, continue with the initialized data
+        pass
+
+    allowed_servers = data.get("allowed_servers", [])
+
     # Check if the server is already allowed
     if server_id in allowed_servers:
-        await interaction.response.send_message("This server is already allowed.")
+        await interaction.response.send_message("This server is already allowed.", ephemeral=True)
         return
-    
+
     # Add the new server ID and save it back to the JSON file
     allowed_servers.append(server_id)
     data["allowed_servers"] = allowed_servers
 
     with open("allowed_servers.json", "w") as f:
         json.dump(data, f, indent=4)
-    
-    await interaction.response.send_message(f"Server {server_id} has been successfully added to the allowed list.")
+
+    await interaction.response.send_message(f"Server {server_id} has been successfully added to the allowed list.", ephemeral=True)
+
+@bot.command(name="remove_server", description="Remove a server from the allowed list.")
+@commands.check(is_allowed_user)
+async def remove_server(interaction: discord.Interaction, server_id: str):
+    # Load the allowed servers from JSON
+    try:
+        with open("allowed_servers.json", "r") as f:
+            data = json.load(f)
+            allowed_servers = data.get("allowed_servers", [])
+    except FileNotFoundError:
+        allowed_servers = []  # Initialize if file doesn't exist
+
+    # Check if the server is in the allowed list
+    if server_id not in allowed_servers:
+        await interaction.response.send_message("This server is not in the allowed list.", ephemeral=True)
+        return
+
+    # Remove the server ID and save it back to the JSON file
+    allowed_servers.remove(server_id)
+    data["allowed_servers"] = allowed_servers
+
+    with open("allowed_servers.json", "w") as f:
+        json.dump(data, f, indent=4)
+
+    await interaction.response.send_message(f"Server {server_id} has been successfully removed from the allowed list.", ephemeral=True)
+
 
 def allowed_server_only():
     def decorator(func):
         @wraps(func)
-        async def wrapper(ctx, *args, **kwargs):
+        async def wrapper(interaction: discord.Interaction, *args, **kwargs):
             # Load allowed servers from JSON
-            with open("allowed_servers.json", "r") as f:
-                data = json.load(f)
-                allowed_servers = data.get("allowed_servers", [])
+            try:
+                with open("allowed_servers.json", "r") as f:
+                    data = json.load(f)
+                    allowed_servers = data.get("allowed_servers", [])
+            except FileNotFoundError:
+                allowed_servers = []  # Initialize if file doesn't exist
             
             # Check if the server is allowed
-            if str(ctx.guild.id) not in allowed_servers:
-                await ctx.send("This server does not have access to use this bot.")
+            if str(interaction.guild.id) not in allowed_servers:
+                await interaction.response.send_message("This server does not have access to use this bot.", ephemeral=True)
                 return
             
-            return await func(ctx, *args, **kwargs)
+            return await func(interaction, *args, **kwargs)
         return wrapper
     return decorator
 
