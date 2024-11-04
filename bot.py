@@ -12,6 +12,7 @@ from bs4 import BeautifulSoup
 from discord.ui import Button, View, Modal, InputText
 from discord import Interaction
 from typing import List, Dict
+from functools import wraps
 from fake_useragent import UserAgent
 from helpers.constants import (
     rune_endpoints,
@@ -44,6 +45,53 @@ DEV_MODE = True
 """
 IN-CODE SUPORTERS
 """
+# Define allowed users list in the code
+ALLOWED_USERS = ["947265286426493000", "1040550234629095464"]
+
+async def is_allowed_user(interaction: discord.Interaction):
+    """Checks if the user is in the allowed users list."""
+    return interaction.user.id in ALLOWED_USERS
+
+@bot.command(name="add_server", description="Add a server to the allowed list.")
+@commands.check(is_allowed_user)
+async def add_server(interaction: discord.Interaction, server_id: str):
+    # Load the allowed servers from JSON
+    with open("allowed_servers.json", "r") as f:
+        data = json.load(f)
+        allowed_servers = data.get("allowed_servers", [])
+    
+    # Check if the server is already allowed
+    if server_id in allowed_servers:
+        await interaction.response.send_message("This server is already allowed.")
+        return
+    
+    # Add the new server ID and save it back to the JSON file
+    allowed_servers.append(server_id)
+    data["allowed_servers"] = allowed_servers
+
+    with open("allowed_servers.json", "w") as f:
+        json.dump(data, f, indent=4)
+    
+    await interaction.response.send_message(f"Server {server_id} has been successfully added to the allowed list.")
+
+def allowed_server_only():
+    def decorator(func):
+        @wraps(func)
+        async def wrapper(ctx, *args, **kwargs):
+            # Load allowed servers from JSON
+            with open("allowed_servers.json", "r") as f:
+                data = json.load(f)
+                allowed_servers = data.get("allowed_servers", [])
+            
+            # Check if the server is allowed
+            if str(ctx.guild.id) not in allowed_servers:
+                await ctx.send("This server does not have access to use this bot.")
+                return
+            
+            return await func(ctx, *args, **kwargs)
+        return wrapper
+    return decorator
+
 class DeleteButton(discord.ui.Button):
     def __init__(self, author_id):
         super().__init__(style=discord.ButtonStyle.secondary, emoji="❌")
@@ -154,6 +202,7 @@ These are commands that are not tied to collective functions like the others for
 """
 
 @bot.command(name="help", description="Get help with using the bot")
+@allowed_server_only()
 async def help_command(ctx):
     await ctx.defer(ephemeral=True)  # Defer response to indicate processing
 
@@ -214,6 +263,7 @@ async def help_command(ctx):
     name="xhistory",
     description="Get previous usernames associated with the specified X (Twitter) account",
 )
+@allowed_server_only()
 async def xhistory(ctx: discord.ApplicationContext, username: Option(str, "X (Twitter) Username")):  # type: ignore
     try:
 
@@ -285,6 +335,7 @@ async def xhistory(ctx: discord.ApplicationContext, username: Option(str, "X (Tw
 
 
 @bot.command(name="satsvb", description="Get network fees on bitcoin")
+@allowed_server_only()
 async def satsvb(ctx: discord.ApplicationContext):
     """Fetches and displays Bitcoin network fees in an embed."""
 
@@ -340,6 +391,7 @@ async def satsvb(ctx: discord.ApplicationContext):
     name="floor",
     description="Retrieve floor price for either Runes or Ordinals with a specific slug",
 )
+@allowed_server_only()
 async def floor(
     ctx: discord.ApplicationContext,
     asset_type: Option(str, "Select asset type", choices=["runes", "ordinals"]),  # type: ignore
@@ -617,10 +669,11 @@ Wallet Tracking Logic, Admin; Start
 """
 tracked_wallets = {}
 
-@bot.command(
+@bot.command(   
     name="setchannel",
     description="Set the channel for wallet tracking updates (Admin only)"
 )
+@allowed_server_only()
 @commands.check(is_admin)
 async def setchannel(interaction: discord.Interaction, channel: Option(discord.TextChannel, "Select the channel")):  # type: ignore
     await interaction.response.defer(ephemeral=True)
@@ -711,6 +764,7 @@ class AddWalletModal(Modal):
         )
 
 @bot.command(name="addwallet", description="Add a wallet to track (Admin only)")
+@allowed_server_only()
 @commands.check(is_admin)  # Limit to admins
 async def addwallet(
     ctx: discord.ApplicationContext,
@@ -752,6 +806,7 @@ async def addwallet(
     )
 
 @bot.command(name="deletewallet", description="Delete a tracked wallet by address (Admin only)")
+@allowed_server_only()
 @commands.check(is_admin)
 async def deletewallet(
     ctx: discord.ApplicationContext,
@@ -1537,6 +1592,7 @@ def set_sent_status(guild_id, rune_id, target):
     name="runesmint",
     description="Set the channel for runes mint tracking updates (Admin only)",
 )
+@allowed_server_only()
 @commands.check(is_admin)  # Limit to admins
 async def runesmint(ctx: discord.ApplicationContext, channel: Option(discord.TextChannel, "Select the channel")):  # type: ignore
     guild_id = str(ctx.guild.id)
