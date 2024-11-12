@@ -30,8 +30,8 @@ import os
 
 load_dotenv()
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
-WALLET_DATA_FILE = "wallet_tracking_data.json"
-USER_WALLET_FILE = "user_wallet_data_file.json"
+WALLET_DATA_FILE = "./data/wallet_tracking_data.json"
+USER_WALLET_FILE = "./data/user_wallet_data_file.json"
 
 ua = UserAgent()
 intents = discord.Intents.default()
@@ -61,7 +61,7 @@ async def add_server(interaction: discord.Interaction, server_id: str):
 
     # Load the allowed servers from JSON
     try:
-        with open("allowed_servers.json", "r") as f:
+        with open("./data/allowed_servers.json", "r") as f:
             data = json.load(f)
     except FileNotFoundError:
         # The file does not exist, continue with the initialized data
@@ -78,7 +78,7 @@ async def add_server(interaction: discord.Interaction, server_id: str):
     allowed_servers.append(server_id)
     data["allowed_servers"] = allowed_servers
 
-    with open("allowed_servers.json", "w") as f:
+    with open("./data/allowed_servers.json", "w") as f:
         json.dump(data, f, indent=4)
 
     await interaction.response.send_message(f"Server {server_id} has been successfully added to the allowed list.", ephemeral=True)
@@ -88,7 +88,7 @@ async def add_server(interaction: discord.Interaction, server_id: str):
 async def remove_server(interaction: discord.Interaction, server_id: str):
     # Load the allowed servers from JSON
     try:
-        with open("allowed_servers.json", "r") as f:
+        with open("./data/allowed_servers.json", "r") as f:
             data = json.load(f)
             allowed_servers = data.get("allowed_servers", [])
     except FileNotFoundError:
@@ -103,7 +103,7 @@ async def remove_server(interaction: discord.Interaction, server_id: str):
     allowed_servers.remove(server_id)
     data["allowed_servers"] = allowed_servers
 
-    with open("allowed_servers.json", "w") as f:
+    with open("./data/allowed_servers.json", "w") as f:
         json.dump(data, f, indent=4)
 
     await interaction.response.send_message(f"Server {server_id} has been successfully removed from the allowed list.", ephemeral=True)
@@ -115,7 +115,7 @@ def allowed_server_only():
         async def wrapper(interaction: discord.Interaction, *args, **kwargs):
             # Load allowed servers from JSON
             try:
-                with open("allowed_servers.json", "r") as f:
+                with open("./data/allowed_servers.json", "r") as f:
                     data = json.load(f)
                     allowed_servers = data.get("allowed_servers", [])
             except FileNotFoundError:
@@ -948,7 +948,11 @@ async def process_inscription_sales(wallet_address, wallet_info, item, guild_id,
         )
         ins_id = item.get("inscription_id", "N/A")
         embed_inscription_sales.add_field(name="Price (BTC)", value=(int(item.get("psbt_sale", 0)) / 100_000_000), inline=False)
-        embed_inscription_sales.add_field(name="Price ($)", value=(int(item.get("psbt_sale", 0)) / 100_000_000) * get_btc_price_usd(), inline=False)
+        embed_inscription_sales.add_field(
+            name="Price ($)", 
+            value=f"{(int(item.get('psbt_sale', 0)) / 100_000_000) * get_btc_price_usd():.2f}", 
+            inline=False
+        )        
         embed_inscription_sales.set_image(url=f"https://ord-mirror.magiceden.dev/content/{ins_id}")
         embed_inscription_sales.add_field(name="Inscription ID", value=item.get("inscription_id", "N/A"), inline=False)
         embed_inscription_sales.add_field(name="Category", value="Inscriptions")
@@ -1044,7 +1048,7 @@ async def process_rune_transactions(wallet_address, wallet_info, item, guild_id,
         rune = item.get("rune", {})
         wallet_from = item.get("wallet_from", "Unknown")
         wallet_to = item.get("wallet_to", "Unknown")
-        rune_name = rune.get("rune_name", "Unknown")
+        rune_name = rune.get("spaced_rune_name", "Unknown")
         action = "Bought" if wallet_to == wallet_address else "Sold"
 
         embed_runes = discord.Embed(
@@ -1052,7 +1056,11 @@ async def process_rune_transactions(wallet_address, wallet_info, item, guild_id,
             color=(discord.Color.green() if wallet_to == wallet_address else discord.Color.red()),
         )
         embed_runes.add_field(name="Sale Price (BTC)", value=(item.get("sale_price_sats", 0) / 100_000_000), inline=False)
-        embed_runes.add_field(name="Price ($)", value=(item.get("sale_price_sats", 0) / 100_000_000) * get_btc_price_usd(), inline=False)
+        embed_runes.add_field(
+            name="Price ($)", 
+            value=f"{(item.get('sale_price_sats', 0) / 100_000_000) * get_btc_price_usd():.2f}", 
+            inline=False
+        )        
         embed_runes.set_image(url=f"https://ord-mirror.magiceden.dev/content/{item.get('deploy_txid', 'N/A')}")
         embed_runes.add_field(name="Rune ID", value=rune.get("rune_id", "N/A"), inline=False)
         embed_runes.add_field(name="Category", value="Runes")
@@ -1080,6 +1088,7 @@ async def process_rune_transactions(wallet_address, wallet_info, item, guild_id,
 
 # Dictionary to store the most recent transactions for each wallet
 recent_transactions = defaultdict(list)
+
 @tasks.loop(seconds=5)  # Check for new transactions every 5 seconds
 async def check_wallet_transactions():
     global tracked_wallets, transaction_history, output_channels, recent_transactions
@@ -1105,13 +1114,12 @@ async def check_wallet_transactions():
                     if response.status == 200:
                         data = await response.json()
                         items = data.get("items", [])
-                        if items:
+                        if not items:  # Explicit check for empty items
+                            await send_no_transactions_message(channel_id, wallet_info, "Inscriptions")
+                        else:
                             for item in items[:1]:
                                 await process_inscription_sales(wallet_address, wallet_info, item, guild_id, channel_id)
                                 recent_transactions[wallet_address].append(item)
-                        else:
-                            # No inscription sales found
-                            await send_no_transactions_message(channel_id, wallet_info, "Inscriptions")
 
                 # Fetching inscriptions
                 inscriptions_url = f"https://v2api.bestinslot.xyz/wallet/history?page=1&address={wallet_address}&activity=1"
@@ -1119,26 +1127,24 @@ async def check_wallet_transactions():
                     if response.status == 200:
                         data = await response.json()
                         items = data.get("items", [])
-                        if items:
+                        if not items:  # Explicit check for empty items
+                            await send_no_transactions_message(channel_id, wallet_info, "Inscriptions")
+                        else:
                             for item in items[:1]:
                                 await process_inscriptions(wallet_address, wallet_info, item, guild_id, channel_id)
-                        else:
-                            # No inscriptions found
-                            await send_no_transactions_message(channel_id, wallet_info, "Inscriptions")
 
-                # # Fetching BRC-20 transactions
+                # # Fetching BRC-20 transactions (currently commented out)
                 # brc20_transactions_url = f"https://v2api.bestinslot.xyz/wallet/history-brc20?page=1&address={wallet_address}"
                 # async with session.get(brc20_transactions_url, headers=headers) as response:
                 #     if response.status == 200:
                 #         data = await response.json()
                 #         items = data.get("items", [])
-                #         if items:
+                #         if not items:  # Explicit check for empty items
+                #             await send_no_transactions_message(channel_id, wallet_info, "BRC-20 transactions")
+                #         else:
                 #             for item in items[:1]:
                 #                 await process_brc20_transactions(wallet_address, wallet_info, item, guild_id, channel_id)
                 #                 recent_transactions[wallet_address].append(item)
-                #         else:
-                #             # No BRC-20 transactions found
-                #             await send_no_transactions_message(channel_id, wallet_info, "BRC-20 transactions")
 
                 # Fetching rune transactions
                 rune_transactions_url = f"https://v2api.bestinslot.xyz/rune/activity?page=1&address={wallet_address}&include_rune=true"
@@ -1146,14 +1152,13 @@ async def check_wallet_transactions():
                     if response.status == 200:
                         data = await response.json()
                         items = data.get("items", [])
-                        if items:
+                        if not items:  # Explicit check for empty items
+                            await send_no_transactions_message(channel_id, wallet_info, "Rune transactions")
+                        else:
                             for item in items[:1]:
                                 await process_rune_transactions(wallet_address, wallet_info, item, guild_id, channel_id)
                                 recent_transactions[wallet_address].append(item)
-                        else:
-                            # No rune transactions found
-                            await send_no_transactions_message(channel_id, wallet_info, "Rune transactions")
-    
+
     save_wallet_data()
 
 async def send_no_transactions_message(channel_id, wallet_info, transaction_type):
@@ -1562,8 +1567,8 @@ All of the code below, until the point marked end represents the rune tracking l
 def load_runes_data():
     """Load the runes data from a JSON file if it exists."""
     global data
-    if os.path.exists("runes_mint_data.json"):
-        with open("runes_mint_data.json", "r") as f:
+    if os.path.exists("./data/runes_mint_data.json"):
+        with open("./data/runes_mint_data.json", "r") as f:
             data = json.load(f)
     else:
         # Do not initialize any structure here to prevent auto-creation of the file
@@ -1572,7 +1577,7 @@ def load_runes_data():
 def save_data():
     # Only save guilds that have at least one tracking channel configured
     data_to_save = {guild_id: channels for guild_id, channels in data.items() if channels}
-    with open("data.json", "w") as f:
+    with open("./data./data.json", "w") as f:
         json.dump(data_to_save, f, indent=4)
 
 def get_last_sent_percentage(guild_id, rune_id):
@@ -1746,7 +1751,7 @@ async def runes_mint_tracker():
             for rune in runes_data:
                 rune_id = str(rune.get("tick", ""))
                 percentage = rune.get("progress", 0)
-                target_percentages = [10, 25, 50, 80]
+                target_percentages = [30]
                 # print(rune_id)
 
                 for target in target_percentages:
