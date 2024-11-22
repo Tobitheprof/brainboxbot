@@ -6,9 +6,7 @@ import discord
 from discord import Option
 from discord.ext import commands
 from discord.ext import commands, tasks
-from tweeterpy import TweeterPy
 from collections import defaultdict
-from bs4 import BeautifulSoup
 from discord.ui import Button, View, Modal, InputText
 from discord import Interaction
 from typing import List, Dict
@@ -45,8 +43,8 @@ DEV_MODE = True
 """
 IN-CODE SUPORTERS
 """
-# Define allowed users list in the code
-# Allowed user IDs as integers
+
+# Allowed user IDs as integers ONLY!
 ALLOWED_USERS = [947265286426493000, 1040550234629095464]
 
 async def is_allowed_user(interaction: discord.Interaction):
@@ -275,10 +273,6 @@ async def help_command(ctx):
         name="/satsvb", value="Get the network fees on Bitcoin. \n Usage: `/satsvb`"
     )
     embed.add_field(
-        name="/xhistory",
-        value="Get past usernames on an X account. \n Usage: `/xhistory username=<username>`",
-    )
-    embed.add_field(
         name="/deletewallet",
         value="Delete a tracked wallet (Admin only).\nUsage: `/deletewallet wallet_name=<wallet_name>`",
         inline=False,
@@ -295,82 +289,7 @@ async def help_command(ctx):
         icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg",
     )
 
-    await ctx.respond(embed=embed, view=DeleteView(author_id=ctx.author.id), ephemeral=True)  # Make response visible only to the command caller
-
-@bot.command(
-    name="xhistory",
-    description="Get previous usernames associated with the specified X (Twitter) account",
-)
-@allowed_server_only()
-async def xhistory(ctx: discord.ApplicationContext, username: Option(str, "X (Twitter) Username")):  # type: ignore
-    try:
-
-        await ctx.defer()
-        headers = {
-            "User-Agent": ua.random,
-        }
-        twitter = TweeterPy()
-
-        user_id = twitter.get_user_id(username)
-
-        url = f"https://botsentinel.com/profile/{user_id}"
-        response = requests.get(url, headers=headers)
-
-        if response.status_code == 200:
-            soup = BeautifulSoup(response.text, "html.parser")
-
-            change_history_section = soup.find(
-                "h3", string="Twitter Handle Change History"
-            )
-            if change_history_section:
-                change_history_div = change_history_section.find_next(
-                    "div", class_="card-body"
-                )
-
-                username_changes = change_history_div.find_all("div", class_="media")
-
-                embed = discord.Embed(
-                    title=f"Username History for @{username}",
-                    color=discord.Color(int("008000", 16)),
-                )
-
-                history_text = ""
-                for change in username_changes:
-                    username_change = change.find("h6", class_="mediafont").get_text(
-                        strip=True
-                    )
-                    change_date = change.find("span", class_="d-block").get_text(
-                        strip=True
-                    )
-                    previous, current = username_change.split("→")
-
-                    history_text += f"[{previous.strip()}](https://twitter.com/{previous.strip()}) → [{current.strip()}](https://twitter.com/{current.strip()})\nChanged on: {change_date}\n\n"
-
-                if history_text:
-                    embed.add_field(
-                        name="Previous Username Changes",
-                        value=history_text,
-                        inline=False,
-                    )
-
-                embed.add_field(
-                    name="Current Username",
-                    value=f"[{username}](https://twitter.com/{username}) (current)",
-                    inline=False,
-                )
-
-                await ctx.respond(embed=embed, view=DeleteView(author_id=ctx.author.id))
-            else:
-                await ctx.followup.send(
-                    f"No Twitter handle change history found for @{username}."
-                )
-        else:
-            await ctx.followup.send(
-                f"Failed to retrieve profile details (status code: {response.status_code})."
-            )
-    except Exception as e:
-        await ctx.followup.send(f"An error occurred: {str(e)}")
-
+    await ctx.respond(embed=embed, view=DeleteView(author_id=ctx.author.id), ephemeral=True)
 
 @bot.command(name="satsvb", description="Get network fees on bitcoin")
 @allowed_server_only()
@@ -864,8 +783,14 @@ async def deletewallet(
         if wallet_address in tracked_wallets[key]:
             del tracked_wallets[key][wallet_address]
             save_wallet_data()
+            embed = discord.Embed(
+                title="Wallet Deleted 🚮",
+                description=f"Wallet with address **{wallet_address}** has been deleted",
+                color=discord.Color.red()
+                )
+            embed.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
             await ctx.respond(
-                f"Wallet with address '{wallet_address}' deleted from tracking list.",
+                embed=embed,
                 ephemeral=True  # Make the response visible only to the user who called the command
             )
             return
@@ -911,19 +836,20 @@ async def listwallets(ctx: discord.ApplicationContext):  # type: ignore
     for address, info in tracked_wallets[key].items():
         track_str = ""
         if info["track_mint"]:
-            track_str += "Mint "
+            track_str += "Mint(s) "
         if info["track_buy"]:
-            track_str += "Buy "
+            track_str += "Buy(s) "
         if info["track_sell"]:
-            track_str += "Sell "
+            track_str += "Sell(s) "
         embed.add_field(
-            name=info["name"],
+            name=f"Wallet Name: {info['name']}",
             value=f"**Address:** {address}\n**Tracking:** {track_str.strip()}",
             inline=False,
         )
+        embed.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
+
 
     await ctx.respond(embed=embed, ephemeral=True)  # Make response visible only to the command caller
-
 
 # Dictionary to store transaction history for each guild/channel
 transaction_history: Dict[str, Dict[str, Dict[str, List[str]]]] = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
@@ -964,21 +890,7 @@ async def process_inscription_sales(wallet_address, wallet_info, item, guild_id,
         if channel:
             await channel.send(embed=embed_inscription_sales)
     
-    elif not transaction_history[guild_id][channel_id][wallet_address]:
-        # Send a failsafe embed if there are no inscription sales transactions
-        embed_no_transactions = discord.Embed(
-            title="No Inscription Sales Transactions Found ❌",
-            description=f"{wallet_info.get('name', 'Unknown')} did not process any Inscription Sales Transactions",
-            color=discord.Color.orange()
-        )
-        embed_no_transactions.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
-        
-        # Send the failsafe embed to the channel
-        channel = bot.get_channel(channel_id)
-        if channel:
-            await channel.send(embed=embed_no_transactions)
-
-
+    
 async def process_inscriptions(wallet_address, wallet_info, item, guild_id, channel_id):
     # Ensure the transaction_history structure is initialized
     if guild_id not in transaction_history:
@@ -1015,20 +927,7 @@ async def process_inscriptions(wallet_address, wallet_info, item, guild_id, chan
         if channel:
             await channel.send(embed=embed_inscription)
     
-    elif not transaction_history[guild_id][channel_id][wallet_address]:
-        # Send a failsafe embed if there are no inscription sales transactions
-        embed_no_transactions = discord.Embed(
-            title="No Inscriptions Found ❌",
-            description=f"{wallet_info.get('name', 'Unknown')} did not process any Inscriptions",
-            color=discord.Color.orange()
-        )
-        embed_no_transactions.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
-        
-        # Send the failsafe embed to the channel
-        channel = bot.get_channel(channel_id)
-        if channel:
-            await channel.send(embed=embed_no_transactions)
-
+    
 
 async def process_rune_transactions(wallet_address, wallet_info, item, guild_id, channel_id):
     # Ensure the transaction_history structure is initialized
@@ -1071,20 +970,6 @@ async def process_rune_transactions(wallet_address, wallet_info, item, guild_id,
         if channel:
             await channel.send(embed=embed_runes)
     
-    elif not transaction_history[guild_id][channel_id][wallet_address]:
-        # Send a failsafe embed if there are no inscription sales transactions
-        embed_no_transactions = discord.Embed(
-            title="No Rune Transactions Found ❌",
-            description=f"{wallet_info.get('name', 'Unknown')} did not process any Rune transactions.",
-            color=discord.Color.orange()
-        )
-        embed_no_transactions.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
-        
-        # Send the failsafe embed to the channel
-        channel = bot.get_channel(channel_id)
-        if channel:
-            await channel.send(embed=embed_no_transactions)
-
 
 # Dictionary to store the most recent transactions for each wallet
 recent_transactions = defaultdict(list)
@@ -1115,7 +1000,7 @@ async def check_wallet_transactions():
                         data = await response.json()
                         items = data.get("items", [])
                         if not items:  # Explicit check for empty items
-                            await send_no_transactions_message(channel_id, wallet_info, "Inscriptions")
+                            await send_no_transactions_message(channel_id, wallet_info, "Inscriptions Sales")
                         else:
                             for item in items[:1]:
                                 await process_inscription_sales(wallet_address, wallet_info, item, guild_id, channel_id)
@@ -1653,8 +1538,16 @@ async def runesmint(ctx: discord.ApplicationContext, channel: Option(discord.Tex
     if not runes_mint_tracker.is_running():
         runes_mint_tracker.start()
 
+    embed = discord.Embed(
+        title="Tracking Channel Set ✅",
+        description=f"Runes mint tracking updates will now be sent to {channel.mention}",
+        color= discord.Colour.green()
+    )
+    embed.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
+
+    
     await ctx.respond(
-        f"Runes mint tracking updates will now be sent to {channel.mention}"
+        embed=embed
     )
 
 def format_rune_message(rune_data, percentage):
@@ -1751,7 +1644,7 @@ async def runes_mint_tracker():
             for rune in runes_data:
                 rune_id = str(rune.get("tick", ""))
                 percentage = rune.get("progress", 0)
-                target_percentages = [30]
+                target_percentages = [30, 50, 80, 90]
                 # print(rune_id)
 
                 for target in target_percentages:

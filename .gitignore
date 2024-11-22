@@ -4,3 +4,5 @@ __pycache__
 .env
 wallet_tracking_data.json
 data.json
+data
+tweeterpy.log
