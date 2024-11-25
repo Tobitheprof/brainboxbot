@@ -21,6 +21,8 @@ from helpers.functions import (
     plot_price_chart,
     plot_ordinals_price_chart,
     get_btc_price_usd,
+    safe_float,
+    safe_int
 )
 from dotenv import load_dotenv
 import json
@@ -54,32 +56,39 @@ async def is_allowed_user(interaction: discord.Interaction):
 @bot.command(name="add_server", description="Add a server to the allowed list.")
 @commands.check(is_allowed_user)
 async def add_server(interaction: discord.Interaction, server_id: str):
-    # Initialize the data dictionary
     data = {"allowed_servers": []}
 
-    # Load the allowed servers from JSON
     try:
         with open("/data/allowed_servers.json", "r") as f:
             data = json.load(f)
     except FileNotFoundError:
-        # The file does not exist, continue with the initialized data
         pass
 
     allowed_servers = data.get("allowed_servers", [])
 
-    # Check if the server is already allowed
     if server_id in allowed_servers:
-        await interaction.response.send_message("This server is already allowed.", ephemeral=True)
+        embed = discord.Embed(
+            title="Server Already Allowed",
+            description=f"The server with ID `{server_id}` is already in the allowed list.",
+            color=discord.Color.orange()
+        )
+        await interaction.response.send_message(embed=embed, ephemeral=True)
         return
 
-    # Add the new server ID and save it back to the JSON file
     allowed_servers.append(server_id)
     data["allowed_servers"] = allowed_servers
 
     with open("/data/allowed_servers.json", "w") as f:
         json.dump(data, f, indent=4)
 
-    await interaction.response.send_message(f"Server {server_id} has been successfully added to the allowed list.", ephemeral=True)
+    embed = discord.Embed(
+        title="Server Added",
+        description=f"Server with ID `{server_id}` has been successfully added to the allowed list.",
+        color=discord.Color.green()
+    )
+    embed.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
+    await interaction.response.send_message(embed=embed, ephemeral=True)
+
 
 @bot.command(name="remove_server", description="Remove a server from the allowed list.")
 @commands.check(is_allowed_user)
@@ -90,36 +99,74 @@ async def remove_server(interaction: discord.Interaction, server_id: str):
             data = json.load(f)
             allowed_servers = data.get("allowed_servers", [])
     except FileNotFoundError:
-        allowed_servers = []  # Initialize if file doesn't exist
+        allowed_servers = []
 
-    # Check if the server is in the allowed list
     if server_id not in allowed_servers:
-        await interaction.response.send_message("This server is not in the allowed list.", ephemeral=True)
+        embed = discord.Embed(
+            title="Server Not Found",
+            description=f"The server with ID `{server_id}` is not in the allowed list.",
+            color=discord.Color.red()
+        )
+        await interaction.response.send_message(embed=embed, ephemeral=True)
         return
 
-    # Remove the server ID and save it back to the JSON file
     allowed_servers.remove(server_id)
     data["allowed_servers"] = allowed_servers
 
     with open("/data/allowed_servers.json", "w") as f:
         json.dump(data, f, indent=4)
 
-    await interaction.response.send_message(f"Server {server_id} has been successfully removed from the allowed list.", ephemeral=True)
+    embed = discord.Embed(
+        title="Server Removed",
+        description=f"Server with ID `{server_id}` has been successfully removed from the allowed list.",
+        color=discord.Color.green()
+    )
+    embed.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
+    await interaction.response.send_message(embed=embed, ephemeral=True)
+
+
+@bot.command(name="list_servers", description="List all servers in the allowed list.")
+@commands.check(is_allowed_user)
+async def list_servers(interaction: discord.Interaction):
+    try:
+        with open("/data/allowed_servers.json", "r") as f:
+            data = json.load(f)
+            allowed_servers = data.get("allowed_servers", [])
+    except FileNotFoundError:
+        allowed_servers = [] 
+
+    if not allowed_servers:
+        embed = discord.Embed(
+            title="Allowed Servers",
+            description="No servers are currently in the allowed list.",
+            color=discord.Color.red()
+        )
+        embed.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+        return
+
+    server_list = "\n".join(allowed_servers)
+    embed = discord.Embed(
+        title="Allowed Servers",
+        description=server_list,
+        color=discord.Color.blue()
+    )
+    embed.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
+
+    await interaction.response.send_message(embed=embed, ephemeral=True)
 
 
 def allowed_server_only():
     def decorator(func):
         @wraps(func)
         async def wrapper(interaction: discord.Interaction, *args, **kwargs):
-            # Load allowed servers from JSON
             try:
                 with open("/data/allowed_servers.json", "r") as f:
                     data = json.load(f)
                     allowed_servers = data.get("allowed_servers", [])
             except FileNotFoundError:
-                allowed_servers = []  # Initialize if file doesn't exist
+                allowed_servers = []
             
-            # Check if the server is allowed
             if str(interaction.guild.id) not in allowed_servers:
                 await interaction.response.send_message("This server does not have access to use this bot.", ephemeral=True)
                 return
@@ -134,7 +181,6 @@ class DeleteButton(discord.ui.Button):
         self.author_id = author_id
 
     async def callback(self, interaction: discord.Interaction):
-        # Only the author can delete the message
         if interaction.user.id == self.author_id:
             await interaction.message.delete()
         else:
@@ -855,42 +901,92 @@ async def listwallets(ctx: discord.ApplicationContext):  # type: ignore
 transaction_history: Dict[str, Dict[str, Dict[str, List[str]]]] = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
 
 async def process_inscription_sales(wallet_address, wallet_info, item, guild_id, channel_id):
-    if guild_id not in transaction_history: #Be sure to initialize transaction hisotry
+    # Initialize transaction history for guild, channel, and wallet
+    if guild_id not in transaction_history:
         transaction_history[guild_id] = {}
     if channel_id not in transaction_history[guild_id]:
         transaction_history[guild_id][channel_id] = {}
     if wallet_address not in transaction_history[guild_id][channel_id]:
         transaction_history[guild_id][channel_id][wallet_address] = []
 
-    txn_id = item['inscription_id']  # Assuming 'inscription_id' is the transaction ID field
+    txn_id = item.get('inscription_id', None)
+    if not txn_id:
+        print("Missing 'inscription_id' in item:", item)
+        return
 
     # Check if the transaction ID is already tracked
     if txn_id not in transaction_history[guild_id][channel_id][wallet_address]:
         transaction_history[guild_id][channel_id][wallet_address].append(txn_id)
-        
-        embed_inscription_sales = discord.Embed(
-            title=f"{wallet_info.get('name', 'Unknown')} {'Bought' if item.get('to') == wallet_address else 'Sold'} {item.get('inscription_name', 'N/A')} with number #{item.get('inscription_number', 'N/A')}",
-            color=(discord.Color.blue() if item.get("to") == wallet_address else discord.Color.red()),
+
+        # Check if the transaction is a BRC-20
+        is_brc20 = (
+            item.get("inscription_name") is None
+            and item.get("brc20_info", {}).get("transfer_info", {}).get("tick") is not None
         )
-        ins_id = item.get("inscription_id", "N/A")
-        embed_inscription_sales.add_field(name="Price (BTC)", value=(int(item.get("psbt_sale", 0)) / 100_000_000), inline=False)
-        embed_inscription_sales.add_field(
-            name="Price ($)", 
-            value=f"{(int(item.get('psbt_sale', 0)) / 100_000_000) * get_btc_price_usd():.2f}", 
-            inline=False
-        )        
-        embed_inscription_sales.set_image(url=f"https://ord-mirror.magiceden.dev/content/{ins_id}")
-        embed_inscription_sales.add_field(name="Inscription ID", value=item.get("inscription_id", "N/A"), inline=False)
-        embed_inscription_sales.add_field(name="Category", value="Inscriptions")
-        embed_inscription_sales.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
 
+        if is_brc20:
+            # Handle BRC-20 transaction
+            brc20_info = item.get("brc20_info", {}).get("transfer_info", {})
+            tick = brc20_info.get("tick", "N/A")
+            amount = safe_float(brc20_info.get("amount"))
+            psbt_sale = safe_int(item.get("psbt_sale"), default=0) / 100_000_000
+            btc_price_usd = get_btc_price_usd()
 
-        # Send notification to the channel
-        channel = bot.get_channel(channel_id)
-        if channel:
-            await channel.send(embed=embed_inscription_sales)
-    
-    
+            embed_brc20 = discord.Embed(
+                title=f"{wallet_info.get('name', 'Unknown')} {'Bought' if item.get('to') == wallet_address else 'Sold'} {tick} (BRC-20)",
+                color=(discord.Color.blue() if item.get("to") == wallet_address else discord.Color.red()),
+            )
+            embed_brc20.add_field(name="Price (BTC)", value=f"{psbt_sale:.8f}", inline=False)
+            embed_brc20.add_field(name="Amount (QTY)", value=f"{amount:.2f}", inline=False)
+            embed_brc20.add_field(
+                name="Price ($)",
+                value=f"{psbt_sale * btc_price_usd:.2f}" if psbt_sale > 0 else "N/A",
+                inline=False,
+            )
+            embed_brc20.set_image(url=f"https://ord-mirror.magiceden.dev/content/{txn_id}")
+            embed_brc20.add_field(name="Inscription ID", value=txn_id, inline=False)
+            embed_brc20.add_field(name="Category", value="BRC-20")
+            embed_brc20.set_footer(
+                text="Powered by Brain Box Intel",
+                icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg",
+            )
+
+            # Send notification to the channel
+            channel = bot.get_channel(channel_id)
+            if channel:
+                await channel.send(embed=embed_brc20)
+
+        else:
+            # Handle regular inscription sale
+            inscription_name = item.get("inscription_name", "N/A")
+            inscription_number = item.get("inscription_number", "N/A")
+            psbt_sale = safe_int(item.get("psbt_sale"), default=0) / 100_000_000
+            btc_price_usd = get_btc_price_usd()
+
+            embed_inscription_sales = discord.Embed(
+                title=f"{wallet_info.get('name', 'Unknown')} {'Bought' if item.get('to') == wallet_address else 'Sold'} {inscription_name} with number #{inscription_number}",
+                color=(discord.Color.blue() if item.get("to") == wallet_address else discord.Color.red()),
+            )
+            embed_inscription_sales.add_field(name="Price (BTC)", value=f"{psbt_sale:.8f}", inline=False)
+            embed_inscription_sales.add_field(
+                name="Price ($)",
+                value=f"{psbt_sale * btc_price_usd:.2f}" if psbt_sale > 0 else "N/A",
+                inline=False,
+            )
+            embed_inscription_sales.set_image(url=f"https://ord-mirror.magiceden.dev/content/{txn_id}")
+            embed_inscription_sales.add_field(name="Inscription ID", value=txn_id, inline=False)
+            embed_inscription_sales.add_field(name="Category", value="Inscriptions")
+            embed_inscription_sales.set_footer(
+                text="Powered by Brain Box Intel",
+                icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg",
+            )
+
+            # Send notification to the channel
+            channel = bot.get_channel(channel_id)
+            if channel:
+                await channel.send(embed=embed_inscription_sales)
+
+        
 async def process_inscriptions(wallet_address, wallet_info, item, guild_id, channel_id):
     # Ensure the transaction_history structure is initialized
     if guild_id not in transaction_history:
@@ -900,34 +996,68 @@ async def process_inscriptions(wallet_address, wallet_info, item, guild_id, chan
     if wallet_address not in transaction_history[guild_id][channel_id]:
         transaction_history[guild_id][channel_id][wallet_address] = []
 
-    inscription_id = item['inscription_id']  # Assuming 'inscription_id' is the transaction ID field
+    inscription_id = item.get("inscription_id", None)
+    if not inscription_id:
+        print("Missing 'inscription_id' in item:", item)
+        return
 
     # Check if the inscription ID is already tracked
     if inscription_id not in transaction_history[guild_id][channel_id][wallet_address]:
         transaction_history[guild_id][channel_id][wallet_address].append(inscription_id)
-        embed_inscription = discord.Embed(
-            title=f"{wallet_info.get('name', 'Unknown')} 'Inscribed' Inscription with number #{item.get('inscription_number', 'N/A')}",
-            color=(discord.Color.blue() if item.get("to") == wallet_address else discord.Color.red()),
+
+        # Determine if the inscription is a BRC-20 using mint_info
+        mint_info = item.get("brc20_info", {}).get("mint_info", {})
+        is_brc20 = (
+            item.get("inscription_name") is None
+            and mint_info.get("tick") is not None
         )
 
-        brc20_info = item.get("brc20_info")
-        if brc20_info:  # Check if brc-20 data is present
-            brc20_text = f"""**p:** "BRC-20"\n**op:** "transfer"\n**tick:** "{brc20_info.get('tick', 'N/A')}"\n**amt:** "{int(brc20_info.get('amount', 'N/A'))}" """
-            embed_inscription.add_field(name="BRC-20 Info", value=brc20_text, inline=False)
-        else:
-            ins_id = item.get("inscription_id", "N/A")
-            embed_inscription.set_image(url=f"https://bis-ord-content.fra1.cdn.digitaloceanspaces.com/ordinals/{ins_id}")
+        inscription_number = item.get("inscription_number", "N/A")
+        title = f"{wallet_info.get('name', 'Unknown')} 'Inscribed' Inscription with number #{inscription_number}"
 
-        embed_inscription.add_field(name="Inscription ID", value=item.get("inscription_id", "N/A"), inline=False)
-        embed_inscription.add_field(name="Category", value="Inscriptions")
-        embed_inscription.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
-        
-        # Send notification to the channel
-        channel = bot.get_channel(channel_id)
-        if channel:
-            await channel.send(embed=embed_inscription)
-    
-    
+        if is_brc20:
+            # Handle BRC-20 transaction using mint_info
+            tick = mint_info.get("tick", "N/A")
+            amount = safe_float(mint_info.get("amount"), )
+            mint_wallet = mint_info.get("mint_wallet", "N/A")
+
+            embed_brc20 = discord.Embed(
+                title=f"{title} (BRC-20 Mint)",
+                color=(discord.Color.blue() if mint_wallet == wallet_address else discord.Color.red()),
+            )
+            embed_brc20.add_field(name="Tick", value=f"{tick}")
+            embed_brc20.add_field(name="Mint Amount (QTY)", value=f"{amount:.2f}", inline=False)
+            embed_brc20.add_field(name="Mint Wallet", value=mint_wallet, inline=False)
+            embed_brc20.add_field(name="Inscription ID", value=inscription_id, inline=False)
+            embed_brc20.add_field(name="Category", value="BRC-20")
+            embed_brc20.set_footer(
+                text="Powered by Brain Box Intel",
+                icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg",
+            )
+
+            # Send notification to the channel
+            channel = bot.get_channel(channel_id)
+            if channel:
+                await channel.send(embed=embed_brc20)
+
+        else:
+            # Handle regular inscription
+            embed_inscription = discord.Embed(
+                title=title,
+                color=(discord.Color.blue() if item.get("to") == wallet_address else discord.Color.red()),
+            )
+            embed_inscription.add_field(name="Inscription ID", value=inscription_id, inline=False)
+            embed_inscription.add_field(name="Category", value="Inscriptions")
+            embed_inscription.set_footer(
+                text="Powered by Brain Box Intel",
+                icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg",
+            )
+
+            # Send notification to the channel
+            channel = bot.get_channel(channel_id)
+            if channel:
+                await channel.send(embed=embed_inscription)
+
 
 async def process_rune_transactions(wallet_address, wallet_info, item, guild_id, channel_id):
     # Ensure the transaction_history structure is initialized
@@ -1000,7 +1130,8 @@ async def check_wallet_transactions():
                         data = await response.json()
                         items = data.get("items", [])
                         if not items:  # Explicit check for empty items
-                            await send_no_transactions_message(channel_id, wallet_info, "Inscriptions Sales")
+                            # await send_no_transactions_message(channel_id, wallet_info, "Inscriptions Sales")
+                            pass
                         else:
                             for item in items[:1]:
                                 await process_inscription_sales(wallet_address, wallet_info, item, guild_id, channel_id)
@@ -1012,24 +1143,12 @@ async def check_wallet_transactions():
                     if response.status == 200:
                         data = await response.json()
                         items = data.get("items", [])
+                        # print("I AM AN INSCRIPTION")
                         if not items:  # Explicit check for empty items
                             await send_no_transactions_message(channel_id, wallet_info, "Inscriptions")
                         else:
                             for item in items[:1]:
                                 await process_inscriptions(wallet_address, wallet_info, item, guild_id, channel_id)
-
-                # # Fetching BRC-20 transactions (currently commented out)
-                # brc20_transactions_url = f"https://v2api.bestinslot.xyz/wallet/history-brc20?page=1&address={wallet_address}"
-                # async with session.get(brc20_transactions_url, headers=headers) as response:
-                #     if response.status == 200:
-                #         data = await response.json()
-                #         items = data.get("items", [])
-                #         if not items:  # Explicit check for empty items
-                #             await send_no_transactions_message(channel_id, wallet_info, "BRC-20 transactions")
-                #         else:
-                #             for item in items[:1]:
-                #                 await process_brc20_transactions(wallet_address, wallet_info, item, guild_id, channel_id)
-                #                 recent_transactions[wallet_address].append(item)
 
                 # Fetching rune transactions
                 rune_transactions_url = f"https://v2api.bestinslot.xyz/rune/activity?page=1&address={wallet_address}&include_rune=true"
@@ -1038,7 +1157,8 @@ async def check_wallet_transactions():
                         data = await response.json()
                         items = data.get("items", [])
                         if not items:  # Explicit check for empty items
-                            await send_no_transactions_message(channel_id, wallet_info, "Rune transactions")
+                            # await send_no_transactions_message(channel_id, wallet_info, "Rune transactions")
+                            pass
                         else:
                             for item in items[:1]:
                                 await process_rune_transactions(wallet_address, wallet_info, item, guild_id, channel_id)
@@ -1209,9 +1329,6 @@ USER WALLET LOGIC FOR PnL - START
 
 #     if asset_type == "rune":
 #         spaced_rune = asset_slug
-
-
-#     if asset_type == "rune":
 #         asset_slug = asset_slug.replace("•", "").upper()
 
 
@@ -1352,82 +1469,65 @@ USER WALLET LOGIC FOR PnL - START
 #         total_profit_usd = total_profit_btc * btc_price_usd
 #         average_realized_pnl_usd = average_realized_pnl_btc * btc_price_usd
 
-#         # --- Image creation code starts here ---
 
 #         from PIL import Image, ImageDraw, ImageFont
 #         import requests
 #         from io import BytesIO
 
-#         # Load the image
 #         image_path = 'output_image.png'
 #         image = Image.open(image_path)
 
-#         # Define font path, font size, and text color
-#         font_path = "vt323.ttf"  # Path to custom font file (.ttf)
-#         font_size = 110          # Font size
-#         text_color = (255, 255, 255)  # Default color: White
+#         font_path = "vt323.ttf"
+#         font_size = 110
+#         text_color = (255, 255, 255) 
 
-#         # Load the font
 #         try:
 #             font = ImageFont.truetype(font_path, font_size)
 #         except IOError:
 #             print("Font file not found, using default font.")
 #             font = ImageFont.load_default()
 
-#         # Create a drawing context
 #         draw = ImageDraw.Draw(image)
 
-#         # Define each text and position based on approximate layout
-#         wallets_with_asset_value = wallets_with_asset  # The number of wallets that bought
-#         average_sold_value = average_sell_price  # Average sell price calculated in the command
-#         realized_profit = total_realized_pnl_btc  # Realized profit in BTC
-#         remaining_profit = total_profit_btc - total_realized_pnl_btc  # Remaining profit
+#         wallets_with_asset_value = wallets_with_asset
+#         average_sold_value = average_sell_price
+#         realized_profit = total_realized_pnl_btc
+#         remaining_profit = total_profit_btc - total_realized_pnl_btc 
 #         potential_profit = f"{total_profit_btc:.4f}BTC, (${total_profit_usd:.2f}), {((total_profit_btc / total_buy_price) * 100) if total_buy_price > 0 else 0:.1f}%"  # Potential profit
 
-#         # Update the texts_with_positions list with actual values
 #         texts_with_positions = [
-#             (spaced_rune, (1025, 340), (213, 177, 36)),             # Wallets that bought
-#             (str(wallets_with_asset_value), (1950, 434)),  # Wallets that bought
-#             (f"{average_sold_value:.5f}BTC", (1950, 570)),  # Average sold value
-#             (f"{realized_profit:.4f}BTC", (1950, 712)),  # Realized Profit
-#             (f"{remaining_profit:.4f}BTC", (1950, 848)),  # Remaining profit
-#             (f"{potential_profit}", (1086, 1280), (213, 177, 36))  # Potential profit (BTC), potential profit ($), percentage gain (%) 
+#             (spaced_rune, (1025, 340), (213, 177, 36)),
+#             (str(wallets_with_asset_value), (1950, 434)),
+#             (f"{average_sold_value:.5f}BTC", (1950, 570)),
+#             (f"{realized_profit:.4f}BTC", (1950, 712)),
+#             (f"{remaining_profit:.4f}BTC", (1950, 848)),
+#             (f"{potential_profit}", (1086, 1280), (213, 177, 36))
 #         ]
 
-#         # Add each text to the image
 #         for i, (text, position, *color) in enumerate(texts_with_positions):
-#             # Use the specified color if provided, otherwise default to text_color
 #             fill_color = color[0] if color else text_color
 #             draw.text(position, text, fill=fill_color, font=font)
 
-#         # --- Add user profile picture and username ---
 #         user_profile_pic_url = str(ctx.author.avatar.url)
 #         response = requests.get(user_profile_pic_url)
 #         profile_pic = Image.open(BytesIO(response.content)).resize((100, 100))
 
-#         # Create a mask for the circular shape
 #         mask = Image.new('L', profile_pic.size, 0)
 #         draw_mask = ImageDraw.Draw(mask)
 
-#         # Define the bounding box for the circle
 #         draw_mask.ellipse((0, 0) + profile_pic.size, fill=255)
 
-#         # Ensure the profile picture has an alpha channel
 #         profile_pic = profile_pic.convert("RGBA")
 
-#         # Apply the mask to make it circular
 #         profile_pic.putalpha(mask)
         
-#         # Define position for the profile picture
-#         profile_pic_position = (1400, 1400)  # Adjust coordinates as needed
+#         profile_pic_position = (1400, 1400)
 #         username = ctx.author.name
-#         username_position = (1520, 1490)  # Adjust x-coordinate as needed
+#         username_position = (1520, 1490)
 #         draw.text(username_position, username, fill=text_color, font=font)
 
-#         # Calculate the width of the username text
 #         username_width = draw.textlength(username, font=font)
 
-#         # Define position for the profile picture next to the username
 #         profile_pic_position = (username_position[0] - profile_pic.width - 10, username_position[1] - (profile_pic.height // 2) + (font.size // 2))  
 #         image.paste(profile_pic, profile_pic_position, profile_pic)
 
@@ -1439,7 +1539,308 @@ USER WALLET LOGIC FOR PnL - START
 
 #         # Send the image to the Discord channel
 #         await ctx.respond(file=discord.File(output_path))
-                                             
+
+# @bot.command(
+#     name="profit",
+#     description="Calculate collective profits of everyone who took part in a trade",
+# )
+# async def profit(
+#     ctx: discord.ApplicationContext,
+#     asset_type: Option(str, "Select asset type", choices=["rune", "ordinal"]),  # type: ignore
+#     asset_slug: Option(
+#         str, "Enter the asset slug (rune name or ordinal collection symbol)"
+#     ),  # type: ignore
+# ):  # type: ignore
+#     await ctx.defer()
+
+#     headers = {
+#         "User-Agent": ua.random,
+#         "Accept": "application/json, text/plain, */*",
+#         "Authorization": "Bearer 4a02b503-2fdc-4cd3-a053-9d06e81f1c8e",
+#     }
+
+#     if asset_type == "rune":
+#         spaced_rune = asset_slug
+#         asset_slug = asset_slug.replace("•", "").upper()
+
+#     guild_id = str(ctx.guild.id)
+
+#     if guild_id not in wallets or not wallets[guild_id]:
+#         await ctx.respond("No wallets found for this server.")
+#         return
+
+#     async with aiohttp.ClientSession() as session:
+#         if asset_type == "rune":
+#             price_url = f"https://api-mainnet.magiceden.dev/v2/ord/btc/runes/market/{asset_slug}/info"
+#         else:
+#             price_url = f"https://api-mainnet.magiceden.dev/v2/ord/btc/stat?collectionSymbol={asset_slug}"
+
+#         total_bought_btc = 0
+#         total_sold_btc = 0
+#         total_quantity_bought = 0
+#         total_quantity_sold = 0
+
+#         for wallet in wallets[guild_id]:
+#             wallet_address = wallet["address"]
+#             url = (
+#                 f"https://v2api.bestinslot.xyz/rune/activity?page=1&address={wallet_address}&include_rune=true"
+#                 if asset_type == "rune"
+#                 else f"https://v2api.bestinslot.xyz/wallet/history?page=1&address={wallet_address}"
+#             )
+
+#             async with session.get(url) as response:
+#                 if response.status == 200:
+#                     data = await response.json()
+#                 else:
+#                     await ctx.respond("Failed to fetch asset data.")
+#                     return
+
+#             async with session.get(price_url, headers=headers) as price_response:
+#                 if price_response.status == 200:
+#                     price_data = await price_response.json()
+#                     current_price_sats = float(
+#                         price_data["floorUnitPrice"]["formatted"]
+#                         if asset_type == "rune"
+#                         else price_data["floorPrice"]
+#                     )
+#                     current_price_btc = current_price_sats / 100000000
+#                 else:
+#                     await ctx.respond("Failed to fetch current price data.")
+#                     return
+
+#             # Process transactions
+#             for item in data["items"]:
+#                 if asset_type == "rune":
+#                     is_buy = item["wallet_to"] == wallet_address and item["rune"]["rune_name"].lower() == asset_slug.lower()
+#                     is_sell = item["wallet_to"] != wallet_address and item["rune"]["rune_name"].lower() == asset_slug.lower()
+#                 else:
+#                     is_buy = item["to"] == wallet_address and item["inscription_name"].lower() == asset_slug.lower()
+#                     is_sell = item["to"] != wallet_address and item["inscription_name"].lower() == asset_slug.lower()
+
+#                 if is_buy:
+#                     buy_price_sats = float(item["sale_price_sats"])
+#                     quantity_bought = float(item.get("amount", 1))  # Use amount for asset tracking
+#                     total_bought_btc += buy_price_sats / 100000000
+#                     total_quantity_bought += quantity_bought
+
+#                 elif is_sell:
+#                     sell_price_sats = float(item["sale_price_sats"])
+#                     quantity_sold = float(item.get("amount", 1))  # Use amount for asset tracking
+#                     total_sold_btc += sell_price_sats / 100000000
+#                     total_quantity_sold += quantity_sold
+
+#         # Calculate holdings
+#         holding_quantity = total_quantity_bought - total_quantity_sold
+#         holding_btc = holding_quantity * current_price_btc
+#         holding_usd = holding_btc * get_btc_price_usd()
+
+#         # Avoid ZeroDivisionError
+#         total_bought_btc = max(total_bought_btc, 1e-8)
+
+#         if total_quantity_sold == 0:
+#             # No sales, unrealized PnL only
+#             pnl_btc = holding_btc - total_bought_btc
+#         else:
+#             # Realized + Unrealized PnL
+#             realized_pnl_btc = total_sold_btc - (total_quantity_sold / total_quantity_bought * total_bought_btc)
+#             unrealized_pnl_btc = holding_btc - (holding_quantity / total_quantity_bought * total_bought_btc)
+#             pnl_btc = realized_pnl_btc + unrealized_pnl_btc
+
+#         pnl_usd = pnl_btc * get_btc_price_usd()
+#         pnl_percentage = (pnl_btc / total_bought_btc) * 100
+
+#         # Prepare output
+#         output_text = (
+#             f"**[{spaced_rune}]**\n"
+#             f"**Bought:** {total_bought_btc:.4f} BTC (${total_bought_btc * get_btc_price_usd():.2f})\n"
+#             f"**Sold:** {total_sold_btc:.4f} BTC (${total_sold_btc * get_btc_price_usd():.2f})\n"
+#             f"**Holding:** {holding_btc:.4f} BTC (${holding_usd:.2f})\n"
+#             f"**PnL:** {pnl_btc:.4f} BTC (${pnl_usd:.2f}) ({pnl_percentage:.2f}%)\n"
+#         )
+
+#         await ctx.respond(output_text)
+
+
+# @bot.command(
+#     name="profit",
+#     description="Calculate collective profits of everyone who took part in a trade",
+# )
+# async def profit(
+#     ctx: discord.ApplicationContext,
+#     asset_type: Option(str, "Select asset type", choices=["rune", "ordinal"]),  # type: ignore
+#     asset_slug: Option(
+#         str, "Enter the asset slug (rune name or ordinal collection symbol)"
+#     ),  # type: ignore
+# ):  # type: ignore
+#     await ctx.defer()
+
+#     headers = {
+#         "User-Agent": ua.random,
+#         "Accept": "application/json, text/plain, */*",
+#         "Authorization": "Bearer 4a02b503-2fdc-4cd3-a053-9d06e81f1c8e",
+#     }
+
+#     if asset_type == "rune":
+#         spaced_rune = asset_slug
+#         asset_slug = asset_slug.replace("•", "").upper()
+
+#     guild_id = str(ctx.guild.id)
+
+#     if guild_id not in wallets or not wallets[guild_id]:
+#         await ctx.respond("No wallets found for this server.")
+#         return
+
+#     async with aiohttp.ClientSession() as session:
+#         if asset_type == "rune":
+#             price_url = f"https://api-mainnet.magiceden.dev/v2/ord/btc/runes/market/{asset_slug}/info"
+#         else:
+#             price_url = f"https://api-mainnet.magiceden.dev/v2/ord/btc/stat?collectionSymbol={asset_slug}"
+
+#         total_bought_btc = 0
+#         total_sold_btc = 0
+#         total_quantity_bought = 0
+#         total_quantity_sold = 0
+
+#         for wallet in wallets[guild_id]:
+#             wallet_address = wallet["address"]
+#             url = (
+#                 f"https://v2api.bestinslot.xyz/rune/activity?page=1&address={wallet_address}&include_rune=true"
+#                 if asset_type == "rune"
+#                 else f"https://v2api.bestinslot.xyz/wallet/history?page=1&address={wallet_address}"
+#             )
+
+#             async with session.get(url) as response:
+#                 if response.status == 200:
+#                     data = await response.json()
+#                 else:
+#                     await ctx.respond("Failed to fetch asset data.")
+#                     return
+
+#             async with session.get(price_url, headers=headers) as price_response:
+#                 if price_response.status == 200:
+#                     price_data = await price_response.json()
+#                     current_price_sats = float(
+#                         price_data["floorUnitPrice"]["formatted"]
+#                         if asset_type == "rune"
+#                         else price_data["floorPrice"]
+#                     )
+#                     current_price_btc = current_price_sats / 100000000
+#                 else:
+#                     await ctx.respond("Failed to fetch current price data.")
+#                     return
+
+#             # Process transactions
+#             for item in data["items"]:
+#                 if asset_type == "rune":
+#                     is_buy = item["wallet_to"] == wallet_address and item["rune"]["rune_name"].lower() == asset_slug.lower()
+#                     is_sell = item["wallet_to"] != wallet_address and item["rune"]["rune_name"].lower() == asset_slug.lower()
+#                 else:
+#                     is_buy = item["to"] == wallet_address and item["inscription_name"].lower() == asset_slug.lower()
+#                     is_sell = item["to"] != wallet_address and item["inscription_name"].lower() == asset_slug.lower()
+
+#                 if is_buy:
+#                     buy_price_sats = float(item["sale_price_sats"] if asset_type == "rune" else item["psbt_sale"])
+#                     quantity_bought = float(item.get("quantity", 1))
+#                     total_bought_btc += buy_price_sats / 100000000
+#                     total_quantity_bought += quantity_bought
+
+#                 elif is_sell:
+#                     sell_price_sats = float(item["sale_price_sats"] if asset_type == "rune" else item["psbt_sale"])
+#                     quantity_sold = float(item.get("quantity", 1))
+#                     total_sold_btc += sell_price_sats / 100000000
+#                     total_quantity_sold += quantity_sold
+
+#         # Calculate holding
+#         holding_quantity = total_quantity_bought - total_quantity_sold
+#         holding_btc = holding_quantity * current_price_btc
+
+#         # Avoid ZeroDivisionError
+#         total_bought_btc = max(total_bought_btc, 1e-8)
+
+#         # Calculate PnL and Exit %
+#         if total_quantity_sold > 0:
+#             realized_pnl_btc = total_sold_btc - (total_sold_btc / total_quantity_sold * total_quantity_sold)
+#         else:
+#             realized_pnl_btc = 0  # No sales, so no realized profit or loss
+
+#         # Calculate Total PnL
+#         total_pnl_btc = realized_pnl_btc + (holding_btc - (holding_quantity / total_quantity_bought * total_bought_btc if total_quantity_bought > 0 else 0))
+#         total_pnl_usd = total_pnl_btc * get_btc_price_usd()
+
+#         # Calculate Exit Percentage
+#         exit_percentage = (total_pnl_btc / total_bought_btc * 100) if total_bought_btc > 0 else 0
+
+
+#         # Create the image
+#         from PIL import Image, ImageDraw, ImageFont
+#         import requests
+#         from io import BytesIO
+
+#         image_path = 'output_image.png'
+#         image = Image.open(image_path)
+
+#         font_path = "vt323.ttf"
+#         font_size = 110
+#         text_color = (255, 255, 255)
+
+#         try:
+#             font = ImageFont.truetype(font_path, font_size)
+#         except IOError:
+#             font = ImageFont.load_default()
+
+#         draw = ImageDraw.Draw(image)
+
+#         potential_profit = f"{total_pnl_btc:.4f}BTC, (${total_pnl_usd:.2f}), {exit_percentage:.1f}%"
+#         texts_with_positions = [
+#             (spaced_rune, (1025, 340), (213, 177, 36)),
+#             (f"{holding_quantity:.5f}", (1950, 434)),
+#             (f"{realized_pnl_btc:.4f}BTC", (1950, 712)),
+#             (f"{potential_profit}", (1086, 1280), (213, 177, 36))
+#         ]
+
+#         for text, position, *color in texts_with_positions:
+#             fill_color = color[0] if color else text_color
+#             draw.text(position, text, fill=fill_color, font=font)
+
+#         user_profile_pic_url = str(ctx.author.avatar.url)
+#         response = requests.get(user_profile_pic_url)
+#         profile_pic = Image.open(BytesIO(response.content)).resize((100, 100))
+
+#         mask = Image.new('L', profile_pic.size, 0)
+#         draw_mask = ImageDraw.Draw(mask)
+#         draw_mask.ellipse((0, 0) + profile_pic.size, fill=255)
+
+#         profile_pic = profile_pic.convert("RGBA")
+#         profile_pic.putalpha(mask)
+
+#         profile_pic_position = (1400, 1400)
+#         username = ctx.author.name
+#         username_position = (1520, 1490)
+#         draw.text(username_position, username, fill=text_color, font=font)
+
+#         profile_pic_position = (username_position[0] - profile_pic.width - 10, username_position[1] - (profile_pic.height // 2) + (font.size // 2))
+#         image.paste(profile_pic, profile_pic_position, profile_pic)
+
+#         output_path = 'out.png'
+#         image.save(output_path)
+
+#         # Create the embed
+#         embed = discord.Embed(
+#             title=f"{spaced_rune} Profit Report",
+#             description=(
+#                 f"**Bought:** {total_bought_btc:.4f} BTC (${total_bought_btc * get_btc_price_usd():.2f})\n"
+#                 f"**Sold:** {total_sold_btc:.4f} BTC (${total_sold_btc * get_btc_price_usd():.2f})\n"
+#                 f"**Holding:** {holding_quantity:.4f} BTC (${holding_quantity * get_btc_price_usd():.2f})\n"
+#                 f"**Exit:** {exit_percentage:.2f}%\n"
+#                 f"**PNL:** {total_pnl_btc:.4f} BTC (${total_pnl_usd:.2f})"
+#             ),
+#             color=discord.Color.gold()
+#         )
+
+#         await ctx.respond(embed=embed, file=discord.File(output_path))
+
+
+
 """
 USER WALLET LOGIC FOR PnL - END
 """

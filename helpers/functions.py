@@ -192,6 +192,18 @@ def get_btc_price_usd():
     return None
 
 
+def safe_int(value, default=0):
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default
+
+def safe_float(value, default=0.0):
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
 async def fetch_data(url, headers):
     async with httpx.AsyncClient() as client:
         response = await client.get(url, headers=headers)
