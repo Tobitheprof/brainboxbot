@@ -30,8 +30,8 @@ import os
 
 load_dotenv()
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
-WALLET_DATA_FILE = "/data/wallet_tracking_data.json"
-USER_WALLET_FILE = "/data/user_wallet_data_file.json"
+WALLET_DATA_FILE = "./data/wallet_tracking_data.json"
+USER_WALLET_FILE = "./data/user_wallet_data_file.json"
 
 ua = UserAgent()
 intents = discord.Intents.default()
@@ -59,7 +59,7 @@ async def add_server(interaction: discord.Interaction, server_id: str):
     data = {"allowed_servers": []}
 
     try:
-        with open("/data/allowed_servers.json", "r") as f:
+        with open("./data/allowed_servers.json", "r") as f:
             data = json.load(f)
     except FileNotFoundError:
         pass
@@ -78,7 +78,7 @@ async def add_server(interaction: discord.Interaction, server_id: str):
     allowed_servers.append(server_id)
     data["allowed_servers"] = allowed_servers
 
-    with open("/data/allowed_servers.json", "w") as f:
+    with open("./data/allowed_servers.json", "w") as f:
         json.dump(data, f, indent=4)
 
     embed = discord.Embed(
@@ -95,7 +95,7 @@ async def add_server(interaction: discord.Interaction, server_id: str):
 async def remove_server(interaction: discord.Interaction, server_id: str):
     # Load the allowed servers from JSON
     try:
-        with open("/data/allowed_servers.json", "r") as f:
+        with open("./data/allowed_servers.json", "r") as f:
             data = json.load(f)
             allowed_servers = data.get("allowed_servers", [])
     except FileNotFoundError:
@@ -113,7 +113,7 @@ async def remove_server(interaction: discord.Interaction, server_id: str):
     allowed_servers.remove(server_id)
     data["allowed_servers"] = allowed_servers
 
-    with open("/data/allowed_servers.json", "w") as f:
+    with open("./data/allowed_servers.json", "w") as f:
         json.dump(data, f, indent=4)
 
     embed = discord.Embed(
@@ -129,7 +129,7 @@ async def remove_server(interaction: discord.Interaction, server_id: str):
 @commands.check(is_allowed_user)
 async def list_servers(interaction: discord.Interaction):
     try:
-        with open("/data/allowed_servers.json", "r") as f:
+        with open("./data/allowed_servers.json", "r") as f:
             data = json.load(f)
             allowed_servers = data.get("allowed_servers", [])
     except FileNotFoundError:
@@ -161,7 +161,7 @@ def allowed_server_only():
         @wraps(func)
         async def wrapper(interaction: discord.Interaction, *args, **kwargs):
             try:
-                with open("/data/allowed_servers.json", "r") as f:
+                with open("./data/allowed_servers.json", "r") as f:
                     data = json.load(f)
                     allowed_servers = data.get("allowed_servers", [])
             except FileNotFoundError:
@@ -919,16 +919,21 @@ async def process_inscription_sales(wallet_address, wallet_info, item, guild_id,
         transaction_history[guild_id][channel_id][wallet_address].append(txn_id)
 
         # Check if the transaction is a BRC-20
-        is_brc20 = (
-            item.get("inscription_name") is None
-            and item.get("brc20_info", {}).get("transfer_info", {}).get("tick") is not None
-        )
+        try:
+            brc20_info = item.get("brc20_info", {})
+            transfer_info = brc20_info.get("transfer_info", {})
+            is_brc20 = (
+                item.get("inscription_name") is None
+                and transfer_info.get("tick") is not None
+            )
+        except AttributeError as e:
+            print(f"Error while checking BRC-20 info: {e}")
+            is_brc20 = False
 
         if is_brc20:
             # Handle BRC-20 transaction
-            brc20_info = item.get("brc20_info", {}).get("transfer_info", {})
-            tick = brc20_info.get("tick", "N/A")
-            amount = safe_float(brc20_info.get("amount"))
+            tick = transfer_info.get("tick", "N/A")
+            amount = safe_float(transfer_info.get("amount"))
             psbt_sale = safe_int(item.get("psbt_sale"), default=0) / 100_000_000
             btc_price_usd = get_btc_price_usd()
 
@@ -1859,8 +1864,8 @@ All of the code below, until the point marked end represents the rune tracking l
 def load_runes_data():
     """Load the runes data from a JSON file if it exists."""
     global data
-    if os.path.exists("/data/runes_mint_data.json"):
-        with open("/data/runes_mint_data.json", "r") as f:
+    if os.path.exists("./data/runes_mint_data.json"):
+        with open("./data/runes_mint_data.json", "r") as f:
             data = json.load(f)
     else:
         # Do not initialize any structure here to prevent auto-creation of the file
@@ -1869,7 +1874,7 @@ def load_runes_data():
 def save_data():
     # Only save guilds that have at least one tracking channel configured
     data_to_save = {guild_id: channels for guild_id, channels in data.items() if channels}
-    with open("/data/data.json", "w") as f:
+    with open("./data./data.json", "w") as f:
         json.dump(data_to_save, f, indent=4)
 
 def get_last_sent_percentage(guild_id, rune_id):
