@@ -1005,12 +1005,19 @@ async def process_inscriptions(wallet_address, wallet_info, item, guild_id, chan
     if inscription_id not in transaction_history[guild_id][channel_id][wallet_address]:
         transaction_history[guild_id][channel_id][wallet_address].append(inscription_id)
 
-        # Determine if the inscription is a BRC-20 using mint_info
-        mint_info = item.get("brc20_info", {}).get("mint_info", {})
-        is_brc20 = (
-            item.get("inscription_name") is None
-            and mint_info.get("tick") is not None
-        )
+        # Initialize variables for BRC-20
+        is_brc20 = False
+        mint_info = {}
+
+        try:
+            # Attempt to extract mint_info
+            mint_info = item.get("brc20_info", {}).get("mint_info", {})
+            is_brc20 = (
+                item.get("inscription_name") is None
+                and mint_info.get("tick") is not None
+            )
+        except AttributeError as e:
+            print(f"Error accessing mint_info: {e}")
 
         inscription_number = item.get("inscription_number", "N/A")
         title = f"{wallet_info.get('name', 'Unknown')} 'Inscribed' Inscription with number #{inscription_number}"
@@ -1018,14 +1025,13 @@ async def process_inscriptions(wallet_address, wallet_info, item, guild_id, chan
         if is_brc20:
             # Handle BRC-20 transaction using mint_info
             tick = mint_info.get("tick", "N/A")
-            amount = safe_float(mint_info.get("amount"), )
+            amount = safe_float(mint_info.get("amount"), default=0.0) / 100_000_000
             mint_wallet = mint_info.get("mint_wallet", "N/A")
 
             embed_brc20 = discord.Embed(
-                title=f"{title} (BRC-20 Mint)",
+                title=f"{title} (BRC-20 Mint: {tick})",
                 color=(discord.Color.blue() if mint_wallet == wallet_address else discord.Color.red()),
             )
-            embed_brc20.add_field(name="Tick", value=f"{tick}")
             embed_brc20.add_field(name="Mint Amount (QTY)", value=f"{amount:.2f}", inline=False)
             embed_brc20.add_field(name="Mint Wallet", value=mint_wallet, inline=False)
             embed_brc20.add_field(name="Inscription ID", value=inscription_id, inline=False)

@@ -3280,3 +3280,55 @@ discord.errors.ConnectionClosed: Shard ID None WebSocket closed with 1000
 2024-11-25 19:13:01,429 - INFO - Cleaning up after 2 tasks.
 2024-11-25 19:13:01,432 - INFO - All tasks finished cancelling.
 2024-11-25 19:13:01,433 - INFO - Closing the event loop.
+2024-11-25 19:20:12,254 - INFO - logging in using static token
+2024-11-25 19:20:15,415 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-11-25 19:20:15,854 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-c-29cc",{"micros":66790,"calls":["id_created",{"micros":1156,"calls":[]},"session_lookup_time",{"micros":4358,"calls":[]},"session_lookup_finished",{"micros":27,"calls":[]},"discord-sessions-prd-1-107",{"micros":60993,"calls":["start_session",{"micros":40760,"calls":["discord-api-rpc-d544f9876-hxpgr",{"micros":36236,"calls":["get_user",{"micros":5796},"get_guilds",{"micros":3634},"send_scheduled_deletion_message",{"micros":8},"guild_join_requests",{"micros":1},"authorized_ip_coro",{"micros":9}]}]},"starting_guild_connect",{"micros":33,"calls":[]},"presence_started",{"micros":9029,"calls":[]},"guilds_started",{"micros":148,"calls":[]},"guilds_connect",{"micros":2,"calls":[]},"presence_connect",{"micros":10995,"calls":[]},"connect_finished",{"micros":11000,"calls":[]},"build_ready",{"micros":20,"calls":[]},"clean_ready",{"micros":0,"calls":[]},"optimize_ready",{"micros":1,"calls":[]},"split_ready",{"micros":1,"calls":[]}]}]}] (Session ID: 284fc68b2ec2d16adc8f266d0f5e3f6b).
+2024-11-25 19:20:17,873 - INFO - Bot logged in as virgin-test#7280
+2024-11-25 19:20:17,877 - INFO - Tracking Wallet Data Loaded Successfully
+2024-11-25 19:20:17,882 - INFO - Wallet Tracking Task Started Successfully
+2024-11-25 19:20:17,884 - INFO - Bot is fully operational.
+2024-11-25 19:21:41,644 - INFO - Received signal to terminate bot and event loop.
+2024-11-25 19:21:41,646 - INFO - Cleaning up tasks.
+2024-11-25 19:21:41,648 - INFO - Cleaning up after 2 tasks.
+2024-11-25 19:21:41,656 - INFO - All tasks finished cancelling.
+2024-11-25 19:21:41,656 - INFO - Closing the event loop.
+2024-11-25 19:22:00,852 - INFO - logging in using static token
+2024-11-25 19:22:03,616 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-11-25 19:22:04,049 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-c-wh7s",{"micros":80584,"calls":["id_created",{"micros":1067,"calls":[]},"session_lookup_time",{"micros":1782,"calls":[]},"session_lookup_finished",{"micros":16,"calls":[]},"discord-sessions-prd-1-137",{"micros":77374,"calls":["start_session",{"micros":39501,"calls":["discord-api-rpc-d544f9876-pzkq5",{"micros":35362,"calls":["get_user",{"micros":7861},"get_guilds",{"micros":2669},"send_scheduled_deletion_message",{"micros":7},"guild_join_requests",{"micros":785},"authorized_ip_coro",{"micros":10}]}]},"starting_guild_connect",{"micros":35,"calls":[]},"presence_started",{"micros":6199,"calls":[]},"guilds_started",{"micros":149,"calls":[]},"guilds_connect",{"micros":1,"calls":[]},"presence_connect",{"micros":31462,"calls":[]},"connect_finished",{"micros":31468,"calls":[]},"build_ready",{"micros":19,"calls":[]},"clean_ready",{"micros":0,"calls":[]},"optimize_ready",{"micros":1,"calls":[]},"split_ready",{"micros":0,"calls":[]}]}]}] (Session ID: 1810fd3566f9aa473024a2da1d35390e).
+2024-11-25 19:22:06,094 - INFO - Bot logged in as virgin-test#7280
+2024-11-25 19:22:06,094 - INFO - Tracking Wallet Data Loaded Successfully
+2024-11-25 19:22:06,094 - INFO - Wallet Tracking Task Started Successfully
+2024-11-25 19:22:06,094 - INFO - Bot is fully operational.
+2024-11-25 19:23:01,488 - INFO - Received signal to terminate bot and event loop.
+2024-11-25 19:23:01,490 - INFO - Cleaning up tasks.
+2024-11-25 19:23:01,492 - INFO - Cleaning up after 1 tasks.
+2024-11-25 19:23:01,495 - INFO - All tasks finished cancelling.
+2024-11-25 19:23:01,495 - INFO - Closing the event loop.
+2024-11-25 19:23:01,624 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-20' coro=<Loop._loop() done, defined at C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\ext\tasks\__init__.py:152> exception=RuntimeError('dictionary changed size during iteration')>
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\ext\tasks\__init__.py", line 198, in _loop
+    raise exc
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\ext\tasks\__init__.py", line 169, in _loop
+    await self.coro(*args, **kwargs)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\bot.py", line 1119, in check_wallet_transactions
+    for guild_id, wallets in tracked_wallets.items():
+RuntimeError: dictionary changed size during iteration
+2024-11-25 19:23:08,872 - INFO - logging in using static token
+2024-11-25 19:23:19,595 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-11-25 19:23:19,994 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-d-64s9",{"micros":85864,"calls":["id_created",{"micros":658,"calls":[]},"session_lookup_time",{"micros":2129,"calls":[]},"session_lookup_finished",{"micros":16,"calls":[]},"discord-sessions-prd-1-246",{"micros":82788,"calls":["start_session",{"micros":37914,"calls":["discord-api-rpc-d544f9876-658vj",{"micros":33348,"calls":["get_user",{"micros":5155},"get_guilds",{"micros":2866},"send_scheduled_deletion_message",{"micros":7},"guild_join_requests",{"micros":1192},"authorized_ip_coro",{"micros":9}]}]},"starting_guild_connect",{"micros":72,"calls":[]},"presence_started",{"micros":14390,"calls":[]},"guilds_started",{"micros":158,"calls":[]},"guilds_connect",{"micros":2,"calls":[]},"presence_connect",{"micros":30218,"calls":[]},"connect_finished",{"micros":30224,"calls":[]},"build_ready",{"micros":26,"calls":[]},"clean_ready",{"micros":1,"calls":[]},"optimize_ready",{"micros":1,"calls":[]},"split_ready",{"micros":0,"calls":[]}]}]}] (Session ID: 21ea89092d34fa396c19656de8ddd421).
+2024-11-25 19:23:22,017 - INFO - Bot logged in as virgin-test#7280
+2024-11-25 19:23:22,017 - INFO - Tracking Wallet Data Loaded Successfully
+2024-11-25 19:23:22,017 - INFO - Wallet Tracking Task Started Successfully
+2024-11-25 19:23:22,021 - INFO - Bot is fully operational.
+2024-11-25 19:29:43,588 - WARNING - Can't keep up, shard ID None websocket is 10.9s behind.
+2024-11-25 19:29:52,184 - WARNING - Can't keep up, shard ID None websocket is 19.5s behind.
+2024-11-25 19:34:02,078 - INFO - Timed out receiving packet. Attempting a reconnect.
+2024-11-25 19:34:02,080 - INFO - Got a request to RESUME the websocket.
+2024-11-25 19:34:03,689 - INFO - Shard ID None has sent the RESUME payload.
+2024-11-25 19:34:04,111 - INFO - Shard ID None has successfully RESUMED session 21ea89092d34fa396c19656de8ddd421 under trace ["gateway-prd-us-east1-c-mcwc",{"micros":680,"calls":["id_created",{"micros":0,"calls":[]},"session_lookup_time",{"micros":333,"calls":[]},"session_lookup_finished",{"micros":16,"calls":[]},"discord-sessions-prd-1-246",{"micros":27}]}].
+2024-11-25 19:39:40,115 - INFO - Received signal to terminate bot and event loop.
+2024-11-25 19:39:40,119 - INFO - Cleaning up tasks.
+2024-11-25 19:39:40,121 - INFO - Cleaning up after 2 tasks.
+2024-11-25 19:39:40,125 - INFO - All tasks finished cancelling.
+2024-11-25 19:39:40,125 - INFO - Closing the event loop.
