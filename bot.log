@@ -3332,3 +3332,922 @@ RuntimeError: dictionary changed size during iteration
 2024-11-25 19:39:40,121 - INFO - Cleaning up after 2 tasks.
 2024-11-25 19:39:40,125 - INFO - All tasks finished cancelling.
 2024-11-25 19:39:40,125 - INFO - Closing the event loop.
+2024-11-27 06:43:00,831 - INFO - logging in using static token
+2024-11-27 06:43:03,676 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-11-27 06:43:04,076 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-d-d7vr",{"micros":83190,"calls":["id_created",{"micros":777,"calls":[]},"session_lookup_time",{"micros":8531,"calls":[]},"session_lookup_finished",{"micros":12,"calls":[]},"discord-sessions-prd-1-291",{"micros":72699,"calls":["start_session",{"micros":47832,"calls":["discord-api-rpc-6887596bf7-kn6gk",{"micros":31459,"calls":["get_user",{"micros":5390},"get_guilds",{"micros":2686},"send_scheduled_deletion_message",{"micros":5},"guild_join_requests",{"micros":0},"authorized_ip_coro",{"micros":5}]}]},"starting_guild_connect",{"micros":43,"calls":[]},"presence_started",{"micros":404,"calls":[]},"guilds_started",{"micros":92,"calls":[]},"guilds_connect",{"micros":2,"calls":[]},"presence_connect",{"micros":24286,"calls":[]},"connect_finished",{"micros":24308,"calls":[]},"build_ready",{"micros":17,"calls":[]},"clean_ready",{"micros":0,"calls":[]},"optimize_ready",{"micros":1,"calls":[]},"split_ready",{"micros":0,"calls":[]}]}]}] (Session ID: 09476a946f4228aa37cc9befb3ea8777).
+2024-11-27 06:43:06,094 - INFO - Bot logged in as virgin-test#7280
+2024-11-27 06:43:06,138 - INFO - Tracking Wallet Data Loaded Successfully
+2024-11-27 06:43:06,142 - INFO - Wallet Tracking Task Started Successfully
+2024-11-27 06:43:06,142 - INFO - Bot is fully operational.
+2024-11-27 06:45:06,286 - INFO - Received signal to terminate bot and event loop.
+2024-11-27 06:45:06,287 - INFO - Cleaning up tasks.
+2024-11-27 06:45:06,287 - INFO - Cleaning up after 2 tasks.
+2024-11-27 06:45:06,289 - INFO - All tasks finished cancelling.
+2024-11-27 06:45:06,290 - INFO - Closing the event loop.
+2024-11-27 06:45:10,256 - INFO - logging in using static token
+2024-11-27 06:45:12,276 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-11-27 06:45:12,659 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-b-1fz5",{"micros":80965,"calls":["id_created",{"micros":732,"calls":[]},"session_lookup_time",{"micros":291,"calls":[]},"session_lookup_finished",{"micros":17,"calls":[]},"discord-sessions-prd-1-43",{"micros":78932,"calls":["start_session",{"micros":37168,"calls":["discord-api-rpc-6887596bf7-2vz9b",{"micros":33692,"calls":["get_user",{"micros":5052},"get_guilds",{"micros":3085},"send_scheduled_deletion_message",{"micros":6},"guild_join_requests",{"micros":1},"authorized_ip_coro",{"micros":7}]}]},"starting_guild_connect",{"micros":41,"calls":[]},"presence_started",{"micros":25030,"calls":[]},"guilds_started",{"micros":122,"calls":[]},"guilds_connect",{"micros":19,"calls":[]},"presence_connect",{"micros":16532,"calls":[]},"connect_finished",{"micros":16555,"calls":[]},"build_ready",{"micros":14,"calls":[]},"clean_ready",{"micros":0,"calls":[]},"optimize_ready",{"micros":1,"calls":[]},"split_ready",{"micros":0,"calls":[]}]}]}] (Session ID: 75f73e62d6fd31b172723ec66cb63e1f).
+2024-11-27 06:45:14,691 - INFO - Bot logged in as virgin-test#7280
+2024-11-27 06:45:14,695 - INFO - Tracking Wallet Data Loaded Successfully
+2024-11-27 06:45:14,696 - INFO - Wallet Tracking Task Started Successfully
+2024-11-27 06:45:14,699 - INFO - Bot is fully operational.
+2024-11-27 06:47:42,573 - INFO - Received signal to terminate bot and event loop.
+2024-11-27 06:47:42,576 - INFO - Cleaning up tasks.
+2024-11-27 06:47:42,581 - INFO - Cleaning up after 2 tasks.
+2024-11-27 06:47:42,586 - INFO - All tasks finished cancelling.
+2024-11-27 06:47:42,586 - INFO - Closing the event loop.
+2024-11-27 06:48:26,075 - INFO - logging in using static token
+2024-11-27 06:48:28,289 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-11-27 06:48:28,690 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-b-lvt6",{"micros":125511,"calls":["id_created",{"micros":569,"calls":[]},"session_lookup_time",{"micros":2221,"calls":[]},"session_lookup_finished",{"micros":11,"calls":[]},"discord-sessions-prd-1-283",{"micros":122282,"calls":["start_session",{"micros":36194,"calls":["discord-api-rpc-6887596bf7-fmfgc",{"micros":31551,"calls":["get_user",{"micros":6074},"get_guilds",{"micros":2942},"send_scheduled_deletion_message",{"micros":6},"guild_join_requests",{"micros":1},"authorized_ip_coro",{"micros":6}]}]},"starting_guild_connect",{"micros":41,"calls":[]},"presence_started",{"micros":23247,"calls":[]},"guilds_started",{"micros":117,"calls":[]},"guilds_connect",{"micros":2,"calls":[]},"presence_connect",{"micros":62650,"calls":[]},"connect_finished",{"micros":62654,"calls":[]},"build_ready",{"micros":26,"calls":[]},"clean_ready",{"micros":0,"calls":[]},"optimize_ready",{"micros":1,"calls":[]},"split_ready",{"micros":0,"calls":[]}]}]}] (Session ID: d03e206d63fa2de22656d940a26f3fce).
+2024-11-27 06:48:30,691 - INFO - Bot logged in as virgin-test#7280
+2024-11-27 06:48:30,721 - INFO - Tracking Wallet Data Loaded Successfully
+2024-11-27 06:48:30,721 - INFO - Wallet Tracking Task Started Successfully
+2024-11-27 06:48:30,722 - INFO - Bot is fully operational.
+2024-11-27 07:36:54,331 - INFO - Timed out receiving packet. Attempting a reconnect.
+2024-11-27 07:36:54,449 - INFO - Got a request to RESUME the websocket.
+2024-11-27 07:36:54,713 - ERROR - Attempting a reconnect in 0.14s
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1317, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 971, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1002, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\resolver.py", line 38, in resolve
+    infos = await self._loop.getaddrinfo(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 860, in getaddrinfo
+    return await self.run_in_executor(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\client.py", line 614, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py", line 445, in wait_for
+    return fut.result()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\gateway.py", line 338, in from_client
+    gateway = gateway or await client.http.get_gateway()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 3071, in get_gateway
+    data = await self.request(Route("GET", "/gateway"))
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 286, in request
+    async with self.__session.request(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 1359, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 663, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 563, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1032, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1323, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+2024-11-27 07:36:55,636 - ERROR - Attempting a reconnect in 3.77s
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1317, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 971, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1002, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\resolver.py", line 38, in resolve
+    infos = await self._loop.getaddrinfo(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 860, in getaddrinfo
+    return await self.run_in_executor(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\client.py", line 614, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py", line 445, in wait_for
+    return fut.result()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\gateway.py", line 338, in from_client
+    gateway = gateway or await client.http.get_gateway()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 3071, in get_gateway
+    data = await self.request(Route("GET", "/gateway"))
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 286, in request
+    async with self.__session.request(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 1359, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 663, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 563, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1032, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1323, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+2024-11-27 07:41:55,986 - ERROR - Attempting a reconnect in 4.08s
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1317, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 971, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1002, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\resolver.py", line 38, in resolve
+    infos = await self._loop.getaddrinfo(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 860, in getaddrinfo
+    return await self.run_in_executor(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\client.py", line 614, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py", line 445, in wait_for
+    return fut.result()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\gateway.py", line 338, in from_client
+    gateway = gateway or await client.http.get_gateway()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 3071, in get_gateway
+    data = await self.request(Route("GET", "/gateway"))
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 286, in request
+    async with self.__session.request(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 1359, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 663, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 563, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1032, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1323, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+2024-11-27 07:42:00,098 - ERROR - Attempting a reconnect in 2.41s
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1317, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 971, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1002, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\resolver.py", line 38, in resolve
+    infos = await self._loop.getaddrinfo(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 860, in getaddrinfo
+    return await self.run_in_executor(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\client.py", line 614, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py", line 445, in wait_for
+    return fut.result()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\gateway.py", line 338, in from_client
+    gateway = gateway or await client.http.get_gateway()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 3071, in get_gateway
+    data = await self.request(Route("GET", "/gateway"))
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 286, in request
+    async with self.__session.request(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 1359, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 663, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 563, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1032, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1323, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+2024-11-27 07:42:02,517 - ERROR - Attempting a reconnect in 27.46s
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1317, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 971, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1002, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\resolver.py", line 38, in resolve
+    infos = await self._loop.getaddrinfo(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 860, in getaddrinfo
+    return await self.run_in_executor(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\client.py", line 614, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py", line 445, in wait_for
+    return fut.result()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\gateway.py", line 338, in from_client
+    gateway = gateway or await client.http.get_gateway()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 3071, in get_gateway
+    data = await self.request(Route("GET", "/gateway"))
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 286, in request
+    async with self.__session.request(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 1359, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 663, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 563, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1032, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1323, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+2024-11-27 07:42:29,988 - ERROR - Attempting a reconnect in 40.74s
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1317, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 971, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1002, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\resolver.py", line 38, in resolve
+    infos = await self._loop.getaddrinfo(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 860, in getaddrinfo
+    return await self.run_in_executor(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\client.py", line 614, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py", line 445, in wait_for
+    return fut.result()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\gateway.py", line 338, in from_client
+    gateway = gateway or await client.http.get_gateway()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 3071, in get_gateway
+    data = await self.request(Route("GET", "/gateway"))
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 286, in request
+    async with self.__session.request(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 1359, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 663, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 563, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1032, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1323, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+2024-11-27 07:43:10,766 - ERROR - Attempting a reconnect in 4.14s
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1317, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 971, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1002, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\resolver.py", line 38, in resolve
+    infos = await self._loop.getaddrinfo(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 860, in getaddrinfo
+    return await self.run_in_executor(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\client.py", line 614, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py", line 445, in wait_for
+    return fut.result()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\gateway.py", line 338, in from_client
+    gateway = gateway or await client.http.get_gateway()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 3071, in get_gateway
+    data = await self.request(Route("GET", "/gateway"))
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 286, in request
+    async with self.__session.request(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 1359, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 663, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 563, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1032, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1323, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+2024-11-27 07:43:14,943 - ERROR - Attempting a reconnect in 206.59s
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1317, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 971, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1002, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\resolver.py", line 38, in resolve
+    infos = await self._loop.getaddrinfo(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 860, in getaddrinfo
+    return await self.run_in_executor(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\client.py", line 614, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py", line 445, in wait_for
+    return fut.result()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\gateway.py", line 338, in from_client
+    gateway = gateway or await client.http.get_gateway()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 3071, in get_gateway
+    data = await self.request(Route("GET", "/gateway"))
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 286, in request
+    async with self.__session.request(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 1359, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 663, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 563, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1032, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1323, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+2024-11-27 07:46:43,099 - INFO - Shard ID None has sent the RESUME payload.
+2024-11-27 07:46:43,370 - INFO - Shard ID None session has been invalidated.
+2024-11-27 07:46:43,626 - INFO - Got a request to IDENTIFY the websocket.
+2024-11-27 07:46:49,612 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-11-27 07:46:50,454 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-b-jj18",{"micros":102615,"calls":["id_created",{"micros":683,"calls":[]},"session_lookup_time",{"micros":281,"calls":[]},"session_lookup_finished",{"micros":13,"calls":[]},"discord-sessions-prd-1-190",{"micros":101394,"calls":["start_session",{"micros":31981,"calls":["discord-api-rpc-6887596bf7-4d9wz",{"micros":28554,"calls":["get_user",{"micros":5023},"get_guilds",{"micros":2193},"send_scheduled_deletion_message",{"micros":6},"guild_join_requests",{"micros":403},"authorized_ip_coro",{"micros":8}]}]},"starting_guild_connect",{"micros":36,"calls":[]},"presence_started",{"micros":19883,"calls":[]},"guilds_started",{"micros":104,"calls":[]},"guilds_connect",{"micros":2,"calls":[]},"presence_connect",{"micros":49351,"calls":[]},"connect_finished",{"micros":49375,"calls":[]},"build_ready",{"micros":13,"calls":[]},"clean_ready",{"micros":0,"calls":[]},"optimize_ready",{"micros":1,"calls":[]},"split_ready",{"micros":0,"calls":[]}]}]}] (Session ID: 5d9f76e7ad97cfafa0030d79302c5019).
+2024-11-27 07:46:52,497 - INFO - Bot logged in as virgin-test#7280
+2024-11-27 07:46:52,504 - INFO - Tracking Wallet Data Loaded Successfully
+2024-11-27 07:46:52,515 - ERROR - Error starting wallet tracking task: Task is already launched and is not completed.
+2024-11-27 07:46:52,517 - INFO - Bot is fully operational.
+2024-11-27 08:11:07,815 - INFO - Timed out receiving packet. Attempting a reconnect.
+2024-11-27 08:11:07,822 - INFO - Got a request to RESUME the websocket.
+2024-11-27 08:11:09,191 - INFO - Shard ID None has sent the RESUME payload.
+2024-11-27 08:11:09,448 - INFO - Shard ID None has successfully RESUMED session 5d9f76e7ad97cfafa0030d79302c5019 under trace ["gateway-prd-us-east1-b-zjlq",{"micros":369,"calls":["id_created",{"micros":0,"calls":[]},"session_lookup_time",{"micros":173,"calls":[]},"session_lookup_finished",{"micros":11,"calls":[]},"discord-sessions-prd-1-190",{"micros":20}]}].
+2024-11-29 19:38:58,555 - INFO - logging in using static token
+2024-11-29 19:39:00,190 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-11-29 19:39:00,525 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-d-pvgw",{"micros":86366,"calls":["id_created",{"micros":523,"calls":[]},"session_lookup_time",{"micros":616,"calls":[]},"session_lookup_finished",{"micros":15,"calls":[]},"discord-sessions-prd-1-63",{"micros":83904,"calls":["start_session",{"micros":38837,"calls":["discord-api-rpc-6cf69f8f4b-f79qm",{"micros":34639,"calls":["get_user",{"micros":4469},"get_guilds",{"micros":5578},"send_scheduled_deletion_message",{"micros":7},"guild_join_requests",{"micros":0},"authorized_ip_coro",{"micros":9}]}]},"starting_guild_connect",{"micros":36,"calls":[]},"presence_started",{"micros":16374,"calls":[]},"guilds_started",{"micros":135,"calls":[]},"guilds_connect",{"micros":1,"calls":[]},"presence_connect",{"micros":28493,"calls":[]},"connect_finished",{"micros":28498,"calls":[]},"build_ready",{"micros":21,"calls":[]},"clean_ready",{"micros":1,"calls":[]},"optimize_ready",{"micros":0,"calls":[]},"split_ready",{"micros":1,"calls":[]}]}]}] (Session ID: 17289ff4d016b030ba10ab0d50992a5c).
+2024-11-29 19:39:02,531 - INFO - Bot logged in as virgin-test#7280
+2024-11-29 19:39:02,563 - INFO - Tracking Wallet Data Loaded Successfully
+2024-11-29 19:39:02,578 - INFO - Wallet Tracking Task Started Successfully
+2024-11-29 19:39:02,580 - INFO - Runes Mint Tracking Task Started Successfully
+2024-11-29 19:39:02,586 - INFO - Bot is fully operational.
+2024-11-29 19:41:28,856 - INFO - Received signal to terminate bot and event loop.
+2024-11-29 19:41:28,857 - INFO - Cleaning up tasks.
+2024-11-29 19:41:28,859 - INFO - Cleaning up after 2 tasks.
+2024-11-29 19:41:28,860 - INFO - All tasks finished cancelling.
+2024-11-29 19:41:28,861 - INFO - Closing the event loop.
+2024-11-29 19:41:32,426 - INFO - logging in using static token
+2024-11-29 19:41:34,191 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-11-29 19:41:34,519 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-d-4pmx",{"micros":69822,"calls":["id_created",{"micros":681,"calls":[]},"session_lookup_time",{"micros":6372,"calls":[]},"session_lookup_finished",{"micros":13,"calls":[]},"discord-sessions-prd-1-276",{"micros":62441,"calls":["start_session",{"micros":39799,"calls":["discord-api-rpc-6cf69f8f4b-fz2q9",{"micros":35201,"calls":["get_user",{"micros":4747},"get_guilds",{"micros":4068},"send_scheduled_deletion_message",{"micros":8},"guild_join_requests",{"micros":1},"authorized_ip_coro",{"micros":8}]}]},"starting_guild_connect",{"micros":37,"calls":[]},"presence_started",{"micros":6636,"calls":[]},"guilds_started",{"micros":140,"calls":[]},"guilds_connect",{"micros":1,"calls":[]},"presence_connect",{"micros":15802,"calls":[]},"connect_finished",{"micros":15807,"calls":[]},"build_ready",{"micros":19,"calls":[]},"clean_ready",{"micros":1,"calls":[]},"optimize_ready",{"micros":0,"calls":[]},"split_ready",{"micros":1,"calls":[]}]}]}] (Session ID: 5e860c1482ff25a1c9f71b287447f89b).
+2024-11-29 19:41:36,555 - INFO - Bot logged in as virgin-test#7280
+2024-11-29 19:41:36,561 - INFO - Tracking Wallet Data Loaded Successfully
+2024-11-29 19:41:36,562 - INFO - Wallet Tracking Task Started Successfully
+2024-11-29 19:41:36,562 - INFO - Runes Mint Tracking Task Started Successfully
+2024-11-29 19:41:36,563 - INFO - Bot is fully operational.
+2024-11-29 19:44:01,773 - INFO - Received signal to terminate bot and event loop.
+2024-11-29 19:44:01,774 - INFO - Cleaning up tasks.
+2024-11-29 19:44:01,776 - INFO - Cleaning up after 1 tasks.
+2024-11-29 19:44:01,778 - INFO - All tasks finished cancelling.
+2024-11-29 19:44:01,779 - INFO - Closing the event loop.
+2024-11-29 19:44:01,848 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-19' coro=<Loop._loop() done, defined at C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\ext\tasks\__init__.py:152> exception=RuntimeError('dictionary changed size during iteration')>
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\ext\tasks\__init__.py", line 198, in _loop
+    raise exc
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\ext\tasks\__init__.py", line 169, in _loop
+    await self.coro(*args, **kwargs)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\bot.py", line 1138, in check_wallet_transactions
+    for wallet_address, wallet_info in wallets.items():
+RuntimeError: dictionary changed size during iteration
+2024-11-29 19:44:06,379 - INFO - logging in using static token
+2024-11-29 19:44:08,134 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-11-29 19:44:08,479 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-b-jd52",{"micros":90924,"calls":["id_created",{"micros":1575,"calls":[]},"session_lookup_time",{"micros":342,"calls":[]},"session_lookup_finished",{"micros":15,"calls":[]},"discord-sessions-prd-1-187",{"micros":87775,"calls":["start_session",{"micros":35004,"calls":["discord-api-rpc-6cf69f8f4b-w2bfc",{"micros":31111,"calls":["get_user",{"micros":4904},"get_guilds",{"micros":3310},"send_scheduled_deletion_message",{"micros":7},"guild_join_requests",{"micros":1},"authorized_ip_coro",{"micros":8}]}]},"starting_guild_connect",{"micros":32,"calls":[]},"presence_started",{"micros":22169,"calls":[]},"guilds_started",{"micros":126,"calls":[]},"guilds_connect",{"micros":2,"calls":[]},"presence_connect",{"micros":30415,"calls":[]},"connect_finished",{"micros":30422,"calls":[]},"build_ready",{"micros":18,"calls":[]},"clean_ready",{"micros":1,"calls":[]},"optimize_ready",{"micros":0,"calls":[]},"split_ready",{"micros":1,"calls":[]}]}]}] (Session ID: 0065efeaf2553f45456243f104e91eba).
+2024-11-29 19:44:10,492 - INFO - Bot logged in as virgin-test#7280
+2024-11-29 19:44:10,493 - INFO - Tracking Wallet Data Loaded Successfully
+2024-11-29 19:44:10,493 - INFO - Wallet Tracking Task Started Successfully
+2024-11-29 19:44:10,493 - INFO - Runes Mint Tracking Task Started Successfully
+2024-11-29 19:44:10,493 - INFO - Bot is fully operational.
+2024-11-29 20:18:09,042 - INFO - Timed out receiving packet. Attempting a reconnect.
+2024-11-29 20:18:09,043 - INFO - Got a request to RESUME the websocket.
+2024-11-29 20:18:10,889 - INFO - Shard ID None has sent the RESUME payload.
+2024-11-29 20:18:11,134 - INFO - Shard ID None has successfully RESUMED session 0065efeaf2553f45456243f104e91eba under trace ["gateway-prd-us-east1-c-7w6q",{"micros":631,"calls":["id_created",{"micros":0,"calls":[]},"session_lookup_time",{"micros":312,"calls":[]},"session_lookup_finished",{"micros":13,"calls":[]},"discord-sessions-prd-1-187",{"micros":23}]}].
+2024-11-29 20:37:03,909 - INFO - Timed out receiving packet. Attempting a reconnect.
+2024-11-29 20:37:03,909 - INFO - Got a request to RESUME the websocket.
+2024-11-29 20:37:05,272 - INFO - Shard ID None has sent the RESUME payload.
+2024-11-29 20:37:05,542 - INFO - Shard ID None has successfully RESUMED session 0065efeaf2553f45456243f104e91eba under trace ["gateway-prd-us-east1-b-ckgk",{"micros":4189,"calls":["id_created",{"micros":0,"calls":[]},"session_lookup_time",{"micros":205,"calls":[]},"session_lookup_finished",{"micros":12,"calls":[]},"discord-sessions-prd-1-187",{"micros":35}]}].
+2024-11-29 20:38:46,826 - INFO - Timed out receiving packet. Attempting a reconnect.
+2024-11-29 20:38:46,826 - INFO - Got a request to RESUME the websocket.
+2024-11-29 20:38:47,991 - INFO - Shard ID None has sent the RESUME payload.
+2024-11-29 20:38:48,278 - INFO - Shard ID None has successfully RESUMED session 0065efeaf2553f45456243f104e91eba under trace ["gateway-prd-us-east1-d-g7rs",{"micros":550,"calls":["id_created",{"micros":0,"calls":[]},"session_lookup_time",{"micros":256,"calls":[]},"session_lookup_finished",{"micros":31,"calls":[]},"discord-sessions-prd-1-187",{"micros":37}]}].
+2024-11-29 20:47:12,561 - INFO - Received signal to terminate bot and event loop.
+2024-11-29 20:47:12,561 - INFO - Cleaning up tasks.
+2024-11-29 20:47:12,563 - INFO - Cleaning up after 1 tasks.
+2024-11-29 20:47:12,564 - INFO - All tasks finished cancelling.
+2024-11-29 20:47:12,565 - INFO - Closing the event loop.
+2024-11-29 20:47:12,647 - ERROR - Task exception was never retrieved
+future: <Task finished name='Task-18' coro=<Loop._loop() done, defined at C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\ext\tasks\__init__.py:152> exception=RuntimeError('dictionary changed size during iteration')>
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\ext\tasks\__init__.py", line 198, in _loop
+    raise exc
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\ext\tasks\__init__.py", line 169, in _loop
+    await self.coro(*args, **kwargs)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\bot.py", line 1138, in check_wallet_transactions
+    "Connection": "keep-alive",
+RuntimeError: dictionary changed size during iteration
+2024-11-29 20:47:16,307 - INFO - logging in using static token
+2024-11-29 20:47:18,372 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-11-29 20:47:18,746 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-b-ghvm",{"micros":117672,"calls":["id_created",{"micros":1814,"calls":[]},"session_lookup_time",{"micros":313,"calls":[]},"session_lookup_finished",{"micros":16,"calls":[]},"discord-sessions-prd-1-256",{"micros":115222,"calls":["start_session",{"micros":73126,"calls":["discord-api-rpc-6cf69f8f4b-xdrfc",{"micros":68933,"calls":["get_user",{"micros":5613},"get_guilds",{"micros":3772},"send_scheduled_deletion_message",{"micros":10},"guild_join_requests",{"micros":1},"authorized_ip_coro",{"micros":10}]}]},"starting_guild_connect",{"micros":58,"calls":[]},"presence_started",{"micros":8748,"calls":[]},"guilds_started",{"micros":128,"calls":[]},"guilds_connect",{"micros":2,"calls":[]},"presence_connect",{"micros":33131,"calls":[]},"connect_finished",{"micros":33138,"calls":[]},"build_ready",{"micros":21,"calls":[]},"clean_ready",{"micros":1,"calls":[]},"optimize_ready",{"micros":0,"calls":[]},"split_ready",{"micros":1,"calls":[]}]}]}] (Session ID: 1ac980ddf72940a88a2fc84aed1d8772).
+2024-11-29 20:47:20,769 - INFO - Bot logged in as virgin-test#7280
+2024-11-29 20:47:20,770 - INFO - Tracking Wallet Data Loaded Successfully
+2024-11-29 20:47:20,771 - INFO - Wallet Tracking Task Started Successfully
+2024-11-29 20:47:20,771 - INFO - Runes Mint Tracking Task Started Successfully
+2024-11-29 20:47:20,771 - INFO - Bot is fully operational.
+2024-11-30 03:23:46,887 - INFO - Timed out receiving packet. Attempting a reconnect.
+2024-11-30 03:23:47,079 - INFO - Got a request to RESUME the websocket.
+2024-11-30 03:23:47,248 - ERROR - Attempting a reconnect in 1.28s
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1317, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 971, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1002, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\resolver.py", line 38, in resolve
+    infos = await self._loop.getaddrinfo(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 860, in getaddrinfo
+    return await self.run_in_executor(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\client.py", line 614, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py", line 445, in wait_for
+    return fut.result()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\gateway.py", line 338, in from_client
+    gateway = gateway or await client.http.get_gateway()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 3071, in get_gateway
+    data = await self.request(Route("GET", "/gateway"))
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 286, in request
+    async with self.__session.request(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 1359, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 663, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 563, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1032, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1323, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+2024-11-30 03:23:48,763 - ERROR - Attempting a reconnect in 3.34s
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1317, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 971, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1002, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\resolver.py", line 38, in resolve
+    infos = await self._loop.getaddrinfo(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 860, in getaddrinfo
+    return await self.run_in_executor(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\client.py", line 614, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py", line 445, in wait_for
+    return fut.result()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\gateway.py", line 338, in from_client
+    gateway = gateway or await client.http.get_gateway()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 3071, in get_gateway
+    data = await self.request(Route("GET", "/gateway"))
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 286, in request
+    async with self.__session.request(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 1359, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 663, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 563, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1032, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1323, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+2024-11-30 06:09:10,295 - ERROR - Attempting a reconnect in 1.92s
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1317, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 971, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1002, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\resolver.py", line 38, in resolve
+    infos = await self._loop.getaddrinfo(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 860, in getaddrinfo
+    return await self.run_in_executor(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\client.py", line 614, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py", line 445, in wait_for
+    return fut.result()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\gateway.py", line 338, in from_client
+    gateway = gateway or await client.http.get_gateway()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 3071, in get_gateway
+    data = await self.request(Route("GET", "/gateway"))
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 286, in request
+    async with self.__session.request(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 1359, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 663, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 563, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1032, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1323, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+2024-11-30 06:09:12,387 - ERROR - Attempting a reconnect in 3.98s
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1317, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 971, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1002, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\resolver.py", line 38, in resolve
+    infos = await self._loop.getaddrinfo(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 860, in getaddrinfo
+    return await self.run_in_executor(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\client.py", line 614, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py", line 445, in wait_for
+    return fut.result()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\gateway.py", line 338, in from_client
+    gateway = gateway or await client.http.get_gateway()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 3071, in get_gateway
+    data = await self.request(Route("GET", "/gateway"))
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 286, in request
+    async with self.__session.request(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 1359, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 663, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 563, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1032, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1323, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+2024-11-30 09:46:50,008 - ERROR - Attempting a reconnect in 1.29s
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1317, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 971, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1002, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\resolver.py", line 38, in resolve
+    infos = await self._loop.getaddrinfo(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 860, in getaddrinfo
+    return await self.run_in_executor(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\client.py", line 614, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py", line 445, in wait_for
+    return fut.result()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\gateway.py", line 338, in from_client
+    gateway = gateway or await client.http.get_gateway()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 3071, in get_gateway
+    data = await self.request(Route("GET", "/gateway"))
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 286, in request
+    async with self.__session.request(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 1359, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 663, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 563, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1032, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1323, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+2024-11-30 09:46:51,318 - ERROR - Attempting a reconnect in 1.35s
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1317, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 971, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1002, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\resolver.py", line 38, in resolve
+    infos = await self._loop.getaddrinfo(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 860, in getaddrinfo
+    return await self.run_in_executor(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\client.py", line 614, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py", line 445, in wait_for
+    return fut.result()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\gateway.py", line 338, in from_client
+    gateway = gateway or await client.http.get_gateway()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 3071, in get_gateway
+    data = await self.request(Route("GET", "/gateway"))
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 286, in request
+    async with self.__session.request(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 1359, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 663, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 563, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1032, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1323, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+2024-11-30 09:46:52,689 - ERROR - Attempting a reconnect in 2.88s
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1317, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 971, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1002, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\resolver.py", line 38, in resolve
+    infos = await self._loop.getaddrinfo(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 860, in getaddrinfo
+    return await self.run_in_executor(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\client.py", line 614, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py", line 445, in wait_for
+    return fut.result()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\gateway.py", line 338, in from_client
+    gateway = gateway or await client.http.get_gateway()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 3071, in get_gateway
+    data = await self.request(Route("GET", "/gateway"))
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 286, in request
+    async with self.__session.request(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 1359, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 663, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 563, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1032, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1323, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+2024-11-30 09:46:55,586 - ERROR - Attempting a reconnect in 4.45s
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1317, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 971, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1002, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\resolver.py", line 38, in resolve
+    infos = await self._loop.getaddrinfo(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 860, in getaddrinfo
+    return await self.run_in_executor(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\client.py", line 614, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py", line 445, in wait_for
+    return fut.result()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\gateway.py", line 338, in from_client
+    gateway = gateway or await client.http.get_gateway()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 3071, in get_gateway
+    data = await self.request(Route("GET", "/gateway"))
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 286, in request
+    async with self.__session.request(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 1359, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 663, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 563, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1032, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1323, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+2024-11-30 09:47:00,045 - ERROR - Attempting a reconnect in 1.04s
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1317, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 971, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1002, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\resolver.py", line 38, in resolve
+    infos = await self._loop.getaddrinfo(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 860, in getaddrinfo
+    return await self.run_in_executor(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\client.py", line 614, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py", line 445, in wait_for
+    return fut.result()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\gateway.py", line 338, in from_client
+    gateway = gateway or await client.http.get_gateway()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 3071, in get_gateway
+    data = await self.request(Route("GET", "/gateway"))
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 286, in request
+    async with self.__session.request(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 1359, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 663, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 563, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1032, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1323, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+2024-11-30 09:47:01,110 - ERROR - Attempting a reconnect in 17.34s
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1317, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 971, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1002, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\resolver.py", line 38, in resolve
+    infos = await self._loop.getaddrinfo(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 860, in getaddrinfo
+    return await self.run_in_executor(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\client.py", line 614, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py", line 445, in wait_for
+    return fut.result()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\gateway.py", line 338, in from_client
+    gateway = gateway or await client.http.get_gateway()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 3071, in get_gateway
+    data = await self.request(Route("GET", "/gateway"))
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 286, in request
+    async with self.__session.request(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 1359, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 663, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 563, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1032, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1323, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+2024-11-30 09:47:12,453 - INFO - Received signal to terminate bot and event loop.
+2024-11-30 09:47:12,454 - INFO - Cleaning up tasks.
+2024-11-30 09:47:12,457 - INFO - Cleaning up after 2 tasks.
+2024-11-30 09:47:12,459 - INFO - All tasks finished cancelling.
+2024-11-30 09:47:12,461 - INFO - Closing the event loop.
+2024-11-30 09:47:26,699 - INFO - logging in using static token
+2024-11-30 09:47:29,635 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-11-30 09:47:30,003 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-c-wj18",{"micros":74775,"calls":["id_created",{"micros":951,"calls":[]},"session_lookup_time",{"micros":3391,"calls":[]},"session_lookup_finished",{"micros":16,"calls":[]},"discord-sessions-prd-1-197",{"micros":70062,"calls":["start_session",{"micros":61258,"calls":["discord-api-rpc-6cf69f8f4b-vjxbt",{"micros":56974,"calls":["get_user",{"micros":5366},"get_guilds",{"micros":3304},"send_scheduled_deletion_message",{"micros":7},"guild_join_requests",{"micros":1},"authorized_ip_coro",{"micros":7}]}]},"starting_guild_connect",{"micros":49,"calls":[]},"presence_started",{"micros":395,"calls":[]},"guilds_started",{"micros":128,"calls":[]},"guilds_connect",{"micros":1,"calls":[]},"presence_connect",{"micros":8186,"calls":[]},"connect_finished",{"micros":8212,"calls":[]},"build_ready",{"micros":17,"calls":[]},"clean_ready",{"micros":1,"calls":[]},"optimize_ready",{"micros":0,"calls":[]},"split_ready",{"micros":1,"calls":[]}]}]}] (Session ID: 77718d85ecbbb4c391179f218bd9a511).
+2024-11-30 09:47:32,038 - INFO - Bot logged in as virgin-test#7280
+2024-11-30 09:47:32,038 - INFO - Tracking Wallet Data Loaded Successfully
+2024-11-30 09:47:32,042 - INFO - Wallet Tracking Task Started Successfully
+2024-11-30 09:47:32,043 - INFO - Runes Mint Tracking Task Started Successfully
+2024-11-30 09:47:32,044 - INFO - Bot is fully operational.
+2024-11-30 09:49:08,342 - WARNING - Can't keep up, shard ID None websocket is 16.2s behind.
+2024-11-30 09:51:29,245 - INFO - Timed out receiving packet. Attempting a reconnect.
+2024-11-30 09:51:29,246 - INFO - Got a request to RESUME the websocket.
+2024-11-30 09:51:30,891 - INFO - Shard ID None has sent the RESUME payload.
+2024-11-30 09:51:31,223 - INFO - Shard ID None has successfully RESUMED session 77718d85ecbbb4c391179f218bd9a511 under trace ["gateway-prd-us-east1-d-1ctr",{"micros":702,"calls":["id_created",{"micros":0,"calls":[]},"session_lookup_time",{"micros":335,"calls":[]},"session_lookup_finished",{"micros":21,"calls":[]},"discord-sessions-prd-1-197",{"micros":41}]}].
+2024-11-30 09:58:28,281 - INFO - Received signal to terminate bot and event loop.
+2024-11-30 09:58:28,285 - INFO - Cleaning up tasks.
+2024-11-30 09:58:28,291 - INFO - Cleaning up after 3 tasks.
+2024-11-30 09:58:28,301 - INFO - All tasks finished cancelling.
+2024-11-30 09:58:28,312 - INFO - Closing the event loop.
+2024-11-30 09:58:52,439 - INFO - logging in using static token
+2024-11-30 09:58:55,514 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-11-30 09:58:55,864 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-c-2q6t",{"micros":93699,"calls":["id_created",{"micros":783,"calls":[]},"session_lookup_time",{"micros":662,"calls":[]},"session_lookup_finished",{"micros":11,"calls":[]},"discord-sessions-prd-1-173",{"micros":90977,"calls":["start_session",{"micros":48170,"calls":["discord-api-rpc-6cf69f8f4b-xvddn",{"micros":44399,"calls":["get_user",{"micros":5179},"get_guilds",{"micros":3224},"send_scheduled_deletion_message",{"micros":6},"guild_join_requests",{"micros":7374},"authorized_ip_coro",{"micros":7}]}]},"starting_guild_connect",{"micros":39,"calls":[]},"presence_started",{"micros":318,"calls":[]},"guilds_started",{"micros":100,"calls":[]},"guilds_connect",{"micros":2,"calls":[]},"presence_connect",{"micros":42303,"calls":[]},"connect_finished",{"micros":42309,"calls":[]},"build_ready",{"micros":38,"calls":[]},"clean_ready",{"micros":1,"calls":[]},"optimize_ready",{"micros":0,"calls":[]},"split_ready",{"micros":0,"calls":[]}]}]}] (Session ID: a91418184759c7ab2861e92da0270e42).
+2024-11-30 09:58:57,912 - INFO - Bot logged in as virgin-test#7280
+2024-11-30 09:58:57,916 - INFO - Tracking Wallet Data Loaded Successfully
+2024-11-30 09:58:57,917 - INFO - Wallet Tracking Task Started Successfully
+2024-11-30 09:58:57,918 - INFO - Runes Mint Tracking Task Started Successfully
+2024-11-30 09:58:57,918 - INFO - Bot is fully operational.
+2024-11-30 10:28:56,008 - INFO - Received signal to terminate bot and event loop.
+2024-11-30 10:28:56,009 - INFO - Cleaning up tasks.
+2024-11-30 10:28:56,010 - INFO - Cleaning up after 2 tasks.
+2024-11-30 10:28:56,013 - INFO - All tasks finished cancelling.
+2024-11-30 10:28:56,015 - INFO - Closing the event loop.

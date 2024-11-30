@@ -265,6 +265,12 @@ async def on_ready():
     except Exception as e:
         logging.error(f"Error starting wallet tracking task: {e}")
 
+    try:
+        runes_mint_tracker.start()
+        logging.info("Runes Mint Tracking Task Started Successfully")
+    except Exception as e:
+        logging.error(f"Error starting runes mint tracking task: {e}")
+
     # try:
     #     runes_mint_tracker.start()
     #     logging.info("Rune Mint Tracker Task Started Successfully")
@@ -901,221 +907,227 @@ async def listwallets(ctx: discord.ApplicationContext):  # type: ignore
 transaction_history: Dict[str, Dict[str, Dict[str, List[str]]]] = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
 
 async def process_inscription_sales(wallet_address, wallet_info, item, guild_id, channel_id):
-    # Initialize transaction history for guild, channel, and wallet
-    if guild_id not in transaction_history:
-        transaction_history[guild_id] = {}
-    if channel_id not in transaction_history[guild_id]:
-        transaction_history[guild_id][channel_id] = {}
-    if wallet_address not in transaction_history[guild_id][channel_id]:
-        transaction_history[guild_id][channel_id][wallet_address] = []
+    try:
+        if guild_id not in transaction_history:
+            transaction_history[guild_id] = {}
+        if channel_id not in transaction_history[guild_id]:
+            transaction_history[guild_id][channel_id] = {}
+        if wallet_address not in transaction_history[guild_id][channel_id]:
+            transaction_history[guild_id][channel_id][wallet_address] = []
 
-    txn_id = item.get('inscription_id', None)
-    if not txn_id:
-        print("Missing 'inscription_id' in item:", item)
-        return
+        txn_id = item.get('inscription_id', None)
+        if not txn_id:
+            print("Missing 'inscription_id' in item:", item)
+            return
 
-    # Check if the transaction ID is already tracked
-    if txn_id not in transaction_history[guild_id][channel_id][wallet_address]:
-        transaction_history[guild_id][channel_id][wallet_address].append(txn_id)
+        if txn_id not in transaction_history[guild_id][channel_id][wallet_address]:
+            transaction_history[guild_id][channel_id][wallet_address].append(txn_id)
 
-        # Check if the transaction is a BRC-20
-        try:
-            brc20_info = item.get("brc20_info", {})
-            transfer_info = brc20_info.get("transfer_info", {})
-            is_brc20 = (
-                item.get("inscription_name") is None
-                and transfer_info.get("tick") is not None
-            )
-        except AttributeError as e:
-            print(f"Error while checking BRC-20 info: {e}")
-            is_brc20 = False
+            try:
+                brc20_info = item.get("brc20_info", {})
+                transfer_info = brc20_info.get("transfer_info", {})
+                is_brc20 = (
+                    item.get("inscription_name") is None
+                    and transfer_info.get("tick") is not None
+                )
+            except AttributeError as e:
+                # print(f"Error while checking BRC-20 info: {e}")
+                is_brc20 = False
 
-        if is_brc20:
-            # Handle BRC-20 transaction
-            tick = transfer_info.get("tick", "N/A")
-            amount = safe_float(transfer_info.get("amount"))
-            psbt_sale = safe_int(item.get("psbt_sale"), default=0) / 100_000_000
-            btc_price_usd = get_btc_price_usd()
+            if is_brc20:
+                tick = transfer_info.get("tick", "N/A")
+                amount = safe_float(transfer_info.get("amount"))
+                psbt_sale = safe_int(item.get("psbt_sale"), default=0) / 100_000_000
+                btc_price_usd = get_btc_price_usd()
 
-            embed_brc20 = discord.Embed(
-                title=f"{wallet_info.get('name', 'Unknown')} {'Bought' if item.get('to') == wallet_address else 'Sold'} {tick} (BRC-20)",
-                color=(discord.Color.blue() if item.get("to") == wallet_address else discord.Color.red()),
-            )
-            embed_brc20.add_field(name="Price (BTC)", value=f"{psbt_sale:.8f}", inline=False)
-            embed_brc20.add_field(name="Amount (QTY)", value=f"{amount:.2f}", inline=False)
-            embed_brc20.add_field(
-                name="Price ($)",
-                value=f"{psbt_sale * btc_price_usd:.2f}" if psbt_sale > 0 else "N/A",
-                inline=False,
-            )
-            embed_brc20.set_image(url=f"https://ord-mirror.magiceden.dev/content/{txn_id}")
-            embed_brc20.add_field(name="Inscription ID", value=txn_id, inline=False)
-            embed_brc20.add_field(name="Category", value="BRC-20")
-            embed_brc20.set_footer(
-                text="Powered by Brain Box Intel",
-                icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg",
-            )
+                embed_brc20 = discord.Embed(
+                    title=f"{wallet_info.get('name', 'Unknown')} {'Bought' if item.get('to') == wallet_address else 'Sold'} {tick} (BRC-20)",
+                    color=(discord.Color.blue() if item.get("to") == wallet_address else discord.Color.red()),
+                )
+                embed_brc20.add_field(name="Price (BTC)", value=f"{psbt_sale:.8f}", inline=False)
+                embed_brc20.add_field(name="Amount (QTY)", value=f"{amount:.2f}", inline=False)
+                embed_brc20.add_field(
+                    name="Price ($)",
+                    value=f"{psbt_sale * btc_price_usd:.2f}" if psbt_sale > 0 else "N/A",
+                    inline=False,
+                )
+                embed_brc20.set_image(url=f"https://ord-mirror.magiceden.dev/content/{txn_id}")
+                embed_brc20.add_field(name="Inscription ID", value=txn_id, inline=False)
+                embed_brc20.add_field(name="Category", value="BRC-20")
+                embed_brc20.set_footer(
+                    text="Powered by Brain Box Intel",
+                    icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg",
+                )
 
-            # Send notification to the channel
-            channel = bot.get_channel(channel_id)
-            if channel:
-                await channel.send(embed=embed_brc20)
+                channel = bot.get_channel(channel_id)
+                if channel:
+                    await channel.send(embed=embed_brc20)
 
-        else:
-            # Handle regular inscription sale
-            inscription_name = item.get("inscription_name", "N/A")
-            inscription_number = item.get("inscription_number", "N/A")
-            psbt_sale = safe_int(item.get("psbt_sale"), default=0) / 100_000_000
-            btc_price_usd = get_btc_price_usd()
+            else:
+                inscription_name = item.get("inscription_name", "N/A")
+                inscription_number = item.get("inscription_number", "N/A")
+                psbt_sale = safe_int(item.get("psbt_sale"), default=0) / 100_000_000
+                btc_price_usd = get_btc_price_usd()
 
-            embed_inscription_sales = discord.Embed(
-                title=f"{wallet_info.get('name', 'Unknown')} {'Bought' if item.get('to') == wallet_address else 'Sold'} {inscription_name} with number #{inscription_number}",
-                color=(discord.Color.blue() if item.get("to") == wallet_address else discord.Color.red()),
-            )
-            embed_inscription_sales.add_field(name="Price (BTC)", value=f"{psbt_sale:.8f}", inline=False)
-            embed_inscription_sales.add_field(
-                name="Price ($)",
-                value=f"{psbt_sale * btc_price_usd:.2f}" if psbt_sale > 0 else "N/A",
-                inline=False,
-            )
-            embed_inscription_sales.set_image(url=f"https://ord-mirror.magiceden.dev/content/{txn_id}")
-            embed_inscription_sales.add_field(name="Inscription ID", value=txn_id, inline=False)
-            embed_inscription_sales.add_field(name="Category", value="Inscriptions")
-            embed_inscription_sales.set_footer(
-                text="Powered by Brain Box Intel",
-                icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg",
-            )
+                embed_inscription_sales = discord.Embed(
+                    title=f"{wallet_info.get('name', 'Unknown')} {'Bought' if item.get('to') == wallet_address else 'Sold'} {inscription_name} with number #{inscription_number}",
+                    color=(discord.Color.blue() if item.get("to") == wallet_address else discord.Color.red()),
+                )
+                embed_inscription_sales.add_field(name="Price (BTC)", value=f"{psbt_sale:.8f}", inline=False)
+                embed_inscription_sales.add_field(
+                    name="Price ($)",
+                    value=f"{psbt_sale * btc_price_usd:.2f}" if psbt_sale > 0 else "N/A",
+                    inline=False,
+                )
+                embed_inscription_sales.set_image(url=f"https://ord-mirror.magiceden.dev/content/{txn_id}")
+                embed_inscription_sales.add_field(name="Inscription ID", value=txn_id, inline=False)
+                embed_inscription_sales.add_field(name="Category", value="Inscriptions")
+                embed_inscription_sales.set_footer(
+                    text="Powered by Brain Box Intel",
+                    icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg",
+                )
 
-            # Send notification to the channel
-            channel = bot.get_channel(channel_id)
-            if channel:
-                await channel.send(embed=embed_inscription_sales)
+                channel = bot.get_channel(channel_id)
+                if channel:
+                    await channel.send(embed=embed_inscription_sales)
+    except Exception as e:
+        logging.error(
+            
+            f"""Error occured at the point of inscription sales processing. Here is a detailed traceback: 
+            {e}
+            """   
+        )
 
         
 async def process_inscriptions(wallet_address, wallet_info, item, guild_id, channel_id):
-    # Ensure the transaction_history structure is initialized
-    if guild_id not in transaction_history:
-        transaction_history[guild_id] = {}
-    if channel_id not in transaction_history[guild_id]:
-        transaction_history[guild_id][channel_id] = {}
-    if wallet_address not in transaction_history[guild_id][channel_id]:
-        transaction_history[guild_id][channel_id][wallet_address] = []
+    try:
+        if guild_id not in transaction_history:
+            transaction_history[guild_id] = {}
+        if channel_id not in transaction_history[guild_id]:
+            transaction_history[guild_id][channel_id] = {}
+        if wallet_address not in transaction_history[guild_id][channel_id]:
+            transaction_history[guild_id][channel_id][wallet_address] = []
 
-    inscription_id = item.get("inscription_id", None)
-    if not inscription_id:
-        print("Missing 'inscription_id' in item:", item)
-        return
+        inscription_id = item.get("inscription_id", None)
+        if not inscription_id:
+            print("Missing 'inscription_id' in item:", item)
+            return
 
-    # Check if the inscription ID is already tracked
-    if inscription_id not in transaction_history[guild_id][channel_id][wallet_address]:
-        transaction_history[guild_id][channel_id][wallet_address].append(inscription_id)
+        if inscription_id not in transaction_history[guild_id][channel_id][wallet_address]:
+            transaction_history[guild_id][channel_id][wallet_address].append(inscription_id)
 
-        # Initialize variables for BRC-20
-        is_brc20 = False
-        mint_info = {}
+            is_brc20 = False
+            mint_info = {}
 
-        try:
-            # Attempt to extract mint_info
-            mint_info = item.get("brc20_info", {}).get("mint_info", {})
-            is_brc20 = (
-                item.get("inscription_name") is None
-                and mint_info.get("tick") is not None
-            )
-        except AttributeError as e:
-            print(f"Error accessing mint_info: {e}")
+            try:
+                mint_info = item.get("brc20_info", {}).get("mint_info", {})
+                is_brc20 = (
+                    item.get("inscription_name") is None
+                    and mint_info.get("tick") is not None
+                )
+            except AttributeError as e:
+                print(f"Error accessing mint_info: {e}")
 
-        inscription_number = item.get("inscription_number", "N/A")
-        title = f"{wallet_info.get('name', 'Unknown')} 'Inscribed' Inscription with number #{inscription_number}"
+            inscription_number = item.get("inscription_number", "N/A")
+            title = f"{wallet_info.get('name', 'Unknown')} 'Inscribed' Inscription with number #{inscription_number}"
 
-        if is_brc20:
-            # Handle BRC-20 transaction using mint_info
-            tick = mint_info.get("tick", "N/A")
-            amount = safe_float(mint_info.get("amount"), default=0.0) / 100_000_000
-            mint_wallet = mint_info.get("mint_wallet", "N/A")
+            if is_brc20:
+                tick = mint_info.get("tick", "N/A")
+                amount = safe_float(mint_info.get("amount"), default=0.0) / 100_000_000
+                mint_wallet = mint_info.get("mint_wallet", "N/A")
 
-            embed_brc20 = discord.Embed(
-                title=f"{title} (BRC-20 Mint: {tick})",
-                color=(discord.Color.blue() if mint_wallet == wallet_address else discord.Color.red()),
-            )
-            embed_brc20.add_field(name="Mint Amount (QTY)", value=f"{amount:.2f}", inline=False)
-            embed_brc20.add_field(name="Mint Wallet", value=mint_wallet, inline=False)
-            embed_brc20.add_field(name="Inscription ID", value=inscription_id, inline=False)
-            embed_brc20.add_field(name="Category", value="BRC-20")
-            embed_brc20.set_footer(
-                text="Powered by Brain Box Intel",
-                icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg",
-            )
+                embed_brc20 = discord.Embed(
+                    title=f"{title} (BRC-20 Mint: {tick})",
+                    color=(discord.Color.blue() if mint_wallet == wallet_address else discord.Color.red()),
+                )
+                embed_brc20.add_field(name="Mint Amount (QTY)", value=f"{amount:.2f}", inline=False)
+                embed_brc20.add_field(name="Mint Wallet", value=mint_wallet, inline=False)
+                embed_brc20.add_field(name="Inscription ID", value=inscription_id, inline=False)
+                embed_brc20.add_field(name="Category", value="BRC-20")
+                embed_brc20.set_footer(
+                    text="Powered by Brain Box Intel",
+                    icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg",
+                )
 
-            # Send notification to the channel
-            channel = bot.get_channel(channel_id)
-            if channel:
-                await channel.send(embed=embed_brc20)
+                channel = bot.get_channel(channel_id)
+                if channel:
+                    await channel.send(embed=embed_brc20)
 
-        else:
-            # Handle regular inscription
-            embed_inscription = discord.Embed(
-                title=title,
-                color=(discord.Color.blue() if item.get("to") == wallet_address else discord.Color.red()),
-            )
-            embed_inscription.add_field(name="Inscription ID", value=inscription_id, inline=False)
-            embed_inscription.add_field(name="Category", value="Inscriptions")
-            embed_inscription.set_footer(
-                text="Powered by Brain Box Intel",
-                icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg",
-            )
+            else:
+                embed_inscription = discord.Embed(
+                    title=title,
+                    color=(discord.Color.blue() if item.get("to") == wallet_address else discord.Color.red()),
+                )
+                embed_inscription.add_field(name="Inscription ID", value=inscription_id, inline=False)
+                embed_inscription.add_field(name="Category", value="Inscriptions")
+                embed_inscription.set_footer(
+                    text="Powered by Brain Box Intel",
+                    icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg",
+                )
 
-            # Send notification to the channel
-            channel = bot.get_channel(channel_id)
-            if channel:
-                await channel.send(embed=embed_inscription)
+                channel = bot.get_channel(channel_id)
+                if channel:
+                    await channel.send(embed=embed_inscription)
+    
+    except Exception as e:
+        logging.error(
+            
+            f"""Error occured at the point of inscription processing. Here is a detailed traceback: 
+            {e}
+            """   
+        )
 
 
 async def process_rune_transactions(wallet_address, wallet_info, item, guild_id, channel_id):
-    # Ensure the transaction_history structure is initialized
-    if guild_id not in transaction_history:
-        transaction_history[guild_id] = {}
-    if channel_id not in transaction_history[guild_id]:
-        transaction_history[guild_id][channel_id] = {}
-    if wallet_address not in transaction_history[guild_id][channel_id]:
-        transaction_history[guild_id][channel_id][wallet_address] = []
+    try:
+        if guild_id not in transaction_history:
+            transaction_history[guild_id] = {}
+        if channel_id not in transaction_history[guild_id]:
+            transaction_history[guild_id][channel_id] = {}
+        if wallet_address not in transaction_history[guild_id][channel_id]:
+            transaction_history[guild_id][channel_id][wallet_address] = []
 
-    transaction_id = item['tx_id']  # Assuming 'rune_id' is the transaction ID field
+        transaction_id = item['tx_id']
 
-    # Check if the transaction ID is already tracked
-    if transaction_id not in transaction_history[guild_id][channel_id][wallet_address]:
-        transaction_history[guild_id][channel_id][wallet_address].append(transaction_id)
-        
-        rune = item.get("rune", {})
-        wallet_from = item.get("wallet_from", "Unknown")
-        wallet_to = item.get("wallet_to", "Unknown")
-        rune_name = rune.get("spaced_rune_name", "Unknown")
-        action = "Bought" if wallet_to == wallet_address else "Sold"
+        if transaction_id not in transaction_history[guild_id][channel_id][wallet_address]:
+            transaction_history[guild_id][channel_id][wallet_address].append(transaction_id)
+            
+            rune = item.get("rune", {})
+            wallet_to = item.get("wallet_to", "Unknown")
+            rune_name = rune.get("spaced_rune_name", "Unknown")
+            action = "Bought" if wallet_to == wallet_address else "Sold"
 
-        embed_runes = discord.Embed(
-            title=f"{wallet_info.get('name', 'Unknown')} {action} {rune_name} #{rune.get('rune_number', 'Unknown')}",
-            color=(discord.Color.green() if wallet_to == wallet_address else discord.Color.red()),
-        )
-        embed_runes.add_field(name="Sale Price (BTC)", value=(item.get("sale_price_sats", 0) / 100_000_000), inline=False)
-        embed_runes.add_field(
-            name="Price ($)", 
-            value=f"{(item.get('sale_price_sats', 0) / 100_000_000) * get_btc_price_usd():.2f}", 
-            inline=False
-        )        
-        embed_runes.set_image(url=f"https://ord-mirror.magiceden.dev/content/{item.get('deploy_txid', 'N/A')}")
-        embed_runes.add_field(name="Rune ID", value=rune.get("rune_id", "N/A"), inline=False)
-        embed_runes.add_field(name="Category", value="Runes")
-        embed_runes.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
+            embed_runes = discord.Embed(
+                title=f"{wallet_info.get('name', 'Unknown')} {action} {rune_name} #{rune.get('rune_number', 'Unknown')}",
+                color=(discord.Color.green() if wallet_to == wallet_address else discord.Color.red()),
+            )
+            embed_runes.add_field(name="Sale Price (BTC)", value=(item.get("sale_price_sats", 0) / 100_000_000), inline=False)
+            embed_runes.add_field(
+                name="Price ($)", 
+                value=f"{(item.get('sale_price_sats', 0) / 100_000_000) * get_btc_price_usd():.2f}", 
+                inline=False
+            )        
+            embed_runes.set_image(url=f"https://ord-mirror.magiceden.dev/content/{item.get('deploy_txid', 'N/A')}")
+            embed_runes.add_field(name="Rune ID", value=rune.get("rune_id", "N/A"), inline=False)
+            embed_runes.add_field(name="Category", value="Runes")
+            embed_runes.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
 
-        # Send notification to the channel
-        channel = bot.get_channel(channel_id)
-        if channel:
-            await channel.send(embed=embed_runes)
+            channel = bot.get_channel(channel_id)
+            if channel:
+                await channel.send(embed=embed_runes)
     
+    except Exception as e:
+        logging.error(
+            
+            f"""Error occured at the point of runes processing. Here is a detailed traceback: 
+            {e}
+            """   
+        )
+        
 
-# Dictionary to store the most recent transactions for each wallet
 recent_transactions = defaultdict(list)
 
-@tasks.loop(seconds=5)  # Check for new transactions every 5 seconds
+@tasks.loop(seconds=5)
 async def check_wallet_transactions():
     global tracked_wallets, transaction_history, output_channels, recent_transactions
 
@@ -1126,56 +1138,50 @@ async def check_wallet_transactions():
         "Connection": "keep-alive",
     }
 
-    async with aiohttp.ClientSession() as session:  # Open a session to reuse connections
-        for guild_id, wallets in tracked_wallets.items():
-            channel_id = output_channels.get(guild_id)  # Get the output channel ID for this guild
-            for wallet_address, wallet_info in wallets.items():
-                # Initialize recent transactions for this wallet if not already done
+    async with aiohttp.ClientSession() as session:
+        tracked_wallets_snapshot = list(tracked_wallets.items())
+        output_channels_snapshot = output_channels.copy()
+
+        for guild_id, wallets in tracked_wallets_snapshot:
+            channel_id = output_channels_snapshot.get(guild_id)
+            if channel_id is None:
+                continue
+            
+            for wallet_address, wallet_info in list(wallets.items()):
                 if wallet_address not in recent_transactions:
                     recent_transactions[wallet_address] = []
 
-                # Fetching inscription sales
                 inscription_sales_url = f"https://v2api.bestinslot.xyz/wallet/history?page=1&address={wallet_address}"
                 async with session.get(inscription_sales_url, headers=headers) as response:
                     if response.status == 200:
                         data = await response.json()
                         items = data.get("items", [])
-                        if not items:  # Explicit check for empty items
-                            # await send_no_transactions_message(channel_id, wallet_info, "Inscriptions Sales")
-                            pass
-                        else:
+                        if items:
                             for item in items[:1]:
                                 await process_inscription_sales(wallet_address, wallet_info, item, guild_id, channel_id)
                                 recent_transactions[wallet_address].append(item)
 
-                # Fetching inscriptions
                 inscriptions_url = f"https://v2api.bestinslot.xyz/wallet/history?page=1&address={wallet_address}&activity=1"
                 async with session.get(inscriptions_url, headers=headers) as response:
                     if response.status == 200:
                         data = await response.json()
                         items = data.get("items", [])
-                        # print("I AM AN INSCRIPTION")
-                        if not items:  # Explicit check for empty items
-                            await send_no_transactions_message(channel_id, wallet_info, "Inscriptions")
-                        else:
+                        if items:
                             for item in items[:1]:
                                 await process_inscriptions(wallet_address, wallet_info, item, guild_id, channel_id)
 
-                # Fetching rune transactions
                 rune_transactions_url = f"https://v2api.bestinslot.xyz/rune/activity?page=1&address={wallet_address}&include_rune=true"
                 async with session.get(rune_transactions_url, headers=headers) as response:
                     if response.status == 200:
                         data = await response.json()
                         items = data.get("items", [])
-                        if not items:  # Explicit check for empty items
-                            # await send_no_transactions_message(channel_id, wallet_info, "Rune transactions")
-                            pass
-                        else:
+                        if items:
                             for item in items[:1]:
                                 await process_rune_transactions(wallet_address, wallet_info, item, guild_id, channel_id)
                                 recent_transactions[wallet_address].append(item)
 
     save_wallet_data()
+
 
 async def send_no_transactions_message(channel_id, wallet_info, transaction_type):
     """Send a message indicating that no transactions of a specific type were found."""
@@ -1946,9 +1952,6 @@ async def runesmint(ctx: discord.ApplicationContext, channel: Option(discord.Tex
     data[guild_id][channel_id] = True
     save_data()
 
-    # Start the tracking task if not already running
-    if not runes_mint_tracker.is_running():
-        runes_mint_tracker.start()
 
     embed = discord.Embed(
         title="Tracking Channel Set ✅",
