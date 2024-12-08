@@ -1920,3 +1920,55 @@ aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discor
 2024-12-07 10:53:33,625 - INFO - Wallet Tracking Task Started Successfully
 2024-12-07 10:53:33,625 - INFO - Runes Mint Tracking Task Started Successfully
 2024-12-07 10:53:33,625 - INFO - Bot is fully operational.
+2024-12-08 17:22:37,959 - INFO - logging in using static token
+2024-12-08 17:22:40,815 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-12-08 17:22:41,139 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-b-6cpm",{"micros":66249,"calls":["id_created",{"micros":2458,"calls":[]},"session_lookup_time",{"micros":286,"calls":[]},"session_lookup_finished",{"micros":15,"calls":[]},"discord-sessions-prd-1-205",{"micros":62212,"calls":["start_session",{"micros":36560,"calls":["discord-api-rpc-7574bb9dff-6np9t",{"micros":32615,"calls":["get_user",{"micros":5220},"get_guilds",{"micros":3321},"send_scheduled_deletion_message",{"micros":6},"guild_join_requests",{"micros":1},"authorized_ip_coro",{"micros":6}]}]},"starting_guild_connect",{"micros":77,"calls":[]},"presence_started",{"micros":367,"calls":[]},"guilds_started",{"micros":145,"calls":[]},"guilds_connect",{"micros":1,"calls":[]},"presence_connect",{"micros":25028,"calls":[]},"connect_finished",{"micros":25035,"calls":[]},"build_ready",{"micros":24,"calls":[]},"clean_ready",{"micros":1,"calls":[]},"optimize_ready",{"micros":0,"calls":[]},"split_ready",{"micros":1,"calls":[]}]}]}] (Session ID: 11b4b96be31f70838a642f0ecc1cbfd9).
+2024-12-08 17:22:43,174 - INFO - Bot logged in as virgin-test#7280
+2024-12-08 17:22:43,202 - INFO - Tracking Wallet Data Loaded Successfully
+2024-12-08 17:22:43,205 - INFO - Wallet Tracking Task Started Successfully
+2024-12-08 17:22:43,206 - INFO - Runes Mint Tracking Task Started Successfully
+2024-12-08 17:22:43,206 - INFO - Bot is fully operational.
+2024-12-08 17:34:16,459 - INFO - Received signal to terminate bot and event loop.
+2024-12-08 17:34:16,487 - INFO - Cleaning up tasks.
+2024-12-08 17:34:16,501 - INFO - Cleaning up after 2 tasks.
+2024-12-08 17:34:16,569 - INFO - All tasks finished cancelling.
+2024-12-08 17:34:16,570 - INFO - Closing the event loop.
+2024-12-08 17:34:22,653 - INFO - logging in using static token
+2024-12-08 17:34:24,622 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-12-08 17:34:24,992 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-d-6fwr",{"micros":120281,"calls":["id_created",{"micros":1736,"calls":[]},"session_lookup_time",{"micros":351,"calls":[]},"session_lookup_finished",{"micros":22,"calls":[]},"discord-sessions-prd-1-96",{"micros":117961,"calls":["start_session",{"micros":112576,"calls":["discord-api-rpc-7574bb9dff-pmzf7",{"micros":108913,"calls":["get_user",{"micros":17706},"get_guilds",{"micros":22717},"send_scheduled_deletion_message",{"micros":9},"guild_join_requests",{"micros":1},"authorized_ip_coro",{"micros":10}]}]},"starting_guild_connect",{"micros":44,"calls":[]},"presence_started",{"micros":216,"calls":[]},"guilds_started",{"micros":132,"calls":[]},"guilds_connect",{"micros":2,"calls":[]},"presence_connect",{"micros":4967,"calls":[]},"connect_finished",{"micros":4972,"calls":[]},"build_ready",{"micros":18,"calls":[]},"clean_ready",{"micros":1,"calls":[]},"optimize_ready",{"micros":1,"calls":[]},"split_ready",{"micros":0,"calls":[]}]}]}] (Session ID: 02fcb8c032c114b49cf3f141ffd34469).
+2024-12-08 17:34:27,057 - INFO - Bot logged in as virgin-test#7280
+2024-12-08 17:34:27,094 - INFO - Tracking Wallet Data Loaded Successfully
+2024-12-08 17:34:27,099 - INFO - Wallet Tracking Task Started Successfully
+2024-12-08 17:34:27,100 - INFO - Runes Mint Tracking Task Started Successfully
+2024-12-08 17:34:27,101 - INFO - Bot is fully operational.
+2024-12-08 17:39:31,689 - INFO - Received signal to terminate bot and event loop.
+2024-12-08 17:39:31,689 - INFO - Cleaning up tasks.
+2024-12-08 17:39:31,696 - INFO - Cleaning up after 2 tasks.
+2024-12-08 17:39:31,700 - INFO - All tasks finished cancelling.
+2024-12-08 17:39:31,702 - INFO - Closing the event loop.
+2024-12-08 17:39:36,327 - INFO - logging in using static token
+2024-12-08 17:39:38,683 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-12-08 17:39:39,148 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-d-4d51",{"micros":222415,"calls":["id_created",{"micros":1451,"calls":[]},"session_lookup_time",{"micros":7525,"calls":[]},"session_lookup_finished",{"micros":16,"calls":[]},"discord-sessions-prd-1-108",{"micros":213178,"calls":["start_session",{"micros":186967,"calls":["discord-api-rpc-7574bb9dff-m9lzr",{"micros":161567,"calls":["get_user",{"micros":29548},"get_guilds",{"micros":39330},"send_scheduled_deletion_message",{"micros":7},"guild_join_requests",{"micros":1},"authorized_ip_coro",{"micros":6}]}]},"starting_guild_connect",{"micros":41,"calls":[]},"presence_started",{"micros":9245,"calls":[]},"guilds_started",{"micros":152,"calls":[]},"guilds_connect",{"micros":1,"calls":[]},"presence_connect",{"micros":16745,"calls":[]},"connect_finished",{"micros":16751,"calls":[]},"build_ready",{"micros":18,"calls":[]},"clean_ready",{"micros":1,"calls":[]},"optimize_ready",{"micros":1,"calls":[]},"split_ready",{"micros":0,"calls":[]}]}]}] (Session ID: fdc9ca16281d9bbae68d94a24c906cec).
+2024-12-08 17:39:41,178 - INFO - Bot logged in as virgin-test#7280
+2024-12-08 17:39:41,178 - INFO - Tracking Wallet Data Loaded Successfully
+2024-12-08 17:39:41,178 - INFO - Wallet Tracking Task Started Successfully
+2024-12-08 17:39:41,178 - INFO - Runes Mint Tracking Task Started Successfully
+2024-12-08 17:39:41,178 - INFO - Bot is fully operational.
+2024-12-08 17:44:01,823 - INFO - Received signal to terminate bot and event loop.
+2024-12-08 17:44:01,823 - INFO - Cleaning up tasks.
+2024-12-08 17:44:01,828 - INFO - Cleaning up after 2 tasks.
+2024-12-08 17:44:01,831 - INFO - All tasks finished cancelling.
+2024-12-08 17:44:01,833 - INFO - Closing the event loop.
+2024-12-08 17:44:06,160 - INFO - logging in using static token
+2024-12-08 17:44:08,405 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-12-08 17:44:08,809 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-c-l97p",{"micros":106136,"calls":["id_created",{"micros":895,"calls":[]},"session_lookup_time",{"micros":435,"calls":[]},"session_lookup_finished",{"micros":17,"calls":[]},"discord-sessions-prd-1-119",{"micros":104500,"calls":["start_session",{"micros":93861,"calls":["discord-api-rpc-7574bb9dff-2mpm8",{"micros":88881,"calls":["get_user",{"micros":5650},"get_guilds",{"micros":15016},"send_scheduled_deletion_message",{"micros":5},"guild_join_requests",{"micros":0},"authorized_ip_coro",{"micros":6}]}]},"starting_guild_connect",{"micros":38,"calls":[]},"presence_started",{"micros":9774,"calls":[]},"guilds_started",{"micros":172,"calls":[]},"guilds_connect",{"micros":2,"calls":[]},"presence_connect",{"micros":625,"calls":[]},"connect_finished",{"micros":631,"calls":[]},"build_ready",{"micros":21,"calls":[]},"clean_ready",{"micros":0,"calls":[]},"optimize_ready",{"micros":1,"calls":[]},"split_ready",{"micros":0,"calls":[]}]}]}] (Session ID: f18c6adb738ae13a1c23af724f687986).
+2024-12-08 17:44:10,827 - INFO - Bot logged in as virgin-test#7280
+2024-12-08 17:44:10,827 - INFO - Tracking Wallet Data Loaded Successfully
+2024-12-08 17:44:10,839 - INFO - Wallet Tracking Task Started Successfully
+2024-12-08 17:44:10,841 - INFO - Runes Mint Tracking Task Started Successfully
+2024-12-08 17:44:10,841 - INFO - Bot is fully operational.
+2024-12-08 17:45:06,996 - INFO - Received signal to terminate bot and event loop.
+2024-12-08 17:45:07,000 - INFO - Cleaning up tasks.
+2024-12-08 17:45:07,014 - INFO - Cleaning up after 2 tasks.
+2024-12-08 17:45:07,020 - INFO - All tasks finished cancelling.
+2024-12-08 17:45:07,033 - INFO - Closing the event loop.

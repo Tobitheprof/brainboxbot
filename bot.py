@@ -1407,29 +1407,16 @@ async def overlay_with_user_info(
 )
 async def profit(
     ctx: discord.ApplicationContext,
-    asset_type: Option(str, "Select asset type", choices=["rune"]),  # type: ignore
-    asset_slug: Option(str, "Enter the asset slug (rune name or ordinal collection symbol)"),  # type: ignore
-):
+    asset_type: Option(str, "Select asset type", choices=["rune", "ordinal"]),  # type: ignore
+    asset_slug: Option(
+        str, "Enter the asset slug (rune name or ordinal collection symbol)"
+    ),  # type: ignore
+):  # type: ignore
     await ctx.defer()
 
-    # Retrieve server-specific overlay settings
-    guild_id = str(ctx.guild.id)
-    overlay = get_server_overlay(guild_id)
-
-    # Load overlay settings or fallback to defaults
-    image_path = overlay.get("image_path", "./blank.jpg")
-    font_path = overlay.get("font_path", "./LoveYaLikeASister.ttf")
-    text_coordinates = overlay.get("text_coordinates", [])
-    avatar_coordinates = overlay.get("avatar_coordinates", [1200, 1870])
-    username_coordinates = overlay.get("username_coordinates", [1300, 1880])
-    avatar_size = overlay.get("avatar_size", [100, 100])
-
-    # Headers for API calls
     headers = {
         "User-Agent": ua.random,
         "Accept": "application/json, text/plain, */*",
-        "Accept-Language": "en-US,en;q=0.5",
-        "Connection": "keep-alive",
         "Authorization": "Bearer 4a02b503-2fdc-4cd3-a053-9d06e81f1c8e",
     }
 
@@ -1437,40 +1424,31 @@ async def profit(
         spaced_rune = asset_slug
         asset_slug = asset_slug.replace("•", "").upper()
 
+    guild_id = str(ctx.guild.id)
+    overlay = get_server_overlay(guild_id)
+
+    image_path = overlay.get("image_path", "./blank.jpg")
+    font_path = overlay.get("font_path", "./LoveYaLikeASister.ttf")
+    text_coordinates = overlay.get("text_coordinates", [])
+    avatar_coordinates = overlay.get("avatar_coordinates", [1200, 1870])
+    username_coordinates = overlay.get("username_coordinates", [1300, 1880])
+    avatar_size = overlay.get("avatar_size", [100, 100])
+
     if guild_id not in wallets or not wallets[guild_id]:
         await ctx.respond("No wallets found for this server.")
         return
 
-    total_bought_btc = 0
-    total_sold_btc = 0
-    total_quantity_bought = 0
-    total_quantity_sold = 0
-
     async with aiohttp.ClientSession() as session:
-        price_url = (
-            f"https://api-mainnet.magiceden.dev/v2/ord/btc/runes/market/{asset_slug}/info"
-            if asset_type == "rune"
-            else f"https://api-mainnet.magiceden.dev/v2/ord/btc/stat?collectionSymbol={asset_slug}"
-        )
-        async with session.get(price_url, headers=headers) as price_response:
-            if price_response.status == 200:
-                price_data = await price_response.json()
-                current_price_btc = float(
-                    price_data["floorUnitPrice"]["formatted"]
-                    if asset_type == "rune"
-                    else price_data["floorPrice"]
-                ) / 100000000
-            else:
-                await ctx.respond("Failed to fetch current price data.")
-                return
+        if asset_type == "rune":
+            price_url = f"https://api-mainnet.magiceden.dev/v2/ord/btc/runes/market/{asset_slug}/info"
+        else:
+            price_url = f"https://api-mainnet.magiceden.dev/v2/ord/btc/stat?collectionSymbol={asset_slug}"
 
-        # Fetch the current BTC price in USD
-        btc_price_usd = get_btc_price_usd()
-        if btc_price_usd == 0:
-            ctx.respond("Failed to fetch the current BTC price in USD.")
-            return
+        total_bought_btc = 0
+        total_sold_btc = 0
+        total_quantity_bought = 0
+        total_quantity_sold = 0
 
-        # Process transactions for each wallet
         for wallet in wallets[guild_id]:
             wallet_address = wallet["address"]
             url = (
@@ -1485,81 +1463,99 @@ async def profit(
                 else:
                     await ctx.respond("Failed to fetch asset data.")
                     return
-            print(data)
 
-            # Calculate trade details
+            async with session.get(price_url, headers=headers) as price_response:
+                if price_response.status == 200:
+                    price_data = await price_response.json()
+                    current_price_sats = float(
+                        price_data["floorUnitPrice"]["formatted"]
+                        if asset_type == "rune"
+                        else price_data["floorPrice"]
+                    )
+                    current_price_btc = current_price_sats / 100000000
+                else:
+                    await ctx.respond("Failed to fetch current price data.")
+                    return
+
+            # Process transactions
             for item in data["items"]:
-                is_buy = item["wallet_to"] == wallet_address
-                is_sell = item["wallet_to"] != wallet_address
+                if asset_type == "rune":
+                    is_buy = item["wallet_to"] == wallet_address and item["rune"]["rune_name"].lower() == asset_slug.lower()
+                    is_sell = item["wallet_to"] != wallet_address and item["rune"]["rune_name"].lower() == asset_slug.lower()
+                else:
+                    is_buy = item["to"] == wallet_address and item["inscription_name"].lower() == asset_slug.lower()
+                    is_sell = item["to"] != wallet_address and item["inscription_name"].lower() == asset_slug.lower()
 
                 if is_buy:
                     buy_price_sats = float(item["sale_price_sats"])
+                    quantity_bought = float(item.get("amount", 1))
                     total_bought_btc += buy_price_sats / 100000000
-                    total_quantity_bought += 1  # Assuming 1 asset per transaction
+                    total_quantity_bought += quantity_bought
 
                 elif is_sell:
                     sell_price_sats = float(item["sale_price_sats"])
+                    quantity_sold = float(item.get("amount", 1))
                     total_sold_btc += sell_price_sats / 100000000
-                    total_quantity_sold += 1  # Assuming 1 asset per transaction
+                    total_quantity_sold += quantity_sold
 
-    # Calculate holdings and PnL
-    holding_quantity = total_quantity_bought - total_quantity_sold
-    holding_btc = holding_quantity * current_price_btc
-    pnl_btc = holding_btc + (total_sold_btc - total_bought_btc)
-    pnl_percentage = (pnl_btc / max(total_bought_btc, 1e-8)) * 100
+        holding_quantity = total_quantity_bought - total_quantity_sold
+        holding_btc = holding_quantity * current_price_btc
+        holding_usd = holding_btc * get_btc_price_usd()
 
-    # Generate texts for overlay
-    texts_with_coordinates = []
-    text_keys = ["asset_name", "total_bought", "total_sold", "holdings", "pnl"]
-    text_values = [
-        f"{spaced_rune}" if asset_type == "rune" else asset_slug,
-        f"{total_bought_btc:.4f} (${total_bought_btc * btc_price_usd:.2f})",
-        f"{total_sold_btc:.4f} (${total_sold_btc * btc_price_usd:.2f})",
-        f"{holding_btc:.4f} (${holding_btc * btc_price_usd:.2f})",
-        f"{pnl_btc:.4f} (${pnl_btc * btc_price_usd:.2f}) ({pnl_percentage:.2f}%)",
-    ]
+        total_bought_btc = max(total_bought_btc, 1e-8)
 
-    for i, text_key in enumerate(text_keys):
-        if i < len(text_coordinates):
-            coordinate = text_coordinates[i]
-            texts_with_coordinates.append({
-                "text": text_values[i],
-                "coordinates": tuple(coordinate["coordinates"]),
-                "color": tuple(coordinate["color"]),
-                "font_size": coordinate["font_size"],
-            })
+        if total_quantity_sold == 0:
+            pnl_btc = holding_btc - total_bought_btc
+        else:
+            realized_pnl_btc = total_sold_btc - (total_quantity_sold / total_quantity_bought * total_bought_btc)
+            unrealized_pnl_btc = holding_btc - (holding_quantity / total_quantity_bought * total_bought_btc)
+            pnl_btc = realized_pnl_btc + unrealized_pnl_btc
 
-    def get_dynamic_output_path(image_path, guild_id):
-        base_name = os.path.splitext(os.path.basename(image_path))[0]  # Get the base file name without extension
-        extension = os.path.splitext(image_path)[1]  # Get the file extension
-        output_dir = "./output_images"  # Directory for storing output images
-        os.makedirs(output_dir, exist_ok=True)  # Ensure the directory exists
-        return os.path.join(output_dir, f"{base_name}_overlay_{guild_id}{extension}")
+        pnl_usd = pnl_btc * get_btc_price_usd()
+        pnl_percentage = (pnl_btc / total_bought_btc) * 100
 
-    output_path = get_dynamic_output_path(image_path, guild_id)
-    await overlay_with_user_info(
-        image_path,
-        output_path,
-        texts_with_coordinates,
-        font_path,
-        username=str(ctx.author.name),
-        avatar_url=ctx.author.avatar.url,
-        avatar_coordinates=tuple(avatar_coordinates),
-        username_coordinates=tuple(username_coordinates),
-        avatar_size=tuple(avatar_size),  # Pass avatar size here
-    )
+        # Overlay text preparation
+        text_keys = ["asset_name", "total_bought", "total_sold", "holdings", "pnl"]
+        text_values = [
+            f"{spaced_rune}" if asset_type == "rune" else asset_slug,
+            f"{total_bought_btc:.4f} (${total_bought_btc * get_btc_price_usd():.2f})",
+            f"{total_sold_btc:.4f} (${total_sold_btc * get_btc_price_usd():.2f})",
+            f"{holding_btc:.4f} (${holding_usd:.2f})",
+            f"{pnl_btc:.4f} (${pnl_usd:.2f}) ({pnl_percentage:.2f}%)",
+        ]
 
+        texts_with_coordinates = []
+        for i, text_key in enumerate(text_keys):
+            if i < len(text_coordinates):
+                coordinate = text_coordinates[i]
+                texts_with_coordinates.append({
+                    "text": text_values[i],
+                    "coordinates": tuple(coordinate["coordinates"]),
+                    "color": tuple(coordinate["color"]),
+                    "font_size": coordinate["font_size"],
+                })
 
-    if os.path.exists(output_path):
-        with open(output_path, "rb") as file:
-            await ctx.respond(file=discord.File(file, os.path.basename(output_path)))
-        try:
+        output_path = f"./output/profit_overlay_{guild_id}.jpg"
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
+        await overlay_with_user_info(
+            image_path,
+            output_path,
+            texts_with_coordinates,
+            font_path,
+            username=str(ctx.author.name),
+            avatar_url=ctx.author.avatar.url,
+            avatar_coordinates=tuple(avatar_coordinates),
+            username_coordinates=tuple(username_coordinates),
+            avatar_size=tuple(avatar_size),
+        )
+
+        if os.path.exists(output_path):
+            with open(output_path, "rb") as file:
+                await ctx.respond(file=discord.File(file, os.path.basename(output_path)))
             os.remove(output_path)
-        except Exception as e:
-            print(f"Failed to delete the image: {e}")
-    else:
-        await ctx.respond("Failed to generate the overlay image.")
-
+        else:
+            await ctx.respond("Failed to generate the overlay image.")
 
 """
 USER WALLET LOGIC FOR PnL - END
@@ -1582,7 +1578,7 @@ def load_runes_data():
 def save_data():
     # Only save guilds that have at least one tracking channel configured
     data_to_save = {guild_id: channels for guild_id, channels in data.items() if channels}
-    with open("./data./data.json", "w") as f:
+    with open("./data/data.json", "w") as f:
         json.dump(data_to_save, f, indent=4)
 
 def get_last_sent_percentage(guild_id, rune_id):
