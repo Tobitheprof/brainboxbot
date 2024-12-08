@@ -5,6 +5,7 @@ rune_endpoints = {
     "1w_chart": lambda rune_name: f"https://stats-mainnet.magiceden.io/collection_stats/getCollectionTimeSeriesV2/{rune_name}?edge_cache=true&resolution=30m&numOfDays=7&chain=bitcoin&protocol=rune",
     "1d_chart": lambda rune_name: f"https://stats-mainnet.magiceden.io/collection_stats/getCollectionTimeSeriesV2/{rune_name}?edge_cache=true&resolution=10m&numOfDays=1&chain=bitcoin&protocol=rune",
     "all_time": lambda rune_name: f"https://stats-mainnet.magiceden.io/collection_stats/getCollectionTimeSeriesV2/{rune_name}?edge_cache=true&resolution=1d&numOfDays=360&chain=bitcoin&protocol=rune",
+    "search" : lambda rune_name: f"https://api-mainnet.magiceden.io/v2/ord/btc/runes/collection_stats/search?chain=bitcoin&protocol=rune&limit=50&offset=0&sort=volume&direction=desc&window=1d&searchTerm=None&allCollections=true"
 }
 
 # All Endpoints for Ord Specific Operations

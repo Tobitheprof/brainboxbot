@@ -31,6 +31,7 @@ propcache==0.2.0
 py-cord==2.6.1
 pycord==0.1.1
 pyparsing==3.2.0
+pytesseract==0.3.13
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 requests==2.32.2

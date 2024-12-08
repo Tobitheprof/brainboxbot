@@ -1,8 +1,11 @@
 html.html
 env
+venv
 __pycache__
 .env
 wallet_tracking_data.json
 data.json
 data
 tweeterpy.log
+bot.log
+addresses_with_tags.txt

@@ -1,0 +1,31 @@
+{
+    "default": {
+        "image_path": "./images/brainbox.jpg",
+        "font_path": "./fonts/LoveYaLikeASister.ttf",
+        "text_coordinates": [
+            { "text_key": "asset_name", "coordinates": [750, 1000], "color": [253, 215, 67], "font_size": 50 },
+            { "text_key": "total_bought", "coordinates": [1000, 1170], "color": [255, 255, 255], "font_size": 50 },
+            { "text_key": "total_sold", "coordinates": [1000, 1303], "color": [255, 255, 255], "font_size": 50 },
+            { "text_key": "holdings", "coordinates": [1000, 1420], "color": [255, 255, 255], "font_size": 50 },
+            { "text_key": "pnl", "coordinates": [820, 1690], "color": [255, 255, 255], "font_size": 35 }
+        ],
+        "avatar_coordinates": [1200, 1870],
+        "avatar_size": [100, 100],
+        "username_coordinates": [1300, 1880]
+    },
+    
+    "131236896495711440": {
+        "image_path": "./images/bro.png",
+        "font_path": "./fonts/micra.ttf",
+        "text_coordinates": [
+            { "text_key": "asset_name", "coordinates": [152, 230], "color": [0, 0, 0], "font_size": 30 },
+            { "text_key": "total_bought", "coordinates": [320, 270], "color": [0, 0, 0], "font_size": 30 },
+            { "text_key": "total_sold", "coordinates": [320, 310], "color": [255, 0, 0], "font_size": 30 },
+            { "text_key": "holdings", "coordinates": [480, 355], "color": [0, 0, 0], "font_size": 30 },
+            { "text_key": "pnl", "coordinates": [200, 450], "color": [255, 0, 0], "font_size": 25 }
+        ],
+        "avatar_coordinates": [30, 490],
+        "avatar_size": [50, 50],
+        "username_coordinates": [90, 490]
+    }
+}
