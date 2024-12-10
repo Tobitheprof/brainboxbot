@@ -1411,7 +1411,7 @@ async def profit(
         str, "Enter the asset slug (rune name or ordinal collection symbol)"
     ),  # type: ignore
 ):  # type: ignore
-    await ctx.defer(ephemeral=True)
+    await ctx.defer()
 
     headers = {
         "User-Agent": ua.random,
@@ -1555,7 +1555,7 @@ async def profit(
 
         if os.path.exists(output_path):
             with open(output_path, "rb") as file:
-                await ctx.respond(file=discord.File(file, os.path.basename(output_path)), ephemeral=True)
+                await ctx.respond(file=discord.File(file, os.path.basename(output_path)))
             os.remove(output_path)
         else:
             await ctx.respond("Failed to generate the overlay image.")
