@@ -1972,3 +1972,332 @@ aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discor
 2024-12-08 17:45:07,014 - INFO - Cleaning up after 2 tasks.
 2024-12-08 17:45:07,020 - INFO - All tasks finished cancelling.
 2024-12-08 17:45:07,033 - INFO - Closing the event loop.
+2024-12-10 10:29:20,837 - INFO - logging in using static token
+2024-12-10 10:29:22,995 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-12-10 10:29:23,457 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-d-rncz",{"micros":196204,"calls":["id_created",{"micros":821,"calls":[]},"session_lookup_time",{"micros":5839,"calls":[]},"session_lookup_finished",{"micros":14,"calls":[]},"discord-sessions-prd-1-222",{"micros":188394,"calls":["start_session",{"micros":161640,"calls":["discord-api-rpc-58464c99c8-2n2cw",{"micros":158186,"calls":["get_user",{"micros":27609},"get_guilds",{"micros":30694},"send_scheduled_deletion_message",{"micros":6},"guild_join_requests",{"micros":311},"authorized_ip_coro",{"micros":5}]}]},"starting_guild_connect",{"micros":35,"calls":[]},"presence_started",{"micros":6646,"calls":[]},"guilds_started",{"micros":133,"calls":[]},"guilds_connect",{"micros":3,"calls":[]},"presence_connect",{"micros":19913,"calls":[]},"connect_finished",{"micros":19919,"calls":[]},"build_ready",{"micros":18,"calls":[]},"clean_ready",{"micros":1,"calls":[]},"optimize_ready",{"micros":0,"calls":[]},"split_ready",{"micros":1,"calls":[]}]}]}] (Session ID: d35493f37334d1a2a56dc7206e8f2a20).
+2024-12-10 10:29:25,479 - INFO - Bot logged in as virgin-test#7280
+2024-12-10 10:29:25,492 - INFO - Tracking Wallet Data Loaded Successfully
+2024-12-10 10:29:25,493 - INFO - Wallet Tracking Task Started Successfully
+2024-12-10 10:29:25,493 - INFO - Runes Mint Tracking Task Started Successfully
+2024-12-10 10:29:25,493 - INFO - Bot is fully operational.
+2024-12-10 10:33:49,357 - INFO - Received signal to terminate bot and event loop.
+2024-12-10 10:33:49,358 - INFO - Cleaning up tasks.
+2024-12-10 10:33:49,364 - INFO - Cleaning up after 2 tasks.
+2024-12-10 10:33:49,368 - INFO - All tasks finished cancelling.
+2024-12-10 10:33:49,369 - INFO - Closing the event loop.
+2024-12-10 10:33:56,207 - INFO - logging in using static token
+2024-12-10 10:33:59,198 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-12-10 10:33:59,618 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-b-ckgk",{"micros":138383,"calls":["id_created",{"micros":601,"calls":[]},"session_lookup_time",{"micros":306,"calls":[]},"session_lookup_finished",{"micros":13,"calls":[]},"discord-sessions-prd-1-94",{"micros":137268,"calls":["start_session",{"micros":118773,"calls":["discord-api-rpc-58464c99c8-slpmt",{"micros":111018,"calls":["get_user",{"micros":11352},"get_guilds",{"micros":37755},"send_scheduled_deletion_message",{"micros":9},"guild_join_requests",{"micros":1},"authorized_ip_coro",{"micros":7}]}]},"starting_guild_connect",{"micros":49,"calls":[]},"presence_started",{"micros":11079,"calls":[]},"guilds_started",{"micros":142,"calls":[]},"guilds_connect",{"micros":2,"calls":[]},"presence_connect",{"micros":7197,"calls":[]},"connect_finished",{"micros":7203,"calls":[]},"build_ready",{"micros":19,"calls":[]},"clean_ready",{"micros":1,"calls":[]},"optimize_ready",{"micros":0,"calls":[]},"split_ready",{"micros":1,"calls":[]}]}]}] (Session ID: 305c6c4829ded91ed06f7d2ed6f8d6e3).
+2024-12-10 10:34:01,633 - INFO - Bot logged in as virgin-test#7280
+2024-12-10 10:34:01,634 - INFO - Tracking Wallet Data Loaded Successfully
+2024-12-10 10:34:01,635 - INFO - Wallet Tracking Task Started Successfully
+2024-12-10 10:34:01,635 - INFO - Runes Mint Tracking Task Started Successfully
+2024-12-10 10:34:01,636 - INFO - Bot is fully operational.
+2024-12-10 10:45:05,413 - INFO - Received signal to terminate bot and event loop.
+2024-12-10 10:45:05,413 - INFO - Cleaning up tasks.
+2024-12-10 10:45:05,415 - INFO - Cleaning up after 2 tasks.
+2024-12-10 10:45:05,417 - INFO - All tasks finished cancelling.
+2024-12-10 10:45:05,417 - INFO - Closing the event loop.
+2024-12-10 10:45:11,575 - INFO - logging in using static token
+2024-12-10 10:45:13,558 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-12-10 10:45:13,949 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-c-pm3h",{"micros":115325,"calls":["id_created",{"micros":624,"calls":[]},"session_lookup_time",{"micros":3336,"calls":[]},"session_lookup_finished",{"micros":20,"calls":[]},"discord-sessions-prd-1-170",{"micros":110275,"calls":["start_session",{"micros":35578,"calls":["discord-api-rpc-58464c99c8-slpmt",{"micros":31712,"calls":["get_user",{"micros":4932},"get_guilds",{"micros":2964},"send_scheduled_deletion_message",{"micros":5},"guild_join_requests",{"micros":0},"authorized_ip_coro",{"micros":8}]}]},"starting_guild_connect",{"micros":33,"calls":[]},"presence_started",{"micros":17295,"calls":[]},"guilds_started",{"micros":132,"calls":[]},"guilds_connect",{"micros":1,"calls":[]},"presence_connect",{"micros":57211,"calls":[]},"connect_finished",{"micros":57217,"calls":[]},"build_ready",{"micros":17,"calls":[]},"clean_ready",{"micros":1,"calls":[]},"optimize_ready",{"micros":0,"calls":[]},"split_ready",{"micros":1,"calls":[]}]}]}] (Session ID: 3e3c3e7cdc5d5e34ebcb80270ac5db85).
+2024-12-10 10:45:15,971 - INFO - Bot logged in as virgin-test#7280
+2024-12-10 10:45:15,977 - INFO - Tracking Wallet Data Loaded Successfully
+2024-12-10 10:45:15,978 - INFO - Wallet Tracking Task Started Successfully
+2024-12-10 10:45:15,981 - INFO - Runes Mint Tracking Task Started Successfully
+2024-12-10 10:45:15,988 - INFO - Bot is fully operational.
+2024-12-10 10:45:44,493 - INFO - Received signal to terminate bot and event loop.
+2024-12-10 10:45:44,493 - INFO - Cleaning up tasks.
+2024-12-10 10:45:44,496 - INFO - Cleaning up after 2 tasks.
+2024-12-10 10:45:44,499 - INFO - All tasks finished cancelling.
+2024-12-10 10:45:44,500 - INFO - Closing the event loop.
+2024-12-10 10:45:51,262 - INFO - logging in using static token
+2024-12-10 10:45:52,945 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-12-10 10:45:53,306 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-b-2ncq",{"micros":98881,"calls":["id_created",{"micros":643,"calls":[]},"session_lookup_time",{"micros":14390,"calls":[]},"session_lookup_finished",{"micros":13,"calls":[]},"discord-sessions-prd-1-64",{"micros":83548,"calls":["start_session",{"micros":37015,"calls":["discord-api-rpc-58464c99c8-xlc7j",{"micros":33655,"calls":["get_user",{"micros":4718},"get_guilds",{"micros":2963},"send_scheduled_deletion_message",{"micros":6},"guild_join_requests",{"micros":0},"authorized_ip_coro",{"micros":7}]}]},"starting_guild_connect",{"micros":38,"calls":[]},"presence_started",{"micros":2461,"calls":[]},"guilds_started",{"micros":116,"calls":[]},"guilds_connect",{"micros":1,"calls":[]},"presence_connect",{"micros":43894,"calls":[]},"connect_finished",{"micros":43900,"calls":[]},"build_ready",{"micros":16,"calls":[]},"clean_ready",{"micros":0,"calls":[]},"optimize_ready",{"micros":1,"calls":[]},"split_ready",{"micros":0,"calls":[]}]}]}] (Session ID: ebc02cb085f55927d0757dda7424c298).
+2024-12-10 10:45:55,375 - INFO - Bot logged in as virgin-test#7280
+2024-12-10 10:45:55,386 - INFO - Tracking Wallet Data Loaded Successfully
+2024-12-10 10:45:55,386 - INFO - Wallet Tracking Task Started Successfully
+2024-12-10 10:45:55,386 - INFO - Runes Mint Tracking Task Started Successfully
+2024-12-10 10:45:55,390 - INFO - Bot is fully operational.
+2024-12-10 11:00:56,164 - INFO - Received signal to terminate bot and event loop.
+2024-12-10 11:00:56,165 - INFO - Cleaning up tasks.
+2024-12-10 11:00:56,166 - INFO - Cleaning up after 2 tasks.
+2024-12-10 11:00:56,169 - INFO - All tasks finished cancelling.
+2024-12-10 11:00:56,175 - INFO - Closing the event loop.
+2024-12-10 11:01:03,415 - INFO - logging in using static token
+2024-12-10 11:01:05,425 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-12-10 11:01:05,784 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-d-wq2w",{"micros":111844,"calls":["id_created",{"micros":682,"calls":[]},"session_lookup_time",{"micros":307,"calls":[]},"session_lookup_finished",{"micros":12,"calls":[]},"discord-sessions-prd-1-21",{"micros":110611,"calls":["start_session",{"micros":47825,"calls":["discord-api-continuous-canary-rpc-7fd8cc54bd-whd7s",{"micros":42386,"calls":["get_user",{"micros":5942},"get_guilds",{"micros":3818},"send_scheduled_deletion_message",{"micros":8},"guild_join_requests",{"micros":1},"authorized_ip_coro",{"micros":7}]}]},"starting_guild_connect",{"micros":38,"calls":[]},"presence_started",{"micros":19670,"calls":[]},"guilds_started",{"micros":124,"calls":[]},"guilds_connect",{"micros":1,"calls":[]},"presence_connect",{"micros":42924,"calls":[]},"connect_finished",{"micros":42930,"calls":[]},"build_ready",{"micros":20,"calls":[]},"clean_ready",{"micros":1,"calls":[]},"optimize_ready",{"micros":1,"calls":[]},"split_ready",{"micros":0,"calls":[]}]}]}] (Session ID: f2faec83a080187294fb21b5f8ed914d).
+2024-12-10 11:01:07,836 - INFO - Bot logged in as virgin-test#7280
+2024-12-10 11:01:07,854 - INFO - Tracking Wallet Data Loaded Successfully
+2024-12-10 11:01:07,854 - INFO - Wallet Tracking Task Started Successfully
+2024-12-10 11:01:07,855 - INFO - Runes Mint Tracking Task Started Successfully
+2024-12-10 11:01:07,855 - INFO - Bot is fully operational.
+2024-12-10 11:01:52,534 - INFO - Received signal to terminate bot and event loop.
+2024-12-10 11:01:52,535 - INFO - Cleaning up tasks.
+2024-12-10 11:01:52,536 - INFO - Cleaning up after 2 tasks.
+2024-12-10 11:01:52,540 - INFO - All tasks finished cancelling.
+2024-12-10 11:01:52,543 - INFO - Closing the event loop.
+2024-12-10 11:02:00,885 - INFO - logging in using static token
+2024-12-10 11:02:02,846 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-12-10 11:02:03,326 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-d-g3ct",{"micros":196593,"calls":["id_created",{"micros":462,"calls":[]},"session_lookup_time",{"micros":3718,"calls":[]},"session_lookup_finished",{"micros":13,"calls":[]},"discord-sessions-prd-1-39",{"micros":192151,"calls":["start_session",{"micros":160499,"calls":["discord-api-rpc-58464c99c8-g88wq",{"micros":135528,"calls":["get_user",{"micros":33967},"get_guilds",{"micros":6168},"send_scheduled_deletion_message",{"micros":7},"guild_join_requests",{"micros":1},"authorized_ip_coro",{"micros":10}]}]},"starting_guild_connect",{"micros":35,"calls":[]},"presence_started",{"micros":10679,"calls":[]},"guilds_started",{"micros":156,"calls":[]},"guilds_connect",{"micros":2,"calls":[]},"presence_connect",{"micros":20756,"calls":[]},"connect_finished",{"micros":20761,"calls":[]},"build_ready",{"micros":15,"calls":[]},"clean_ready",{"micros":1,"calls":[]},"optimize_ready",{"micros":4,"calls":[]},"split_ready",{"micros":1,"calls":[]}]}]}] (Session ID: fca216380bee9ed202d9b57914cfab5e).
+2024-12-10 11:02:05,367 - INFO - Bot logged in as virgin-test#7280
+2024-12-10 11:02:05,375 - INFO - Tracking Wallet Data Loaded Successfully
+2024-12-10 11:02:05,375 - INFO - Wallet Tracking Task Started Successfully
+2024-12-10 11:02:05,375 - INFO - Runes Mint Tracking Task Started Successfully
+2024-12-10 11:02:05,380 - INFO - Bot is fully operational.
+2024-12-10 11:05:43,861 - INFO - Received signal to terminate bot and event loop.
+2024-12-10 11:05:43,861 - INFO - Cleaning up tasks.
+2024-12-10 11:05:43,865 - INFO - Cleaning up after 2 tasks.
+2024-12-10 11:05:43,870 - INFO - All tasks finished cancelling.
+2024-12-10 11:05:43,871 - INFO - Closing the event loop.
+2024-12-10 11:05:48,831 - INFO - logging in using static token
+2024-12-10 11:05:50,847 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-12-10 11:05:51,204 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-c-38gt",{"micros":101754,"calls":["id_created",{"micros":742,"calls":[]},"session_lookup_time",{"micros":3536,"calls":[]},"session_lookup_finished",{"micros":21,"calls":[]},"discord-sessions-prd-1-17",{"micros":97127,"calls":["start_session",{"micros":47357,"calls":["discord-api-rpc-58464c99c8-ndbvh",{"micros":42783,"calls":["get_user",{"micros":4763},"get_guilds",{"micros":6124},"send_scheduled_deletion_message",{"micros":8},"guild_join_requests",{"micros":1},"authorized_ip_coro",{"micros":8}]}]},"starting_guild_connect",{"micros":39,"calls":[]},"presence_started",{"micros":27365,"calls":[]},"guilds_started",{"micros":115,"calls":[]},"guilds_connect",{"micros":2,"calls":[]},"presence_connect",{"micros":22223,"calls":[]},"connect_finished",{"micros":22230,"calls":[]},"build_ready",{"micros":19,"calls":[]},"clean_ready",{"micros":0,"calls":[]},"optimize_ready",{"micros":0,"calls":[]},"split_ready",{"micros":1,"calls":[]}]}]}] (Session ID: 6fcc2fea99eb9896edd031b7181c3f6b).
+2024-12-10 11:05:53,304 - INFO - Bot logged in as virgin-test#7280
+2024-12-10 11:05:53,307 - INFO - Tracking Wallet Data Loaded Successfully
+2024-12-10 11:05:53,308 - INFO - Wallet Tracking Task Started Successfully
+2024-12-10 11:05:53,308 - INFO - Runes Mint Tracking Task Started Successfully
+2024-12-10 11:05:53,309 - INFO - Bot is fully operational.
+2024-12-10 11:06:01,977 - INFO - Received signal to terminate bot and event loop.
+2024-12-10 11:06:01,977 - INFO - Cleaning up tasks.
+2024-12-10 11:06:01,981 - INFO - Cleaning up after 2 tasks.
+2024-12-10 11:06:01,983 - INFO - All tasks finished cancelling.
+2024-12-10 11:06:01,985 - INFO - Closing the event loop.
+2024-12-10 11:06:05,774 - INFO - logging in using static token
+2024-12-10 11:06:08,169 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-12-10 11:06:08,541 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-d-hc5r",{"micros":132773,"calls":["id_created",{"micros":995,"calls":[]},"session_lookup_time",{"micros":591,"calls":[]},"session_lookup_finished",{"micros":19,"calls":[]},"discord-sessions-prd-1-75",{"micros":129918,"calls":["start_session",{"micros":43818,"calls":["discord-api-rpc-58464c99c8-6d9ff",{"micros":39776,"calls":["get_user",{"micros":5528},"get_guilds",{"micros":2965},"send_scheduled_deletion_message",{"micros":8},"guild_join_requests",{"micros":5303},"authorized_ip_coro",{"micros":10}]}]},"starting_guild_connect",{"micros":39,"calls":[]},"presence_started",{"micros":33320,"calls":[]},"guilds_started",{"micros":105,"calls":[]},"guilds_connect",{"micros":1,"calls":[]},"presence_connect",{"micros":52611,"calls":[]},"connect_finished",{"micros":52616,"calls":[]},"build_ready",{"micros":17,"calls":[]},"clean_ready",{"micros":0,"calls":[]},"optimize_ready",{"micros":1,"calls":[]},"split_ready",{"micros":0,"calls":[]}]}]}] (Session ID: 2845231958afc2fd434d268534576872).
+2024-12-10 11:06:10,575 - INFO - Bot logged in as virgin-test#7280
+2024-12-10 11:06:10,579 - INFO - Tracking Wallet Data Loaded Successfully
+2024-12-10 11:06:10,580 - INFO - Wallet Tracking Task Started Successfully
+2024-12-10 11:06:10,580 - INFO - Runes Mint Tracking Task Started Successfully
+2024-12-10 11:06:10,581 - INFO - Bot is fully operational.
+2024-12-10 11:22:59,879 - INFO - Timed out receiving packet. Attempting a reconnect.
+2024-12-10 11:23:00,011 - INFO - Got a request to RESUME the websocket.
+2024-12-10 11:23:02,082 - INFO - Shard ID None has sent the RESUME payload.
+2024-12-10 11:23:02,367 - INFO - Shard ID None session has been invalidated.
+2024-12-10 11:23:02,630 - INFO - Got a request to IDENTIFY the websocket.
+2024-12-10 11:23:08,511 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-12-10 11:23:09,114 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-b-k9kt",{"micros":135468,"calls":["id_created",{"micros":611,"calls":[]},"session_lookup_time",{"micros":323,"calls":[]},"session_lookup_finished",{"micros":14,"calls":[]},"discord-sessions-prd-1-88",{"micros":134156,"calls":["start_session",{"micros":58758,"calls":["discord-api-rpc-58464c99c8-smnk4",{"micros":54989,"calls":["get_user",{"micros":6991},"get_guilds",{"micros":4671},"send_scheduled_deletion_message",{"micros":7},"guild_join_requests",{"micros":1},"authorized_ip_coro",{"micros":6}]}]},"starting_guild_connect",{"micros":43,"calls":[]},"presence_started",{"micros":29110,"calls":[]},"guilds_started",{"micros":159,"calls":[]},"guilds_connect",{"micros":2,"calls":[]},"presence_connect",{"micros":46059,"calls":[]},"connect_finished",{"micros":46065,"calls":[]},"build_ready",{"micros":19,"calls":[]},"clean_ready",{"micros":0,"calls":[]},"optimize_ready",{"micros":1,"calls":[]},"split_ready",{"micros":0,"calls":[]}]}]}] (Session ID: a5b516bb11099a57f7f94eaed6f70903).
+2024-12-10 11:23:11,132 - INFO - Bot logged in as virgin-test#7280
+2024-12-10 11:23:11,135 - INFO - Tracking Wallet Data Loaded Successfully
+2024-12-10 11:23:11,142 - ERROR - Error starting wallet tracking task: Task is already launched and is not completed.
+2024-12-10 11:23:11,145 - INFO - Runes Mint Tracking Task Started Successfully
+2024-12-10 11:23:11,145 - INFO - Bot is fully operational.
+2024-12-10 12:20:59,981 - INFO - Timed out receiving packet. Attempting a reconnect.
+2024-12-10 12:20:59,981 - INFO - Got a request to RESUME the websocket.
+2024-12-10 12:20:59,991 - ERROR - Attempting a reconnect in 1.22s
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1317, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 971, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1002, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\resolver.py", line 38, in resolve
+    infos = await self._loop.getaddrinfo(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 860, in getaddrinfo
+    return await self.run_in_executor(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\client.py", line 614, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py", line 445, in wait_for
+    return fut.result()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\gateway.py", line 338, in from_client
+    gateway = gateway or await client.http.get_gateway()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 3071, in get_gateway
+    data = await self.request(Route("GET", "/gateway"))
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 286, in request
+    async with self.__session.request(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 1359, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 663, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 563, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1032, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1323, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+2024-12-10 12:21:01,442 - ERROR - Attempting a reconnect in 2.46s
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1317, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 971, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1002, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\resolver.py", line 38, in resolve
+    infos = await self._loop.getaddrinfo(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 860, in getaddrinfo
+    return await self.run_in_executor(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\client.py", line 614, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py", line 445, in wait_for
+    return fut.result()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\gateway.py", line 338, in from_client
+    gateway = gateway or await client.http.get_gateway()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 3071, in get_gateway
+    data = await self.request(Route("GET", "/gateway"))
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 286, in request
+    async with self.__session.request(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 1359, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 663, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 563, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1032, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1323, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+2024-12-10 12:21:03,909 - ERROR - Attempting a reconnect in 3.30s
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1317, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 971, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1002, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\resolver.py", line 38, in resolve
+    infos = await self._loop.getaddrinfo(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 860, in getaddrinfo
+    return await self.run_in_executor(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\client.py", line 614, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py", line 445, in wait_for
+    return fut.result()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\gateway.py", line 338, in from_client
+    gateway = gateway or await client.http.get_gateway()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 3071, in get_gateway
+    data = await self.request(Route("GET", "/gateway"))
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 286, in request
+    async with self.__session.request(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 1359, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 663, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 563, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1032, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1323, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+2024-12-10 12:21:07,231 - ERROR - Attempting a reconnect in 14.36s
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1317, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 971, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1002, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\resolver.py", line 38, in resolve
+    infos = await self._loop.getaddrinfo(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 860, in getaddrinfo
+    return await self.run_in_executor(
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\socket.py", line 955, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11004] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\client.py", line 614, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+  File "C:\Users\user\AppData\Local\Programs\Python\Python310\lib\asyncio\tasks.py", line 445, in wait_for
+    return fut.result()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\gateway.py", line 338, in from_client
+    gateway = gateway or await client.http.get_gateway()
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 3071, in get_gateway
+    data = await self.request(Route("GET", "/gateway"))
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\discord\http.py", line 286, in request
+    async with self.__session.request(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 1359, in __aenter__
+    self._resp: _RetType = await self._coro
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\client.py", line 663, in _request
+    conn = await self._connector.connect(
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 563, in connect
+    proto = await self._create_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1032, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+  File "C:\Users\user\Documents\freelance_projects\brainboxbot\venv\lib\site-packages\aiohttp\connector.py", line 1323, in _create_direct_connection
+    raise ClientConnectorDNSError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+2024-12-10 12:21:22,867 - INFO - Shard ID None has sent the RESUME payload.
+2024-12-10 12:21:23,149 - INFO - Shard ID None session has been invalidated.
+2024-12-10 12:21:23,457 - INFO - Got a request to IDENTIFY the websocket.
+2024-12-10 12:21:29,484 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-12-10 12:21:29,911 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-c-51q4",{"micros":159111,"calls":["id_created",{"micros":858,"calls":[]},"session_lookup_time",{"micros":1264,"calls":[]},"session_lookup_finished",{"micros":18,"calls":[]},"discord-sessions-prd-1-173",{"micros":155862,"calls":["start_session",{"micros":80815,"calls":["discord-api-rpc-58464c99c8-69wgm",{"micros":67357,"calls":["get_user",{"micros":9831},"get_guilds",{"micros":23439},"send_scheduled_deletion_message",{"micros":5},"guild_join_requests",{"micros":0},"authorized_ip_coro",{"micros":6}]}]},"starting_guild_connect",{"micros":37,"calls":[]},"presence_started",{"micros":41311,"calls":[]},"guilds_started",{"micros":125,"calls":[]},"guilds_connect",{"micros":2,"calls":[]},"presence_connect",{"micros":33536,"calls":[]},"connect_finished",{"micros":33543,"calls":[]},"build_ready",{"micros":28,"calls":[]},"clean_ready",{"micros":0,"calls":[]},"optimize_ready",{"micros":1,"calls":[]},"split_ready",{"micros":0,"calls":[]}]}]}] (Session ID: 4c208610cdc64c165a26dda627fd9caa).
+2024-12-10 12:21:31,947 - INFO - Bot logged in as virgin-test#7280
+2024-12-10 12:21:31,947 - INFO - Tracking Wallet Data Loaded Successfully
+2024-12-10 12:21:31,956 - ERROR - Error starting wallet tracking task: Task is already launched and is not completed.
+2024-12-10 12:21:31,959 - INFO - Runes Mint Tracking Task Started Successfully
+2024-12-10 12:21:31,962 - INFO - Bot is fully operational.
+2024-12-10 12:22:29,941 - INFO - Timed out receiving packet. Attempting a reconnect.
+2024-12-10 12:22:29,943 - INFO - Got a request to RESUME the websocket.
+2024-12-10 12:22:31,125 - INFO - Shard ID None has sent the RESUME payload.
+2024-12-10 12:22:31,442 - INFO - Shard ID None has successfully RESUMED session 4c208610cdc64c165a26dda627fd9caa under trace ["gateway-prd-us-east1-b-qxg8",{"micros":543,"calls":["id_created",{"micros":0,"calls":[]},"session_lookup_time",{"micros":248,"calls":[]},"session_lookup_finished",{"micros":15,"calls":[]},"discord-sessions-prd-1-173",{"micros":20}]}].
+2024-12-10 12:24:54,004 - INFO - Timed out receiving packet. Attempting a reconnect.
+2024-12-10 12:24:54,012 - INFO - Got a request to RESUME the websocket.
+2024-12-10 12:24:59,703 - INFO - Shard ID None has sent the RESUME payload.
+2024-12-10 12:25:00,627 - INFO - Shard ID None has successfully RESUMED session 4c208610cdc64c165a26dda627fd9caa under trace ["gateway-prd-us-east1-b-mptj",{"micros":522,"calls":["id_created",{"micros":0,"calls":[]},"session_lookup_time",{"micros":249,"calls":[]},"session_lookup_finished",{"micros":20,"calls":[]},"discord-sessions-prd-1-173",{"micros":21}]}].
+2024-12-10 12:26:00,651 - INFO - Timed out receiving packet. Attempting a reconnect.
+2024-12-10 12:26:00,652 - INFO - Got a request to RESUME the websocket.
+2024-12-10 12:26:01,985 - INFO - Shard ID None has sent the RESUME payload.
+2024-12-10 12:26:02,278 - INFO - Shard ID None has successfully RESUMED session 4c208610cdc64c165a26dda627fd9caa under trace ["gateway-prd-us-east1-c-80sl",{"micros":7811,"calls":["id_created",{"micros":0,"calls":[]},"session_lookup_time",{"micros":7616,"calls":[]},"session_lookup_finished",{"micros":19,"calls":[]},"discord-sessions-prd-1-173",{"micros":22}]}].
+2024-12-10 12:27:43,535 - INFO - Timed out receiving packet. Attempting a reconnect.
+2024-12-10 12:27:43,537 - INFO - Got a request to RESUME the websocket.
+2024-12-10 12:27:44,975 - INFO - Shard ID None has sent the RESUME payload.
+2024-12-10 12:27:45,382 - INFO - Shard ID None has successfully RESUMED session 4c208610cdc64c165a26dda627fd9caa under trace ["gateway-prd-us-east1-c-7k1t",{"micros":429,"calls":["id_created",{"micros":0,"calls":[]},"session_lookup_time",{"micros":183,"calls":[]},"session_lookup_finished",{"micros":11,"calls":[]},"discord-sessions-prd-1-173",{"micros":24}]}].
+2024-12-10 12:28:45,388 - INFO - Timed out receiving packet. Attempting a reconnect.
+2024-12-10 12:28:45,389 - INFO - Got a request to RESUME the websocket.
+2024-12-10 12:28:47,524 - INFO - Shard ID None has sent the RESUME payload.
+2024-12-10 12:28:48,298 - INFO - Shard ID None has successfully RESUMED session 4c208610cdc64c165a26dda627fd9caa under trace ["gateway-prd-us-east1-b-l220",{"micros":584,"calls":["id_created",{"micros":0,"calls":[]},"session_lookup_time",{"micros":264,"calls":[]},"session_lookup_finished",{"micros":13,"calls":[]},"discord-sessions-prd-1-173",{"micros":25}]}].
+2024-12-10 12:30:31,883 - INFO - Received signal to terminate bot and event loop.
+2024-12-10 12:30:31,885 - INFO - Cleaning up tasks.
+2024-12-10 12:30:31,894 - INFO - Cleaning up after 2 tasks.
+2024-12-10 12:30:31,897 - INFO - All tasks finished cancelling.
+2024-12-10 12:30:31,897 - INFO - Closing the event loop.
+2024-12-10 12:31:15,958 - INFO - logging in using static token
+2024-12-10 12:31:17,561 - INFO - Shard ID None has sent the IDENTIFY payload.
+2024-12-10 12:31:18,022 - INFO - Shard ID None has connected to Gateway: ["gateway-prd-us-east1-b-86pt",{"micros":112023,"calls":["id_created",{"micros":639,"calls":[]},"session_lookup_time",{"micros":307,"calls":[]},"session_lookup_finished",{"micros":12,"calls":[]},"discord-sessions-prd-1-115",{"micros":109657,"calls":["start_session",{"micros":36851,"calls":["discord-api-rpc-58464c99c8-smnk4",{"micros":32851,"calls":["get_user",{"micros":4800},"get_guilds",{"micros":3673},"send_scheduled_deletion_message",{"micros":7},"guild_join_requests",{"micros":554},"authorized_ip_coro",{"micros":7}]}]},"starting_guild_connect",{"micros":38,"calls":[]},"presence_started",{"micros":26769,"calls":[]},"guilds_started",{"micros":119,"calls":[]},"guilds_connect",{"micros":2,"calls":[]},"presence_connect",{"micros":45856,"calls":[]},"connect_finished",{"micros":45861,"calls":[]},"build_ready",{"micros":17,"calls":[]},"clean_ready",{"micros":0,"calls":[]},"optimize_ready",{"micros":1,"calls":[]},"split_ready",{"micros":0,"calls":[]}]}]}] (Session ID: d1bfc0c8ff7eb688f67467a04dc35f34).
+2024-12-10 12:31:20,036 - INFO - Bot logged in as virgin-test#7280
+2024-12-10 12:31:20,038 - INFO - Tracking Wallet Data Loaded Successfully
+2024-12-10 12:31:20,039 - INFO - Wallet Tracking Task Started Successfully
+2024-12-10 12:31:20,040 - INFO - Runes Mint Tracking Task Started Successfully
+2024-12-10 12:31:20,041 - INFO - Bot is fully operational.
+2024-12-10 12:39:25,549 - INFO - Received signal to terminate bot and event loop.
+2024-12-10 12:39:25,551 - INFO - Cleaning up tasks.
+2024-12-10 12:39:25,554 - INFO - Cleaning up after 2 tasks.
+2024-12-10 12:39:25,554 - INFO - All tasks finished cancelling.
+2024-12-10 12:39:25,554 - INFO - Closing the event loop.

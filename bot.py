@@ -1222,127 +1222,6 @@ Wallet Tracking Logic - End;
 """
 USER WALLET LOGIC FOR PnL - START
 """
-# TODO: FIx this 
-try:
-    with open(USER_WALLET_FILE, 'r') as f:
-        wallets = json.load(f)
-except FileNotFoundError:
-    wallets = {}
-
-
-@bot.command(name="adduserwallets", description="Add wallets",)
-async def adduserwallets(ctx: discord.ApplicationContext,
-                        wallet_name: Option(str, "Name of the wallet"),  # type: ignore
-                        wallet_address: Option(str, "Wallet address")):  # type: ignore
-
-    await ctx.defer(ephemeral=True)  # Defer the response to show "thinking" indicator
-
-    guild_id = str(ctx.guild.id)  # Use ctx.channel.id if you want it to be channel-specific
-    if guild_id not in wallets:
-        wallets[guild_id] = []
-
-    for existing_wallet in wallets[guild_id]:
-        if existing_wallet["name"] == wallet_name or existing_wallet["address"] == wallet_address:
-            embed = discord.Embed(title="Error ❌", description="A wallet with this name or address already exists.", color=discord.Color.red())
-            await ctx.respond(embed=embed, ephemeral=True)  # Respond with error and make it private
-            return
-
-    wallets[guild_id].append({"name": wallet_name, "address": wallet_address})
-
-    with open(USER_WALLET_FILE, 'w') as f:
-        json.dump(wallets, f, indent=4)
-
-    embed = discord.Embed(title="Wallet Added ✅", description=f"Wallet '{wallet_name}' with address '{wallet_address}' added successfully!", color=discord.Color.green())
-    await ctx.respond(embed=embed, ephemeral=True)  # Final response to end the "thinking" indicator
-
-@bot.command(name="managewallets", description="Delete a wallet")
-async def managewallets(
-    ctx: discord.ApplicationContext,
-    wallet_address: Option(str, "Address of the wallet to delete"), # type: ignore
-):
-    guild_id = str(ctx.guild.id)
-
-    if guild_id not in wallets or not wallets[guild_id]:
-        embed = discord.Embed(
-            title="Error", description="No wallets found.", color=discord.Color.red()
-        )
-        await ctx.respond(embed=embed)
-        return
-
-    wallet_to_delete = None
-    for wallet in wallets[guild_id]:
-        if wallet["address"] == wallet_address:
-            wallet_to_delete = wallet
-            break
-
-    if wallet_to_delete is None:
-        embed = discord.Embed(
-            title="Error",
-            description="Wallet with the provided address not found.",
-            color=discord.Color.red(),
-        )
-        await ctx.respond(embed=embed)
-        return
-
-    # Check if the user is the one who added the wallet or if they are an admin
-
-    wallets[guild_id].remove(wallet_to_delete)
-
-    with open(USER_WALLET_FILE, "w") as f:
-        json.dump(wallets, f, indent=4)
-
-    embed = discord.Embed(
-        title="Wallet Deleted 🚮",
-        description=f"Wallet with address '{wallet_address}' deleted successfully!\n",
-        color=discord.Color.green(),
-    )
-    await ctx.respond(embed=embed)
-
-@bot.command(name="viewwallets", description="View all the wallets")
-async def viewwallets(
-    ctx: discord.ApplicationContext,
-    search: Option(str, "Search for a wallet by name", required=False, default=""), # type: ignore
-):
-    await ctx.defer()
-
-    guild_id = str(ctx.guild.id)
-
-    if guild_id not in wallets or not wallets[guild_id]:
-        embed = discord.Embed(
-            title="Wallets", description="No wallets found.", color=discord.Color.blue()
-        )
-        await ctx.respond(embed=embed, ephemeral=True)
-        return
-
-    filtered_wallets = wallets[guild_id]
-    if search:
-        filtered_wallets = [
-            wallet
-            for wallet in wallets[guild_id]
-            if search.lower() in wallet["name"].lower()
-        ]
-
-    if not filtered_wallets:
-        embed = discord.Embed(
-            title="Wallets",
-            description="No wallets found matching your search criteria.",
-            color=discord.Color.blue(),
-        )
-        await ctx.respond(embed=embed, ephemeral=True)
-        return
-
-    wallet_list = "\n".join(
-        [f"{wallet['name']} ({wallet['address']})" for wallet in filtered_wallets]
-    )
-    embed = discord.Embed(
-        title="Wallets",
-        description=f"**Wallets:**\n{wallet_list}",
-        color=discord.Color.blue(),
-    )
-    await ctx.respond(embed=embed, ephemeral=True)
-
-
-
 # Function to create a circular avatar
 async def create_circular_avatar(avatar_url):
     async with aiohttp.ClientSession() as session:
@@ -1358,7 +1237,6 @@ async def create_circular_avatar(avatar_url):
             circular_avatar = Image.new("RGBA", avatar_img.size)
             circular_avatar.paste(avatar_img, (0, 0), mask)
             return circular_avatar
-
 
 async def overlay_with_user_info(
     image_path,
@@ -1400,6 +1278,127 @@ async def overlay_with_user_info(
     except Exception as e:
         print(f"Error: {e}")
 
+try:
+    with open(USER_WALLET_FILE, 'r') as f:
+        wallets = json.load(f)
+except FileNotFoundError:
+    wallets = {}
+
+@bot.command(name="adduserwallets", description="Add wallets")
+async def adduserwallets(ctx: discord.ApplicationContext,
+                         wallet_name: Option(str, "Name of the wallet"), #type: ignore
+                         wallet_address: Option(str, "Wallet address")): #type: ignore
+    await ctx.defer(ephemeral=True)
+
+    guild_id = str(ctx.guild.id) 
+    user_id = str(ctx.author.id) 
+
+    if guild_id not in wallets:
+        wallets[guild_id] = {}
+
+    if user_id not in wallets[guild_id]:
+        wallets[guild_id][user_id] = []
+
+    for existing_wallet in wallets[guild_id][user_id]:
+        if existing_wallet["name"] == wallet_name or existing_wallet["address"] == wallet_address:
+            embed = discord.Embed(title="Error ❌", description="A wallet with this name or address already exists.", color=discord.Color.red())
+            await ctx.respond(embed=embed, ephemeral=True)
+            return
+
+    wallets[guild_id][user_id].append({"name": wallet_name, "address": wallet_address})
+
+    with open(USER_WALLET_FILE, 'w') as f:
+        json.dump(wallets, f, indent=4)
+
+    embed = discord.Embed(
+        title="Wallet Added ✅",
+        description=f"Wallet **'{wallet_name}'** with address **'{wallet_address}'** added successfully!",
+        color=discord.Color.green()
+    )
+    embed.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
+    await ctx.respond(embed=embed, ephemeral=True)
+
+@bot.command(name="managewallets", description="Delete a wallet")
+async def managewallets(ctx: discord.ApplicationContext,
+                        wallet_address: Option(str, "Address of the wallet to delete")): #type: ignore
+    guild_id = str(ctx.guild.id)
+    user_id = str(ctx.author.id)
+
+    if guild_id not in wallets or user_id not in wallets[guild_id] or not wallets[guild_id][user_id]:
+        embed = discord.Embed(title="Error", description="No wallets found.", color=discord.Color.red())
+        await ctx.respond(embed=embed, ephemeral=True)
+        return
+
+    wallet_to_delete = next((wallet for wallet in wallets[guild_id][user_id] if wallet["address"] == wallet_address), None)
+
+    if wallet_to_delete is None:
+        embed = discord.Embed(title="Error", description="Wallet with the provided address not found.", color=discord.Color.red())
+        await ctx.respond(embed=embed, ephemeral=True)
+        return
+
+    wallets[guild_id][user_id].remove(wallet_to_delete)
+
+    with open(USER_WALLET_FILE, "w") as f:
+        json.dump(wallets, f, indent=4)
+
+    embed = discord.Embed(title="Wallet Deleted 🚮", description=f"Wallet with address '{wallet_address}' deleted successfully!", color=discord.Color.green())
+    embed.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
+    await ctx.respond(embed=embed, ephemeral=True)
+
+@bot.command(name="viewwallets", description="View all the wallets")
+async def viewwallets(
+    ctx: discord.ApplicationContext,
+    search: Option(str, "Search for a wallet by name", required=False, default="") #type:ignore
+):
+    await ctx.defer(ephemeral=True)
+
+    guild_id = str(ctx.guild.id)
+    user_id = str(ctx.author.id)
+
+    # Check if the user has wallets
+    if guild_id not in wallets or user_id not in wallets[guild_id] or not wallets[guild_id][user_id]:
+        embed = discord.Embed(
+            title="No Wallets Found",
+            description="You haven't added any wallets yet.",
+            color=discord.Color.blue()
+        )
+        await ctx.respond(embed=embed, ephemeral=True)
+        return
+
+    # Filter wallets by the search term if provided
+    filtered_wallets = wallets[guild_id][user_id]
+    if search:
+        filtered_wallets = [
+            wallet for wallet in filtered_wallets if search.lower() in wallet["name"].lower()
+        ]
+
+    # Handle case where no wallets match the search
+    if not filtered_wallets:
+        embed = discord.Embed(
+            title="No Matches Found",
+            description=f"No wallets found matching **'{search}'**.",
+            color=discord.Color.blue()
+        )
+        await ctx.respond(embed=embed, ephemeral=True)
+        return
+
+    # Prepare a formatted list of wallets
+    wallet_list = "\n".join(
+        [
+            f"**{index + 1}. {wallet['name']}**\n`{wallet['address']}`"
+            for index, wallet in enumerate(filtered_wallets)
+        ]
+    )
+
+    # Build the embed message
+    embed = discord.Embed(
+        title="Your Wallets",
+        description=wallet_list,
+        color=discord.Color.green()
+    )
+    embed.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
+    await ctx.respond(embed=embed, ephemeral=True)
+
 
 @bot.command(
     name="profit",
@@ -1407,16 +1406,16 @@ async def overlay_with_user_info(
 )
 async def profit(
     ctx: discord.ApplicationContext,
-    asset_type: Option(str, "Select asset type", choices=["rune", "ordinal"]),  # type: ignore
+    asset_type: Option(str, "Select asset type", choices=["rune"]),  # type: ignore
     asset_slug: Option(
         str, "Enter the asset slug (rune name or ordinal collection symbol)"
     ),  # type: ignore
 ):  # type: ignore
-    await ctx.defer()
+    await ctx.defer(ephemeral=True)
 
     headers = {
         "User-Agent": ua.random,
-        "Accept": "application/json, text/plain, */*",
+        "Accept": "application/json",
         "Authorization": "Bearer 4a02b503-2fdc-4cd3-a053-9d06e81f1c8e",
     }
 
@@ -1426,6 +1425,7 @@ async def profit(
 
     guild_id = str(ctx.guild.id)
     overlay = get_server_overlay(guild_id)
+    user_id = str(ctx.author.id)
 
     image_path = overlay.get("image_path", "./blank.jpg")
     font_path = overlay.get("font_path", "./LoveYaLikeASister.ttf")
@@ -1434,9 +1434,12 @@ async def profit(
     username_coordinates = overlay.get("username_coordinates", [1300, 1880])
     avatar_size = overlay.get("avatar_size", [100, 100])
 
-    if guild_id not in wallets or not wallets[guild_id]:
-        await ctx.respond("No wallets found for this server.")
+    # Check if the user has wallets
+    if guild_id not in wallets or user_id not in wallets[guild_id] or not wallets[guild_id][user_id]:
+        await ctx.respond("You have not added any wallets to calculate profits.", ephemeral=True)
         return
+    
+    user_wallets = wallets[guild_id][user_id]
 
     async with aiohttp.ClientSession() as session:
         if asset_type == "rune":
@@ -1449,7 +1452,7 @@ async def profit(
         total_quantity_bought = 0
         total_quantity_sold = 0
 
-        for wallet in wallets[guild_id]:
+        for wallet in user_wallets:
             wallet_address = wallet["address"]
             url = (
                 f"https://v2api.bestinslot.xyz/rune/activity?page=1&address={wallet_address}&include_rune=true"
@@ -1552,7 +1555,7 @@ async def profit(
 
         if os.path.exists(output_path):
             with open(output_path, "rb") as file:
-                await ctx.respond(file=discord.File(file, os.path.basename(output_path)))
+                await ctx.respond(file=discord.File(file, os.path.basename(output_path)), ephemeral=True)
             os.remove(output_path)
         else:
             await ctx.respond("Failed to generate the overlay image.")
