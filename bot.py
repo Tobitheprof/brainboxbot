@@ -1510,8 +1510,14 @@ async def profit(
         if total_quantity_sold == 0:
             pnl_btc = holding_btc - total_bought_btc
         else:
-            realized_pnl_btc = total_sold_btc - (total_quantity_sold / total_quantity_bought * total_bought_btc)
-            unrealized_pnl_btc = holding_btc - (holding_quantity / total_quantity_bought * total_bought_btc)
+            if total_quantity_bought == 0:
+                # Handle the edge case where total_quantity_bought is zero
+                realized_pnl_btc = 0  # Or another appropriate default value
+                unrealized_pnl_btc = holding_btc  # Assuming no cost basis
+            else:
+                realized_pnl_btc = total_sold_btc - (total_quantity_sold / total_quantity_bought * total_bought_btc)
+                unrealized_pnl_btc = holding_btc - (holding_quantity / total_quantity_bought * total_bought_btc)
+            
             pnl_btc = realized_pnl_btc + unrealized_pnl_btc
 
         pnl_usd = pnl_btc * get_btc_price_usd()
