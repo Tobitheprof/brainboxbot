@@ -1846,43 +1846,35 @@ async def viewwallets(
 async def profit(
     ctx: discord.ApplicationContext,
     asset_type: Option(str, "Select asset type", choices=["rune"]),  # type: ignore
-    asset_slug: Option(
-        str, "Enter the asset slug (rune name or ordinal collection symbol)"
-    ),  # type: ignore
+    asset_slug: Option(str, "Enter the asset slug (rune name or ordinal collection symbol)"),  # type: ignore
 ):
     """
     Slash command to calculate total PnL and holdings for a given asset.
 
-    Key points:
-      - We use `listedPrice` for the cost in sats (converted to BTC).
-      - `amount` is the quantity of the asset.
-      - We classify SELL if:
-         * kind in ["buying_broadcasted", "buy_broadcasted", "sent"]  (example set)
-         * oldOwner == wallet
-         * newOwner != wallet
-      - We classify BUY if:
-         * kind in ["buying_broadcasted", "buy_broadcasted"]
-         * newOwner == wallet
+    Key difference: We now only show the holding’s value in BTC & USD, 
+    not the leftover quantity of the asset itself.
     """
     await ctx.defer()
 
-    # Example token (remove/replace if not needed)
+    # -------------------------------------------------------------------------
+    # 1) Setup
+    # -------------------------------------------------------------------------
     headers = {
         "Accept": "application/json",
         "Authorization": "Bearer 4a02b503-2fdc-4cd3-a053-9d06e81f1c8e",
     }
 
-    # If it's a rune, remove "•" and uppercase it (but keep a 'spaced_rune' for display).
+    # Normalize the asset slug for runes
     if asset_type == "rune":
         spaced_rune = asset_slug
-        asset_slug = asset_slug.replace("•", "").upper()
+        clean_slug = asset_slug.replace("•", "").upper()
     else:
         spaced_rune = asset_slug
+        clean_slug = asset_slug.upper()
 
     guild_id = str(ctx.guild.id)
     user_id = str(ctx.author.id)
 
-    # Overlay config (update to match your environment)
     overlay = get_server_overlay(guild_id)
     image_path = overlay.get("image_path", "./blank.jpg")
     font_path = overlay.get("font_path", "./LoveYaLikeASister.ttf")
@@ -1897,33 +1889,33 @@ async def profit(
         or user_id not in wallets[guild_id]
         or not wallets[guild_id][user_id]
     ):
-        await ctx.respond("You have not added any wallets to calculate profits.", ephemeral=True)
+        await ctx.respond(
+            "You have not added any wallets to calculate profits.", ephemeral=True
+        )
         return
 
     user_wallets = wallets[guild_id][user_id]
 
     # -------------------------------------------------------------------------
-    # Initialize counters (for both quantity and price)
+    # 2) Calculate total buys & sells (with pagination up to offset=10,000)
     # -------------------------------------------------------------------------
     total_bought_sats = 0
     total_sold_sats = 0
     total_quantity_bought = 0.0
     total_quantity_sold = 0.0
 
-    # Optional: track how many times we buy or sell
     buy_transaction_count = 0
     sell_transaction_count = 0
 
-    # Define which `kind` values qualify as "SELL" for your logic
     SELL_KINDS = ["buying_broadcasted", "buy_broadcasted"]
     BUY_KINDS = ["buying_broadcasted", "buy_broadcasted"]
 
     async with httpx.AsyncClient() as client:
-        # 1) Fetch current floor price for the asset
+        # 2a) Fetch current floor price in sats
         if asset_type == "rune":
-            price_url = f"https://api-mainnet.magiceden.dev/v2/ord/btc/runes/market/{asset_slug}/info"
+            price_url = f"https://api-mainnet.magiceden.dev/v2/ord/btc/runes/market/{clean_slug}/info"
         else:
-            price_url = f"https://api-mainnet.magiceden.dev/v2/ord/btc/stat?collectionSymbol={asset_slug}"
+            price_url = f"https://api-mainnet.magiceden.dev/v2/ord/btc/stat?collectionSymbol={clean_slug}"
 
         price_response = await client.get(price_url, headers=headers)
         if price_response.status_code != 200:
@@ -1932,126 +1924,119 @@ async def profit(
             )
             return
 
-        try:
-            price_data = price_response.json()
-        except json.decoder.JSONDecodeError:
-            await ctx.respond(
-                f"Failed to parse JSON for price data. Response snippet: {price_response.text[:200]}"
-            )
-            return
+        price_data = price_response.json()
 
-        # 2) Extract floor price in sats
         if asset_type == "rune":
-            if (
-                "floorUnitPrice" not in price_data
-                or "formatted" not in price_data["floorUnitPrice"]
-            ):
-                await ctx.respond(f"No valid floor price data found for rune: {asset_slug}.")
+            # e.g. price_data["floorUnitPrice"]["formatted"]
+            if "floorUnitPrice" not in price_data or "formatted" not in price_data["floorUnitPrice"]:
+                await ctx.respond(f"No valid floor price data found for rune: {clean_slug}.")
                 return
             current_price_sats = float(price_data["floorUnitPrice"]["formatted"])
         else:
+            # e.g. price_data["floorPrice"]
             if "floorPrice" not in price_data:
-                await ctx.respond(f"No valid floor price data found for: {asset_slug}.")
+                await ctx.respond(f"No valid floor price data found for: {clean_slug}.")
                 return
             current_price_sats = float(price_data["floorPrice"])
 
-        # Convert the floor price sats → BTC
         current_price_btc = current_price_sats / 1e8
 
-        # ---------------------------------------------------------------------
-        # For each wallet, gather transaction data
-        # ---------------------------------------------------------------------
+        # 2b) For each wallet, gather buy/sell from the wallet activities (paginated)
         for wallet in user_wallets:
             wallet_address = wallet["address"]
-            tx_url = (
-                f"https://api-mainnet.magiceden.dev/v2/ord/btc/runes/wallet/activities/{wallet_address}?offset=0"
-            )
 
-            tx_response = await client.get(tx_url, headers=headers)
-            if tx_response.status_code != 200:
-                await ctx.respond("Failed to fetch asset data.")
-                return
+            offset = 0
+            step = 100
+            max_offset = 10000
 
-            data = tx_response.json()
-            if not isinstance(data, list):
-                # We expect 'data' to be a list
-                continue
-
-            for item in data:
-                # Must match the desired asset
-                if item.get("rune", "").upper() != asset_slug:
-                    continue
-
-                transaction_kind = item.get("kind", "").lower()
-                old_owner = item.get("oldOwner", "")
-                new_owner = item.get("newOwner", "")
-
-                # The quantity of the asset
-                quantity = float(item.get("amount", 1.0))
-
-                # The cost in sats: "listedPrice"
-                price_sats = float(item.get("listedPrice", 0))
-                if price_sats <= 0:
-                    continue  # skip invalid price
-
-                # ------------------------------------------------------------
-                # BUY condition
-                # ------------------------------------------------------------
-                is_buy = (
-                    transaction_kind in BUY_KINDS
-                    and new_owner == wallet_address
+            while offset <= max_offset:
+                tx_url = (
+                    f"https://api-mainnet.magiceden.dev/v2/ord/btc/runes/wallet/activities/"
+                    f"{wallet_address}?offset={offset}"
                 )
-                if is_buy:
-                    buy_transaction_count += 1
-                    total_quantity_bought += quantity
-                    total_bought_sats += price_sats
-                    continue
+                tx_response = await client.get(tx_url, headers=headers)
+                if tx_response.status_code != 200:
+                    # Skip this wallet if there's an error
+                    break
 
-                # ------------------------------------------------------------
-                # SELL condition
-                #   includes checking transaction_kind in SELL_KINDS
-                #   oldOwner == wallet_address, newOwner != wallet_address
-                # ------------------------------------------------------------
-                is_sell = (
-                    transaction_kind in SELL_KINDS
-                    and old_owner == wallet_address
-                    and new_owner != wallet_address
-                )
-                if is_sell:
-                    sell_transaction_count += 1
-                    total_quantity_sold += quantity
-                    total_sold_sats += price_sats
-                    continue
+                data = tx_response.json()
+                if not isinstance(data, list) or len(data) == 0:
+                    # Break out of pagination if no more data
+                    break
 
-                # Otherwise ignore
+                # Process all records on this page
+                for item in data:
+                    # Ensure the correct rune/slug
+                    if item.get("rune", "").replace("•", "").upper() != clean_slug:
+                        continue
 
-    # -------------------------------------------------------------------------
-    # Convert total sats → BTC
-    # -------------------------------------------------------------------------
+                    transaction_kind = item.get("kind", "").lower()
+                    old_owner = item.get("oldOwner", "")
+                    new_owner = item.get("newOwner", "")
+                    quantity = float(item.get("amount", 1.0))
+                    price_sats = float(item.get("listedPrice", 0))
+                    if price_sats <= 0:
+                        continue
+
+                    # BUY
+                    if transaction_kind in BUY_KINDS and new_owner == wallet_address:
+                        buy_transaction_count += 1
+                        total_quantity_bought += quantity
+                        total_bought_sats += price_sats
+
+                    # SELL
+                    elif (
+                        transaction_kind in SELL_KINDS
+                        and old_owner == wallet_address
+                        and new_owner != wallet_address
+                    ):
+                        sell_transaction_count += 1
+                        total_quantity_sold += quantity
+                        total_sold_sats += price_sats
+
+                offset += step  # move to next page
+
+    # Convert to BTC
     total_bought_btc = total_bought_sats / 1e8
     total_sold_btc = total_sold_sats / 1e8
 
-    # Calculate how many of the asset you hold
-    holding_quantity = (total_quantity_bought - total_quantity_sold) / 100_000_000
-    if holding_quantity < 0:
-        holding_quantity = 0
+    # -------------------------------------------------------------------------
+    # 3) Fetch leftover holdings from “balances” endpoint
+    # -------------------------------------------------------------------------
+    leftover_units = 0.0
 
-    # Current holding value (in BTC and USD)
+    async with httpx.AsyncClient() as client:
+        for wallet in user_wallets:
+            wallet_address = wallet["address"]
+            balances_url = (
+                f"https://api-mainnet.magiceden.dev/v2/ord/btc/runes/wallet/balances/"
+                f"{wallet_address}/{clean_slug}"
+            )
+            balances_resp = await client.get(balances_url, headers=headers)
+            if balances_resp.status_code != 200:
+                continue
+
+            balances_data = balances_resp.json()
+            leftover_units += float(balances_data.get("formattedBalance", 0.0))
+
+    # leftover_units is total rune quantity
+    holding_quantity = leftover_units
+
+    # Convert leftover quantity to BTC & USD by floor price
     holding_btc = holding_quantity * current_price_btc
     holding_usd = holding_btc * get_btc_price_usd()
 
     # -------------------------------------------------------------------------
-    # PnL Calculations
+    # 4) PnL Calculations
     # -------------------------------------------------------------------------
-    # Avoid dividing by zero
-    total_bought_btc = max(total_bought_btc, 1e-12)
+    total_bought_btc = max(total_bought_btc, 1e-12)  # prevent div-by-zero
 
     if total_quantity_sold == 0:
         # Entire PnL is unrealized
         pnl_btc = holding_btc - total_bought_btc
     else:
         if total_quantity_bought == 0:
-            # Edge case: sold something without buying
+            # Edge case: sold something w/o recorded buys
             realized_pnl_btc = 0.0
             unrealized_pnl_btc = holding_btc
         else:
@@ -2065,23 +2050,33 @@ async def profit(
             )
         pnl_btc = realized_pnl_btc + unrealized_pnl_btc
 
-    pnl_usd = pnl_btc * get_btc_price_usd()
-    pnl_percentage = (pnl_btc / total_bought_btc) * 100
+    # pnl_usd = pnl_btc * get_btc_price_usd()
+    pnl_percentage = (holding_btc / total_bought_btc) * 100
 
     # -------------------------------------------------------------------------
-    # Prepare overlay text
+    # 5) Prepare overlay text
+    #    - Removed the line showing leftover_units; 
+    #      now we only show the BTC/$ worth for holdings.
     # -------------------------------------------------------------------------
-    text_keys = ["asset_name", "total_bought", "total_sold", "holdings", "pnl"]
+    text_keys = [
+        "asset_name",
+        "total_bought",
+        "total_sold",
+        "holdings (value)",  # Show only BTC & USD
+        "pnl",
+    ]
     text_values = [
-        f"{spaced_rune}" if asset_type == "rune" else asset_slug,
+        f"{spaced_rune}",  # e.g. "KINGS•RUNE"
         f"{total_bought_btc:.4f} (${total_bought_btc * get_btc_price_usd():.2f})",
         f"{total_sold_btc:.4f} (${total_sold_btc * get_btc_price_usd():.2f})",
         f"{holding_btc:.4f} (${holding_usd:.2f})",
-        f"{pnl_btc:.4f} (${pnl_usd:.2f}) ({pnl_percentage:.2f}%)",
+        f"{holding_btc:.4f} (${holding_usd:.2f}) ({pnl_percentage:.2f}%)",
     ]
 
+    # Map text_keys/values onto the overlay coordinates
     texts_with_coordinates = []
     for i, text_key in enumerate(text_keys):
+        # Ensure we have a coordinate config for each item
         if i < len(text_coordinates):
             coord_cfg = text_coordinates[i]
             texts_with_coordinates.append({
@@ -2091,7 +2086,7 @@ async def profit(
                 "font_size": coord_cfg["font_size"],
             })
 
-    # Generate overlay
+    # Generate the final overlay image
     output_path = f"./output/profit_overlay_{guild_id}.jpg"
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
@@ -2107,24 +2102,13 @@ async def profit(
         avatar_size=tuple(avatar_size),
     )
 
-    summary = (
-        f"**Buy transactions:** {buy_transaction_count}\n"
-        f"**Sell transactions:** {sell_transaction_count}\n"
-    )
-    await ctx.send(content=summary)
-
-    # Send image
+    # Send or respond with the overlay
     if os.path.exists(output_path):
         with open(output_path, "rb") as file:
             await ctx.respond(file=discord.File(file, os.path.basename(output_path)))
         os.remove(output_path)
     else:
         await ctx.respond("Failed to generate the overlay image.")
-        return
-
-    # Finally, show buy/sell transaction counts (optional).
-
-    
 
 """
 USER WALLET LOGIC FOR PnL - END
