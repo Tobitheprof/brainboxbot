@@ -1424,7 +1424,7 @@ async def profit(
         spaced_rune = asset_slug
         clean_slug = asset_slug.replace("•", "").upper() if asset_slug else ""
     else:
-        spaced_rune = asset_slug
+        spaced_rune = asset_slug  # Default display name (will be updated if collection name is found)
         clean_slug = asset_slug.lower() if asset_slug else ""  # Ordinal collection symbols are lowercase
 
     guild_id = str(ctx.guild.id)
@@ -1456,8 +1456,9 @@ async def profit(
     # -------------------------------------------------------------------------
     total_bought_sats = 0
     total_sold_sats = 0
-    total_quantity_bought = 0.0
-    total_quantity_sold = 0.0
+    total_quantity_bought = 0
+    total_quantity_sold = 0
+    collection_name = None  # Will store the collection name if we find it
 
     async with httpx.AsyncClient() as client:
         # 2a) Fetch current floor price in sats
@@ -1487,6 +1488,10 @@ async def profit(
                 await ctx.respond(f"No valid floor price data found for: {clean_slug}.")
                 return
             current_price_sats = float(price_data["floorPrice"])
+            
+            # For ordinals, also try to get the collection name from the price data
+            if "name" in price_data:
+                collection_name = price_data["name"]
 
         current_price_btc = current_price_sats / 1e8
 
@@ -1545,10 +1550,19 @@ async def profit(
             else:
                 # Ordinal processing code
                 offset = 0
-                step = 40  # As per the URL limit parameter
+                step = 40
                 max_offset = 10000
 
+                # Only consider specific transaction kinds
+                tx_kinds = [
+                    "buying_broadcasted", 
+                    "buy_broadcasted", 
+                    "mint_broadcasted", 
+                    "offer_accepted_broadcasted"
+                ]
+
                 while offset <= max_offset:
+                    kind_params = "&".join([f"kind[]={kind}" for kind in tx_kinds])
                     tx_url = (
                         f"https://api-mainnet.magiceden.dev/v2/ord/btc/activities"
                         f"?limit={step}&offset={offset}&ownerAddress={wallet_address}"
@@ -1561,41 +1575,38 @@ async def profit(
                     )
                     tx_response = await client.get(tx_url, headers=headers)
                     if tx_response.status_code != 200:
-                        # Skip wallet on error
                         break
 
                     data = tx_response.json()
                     
-                    # Check if we have the 'activities' key in the response
                     activities = data.get("activities", []) or []
                     if not activities or len(activities) == 0:
-                        # No more data to process
                         break
 
-                    # Process each activity
                     for item in activities:
-                        # Check for collection in the collection object
                         collection = item.get("collection", {})
                         if collection is None:
                             collection = {}
-                        # print(item)
                             
-                        # Look at both collection.symbol and collectionSymbol
                         collection_symbol = collection.get("symbol")
-                        print(collection_symbol)
                         if collection_symbol is None:
-                            # Fallback to direct collectionSymbol if collection.symbol is not available
                             collection_symbol = item.get("collectionSymbol")
                             
                         if collection_symbol is None or collection_symbol.lower() != clean_slug.lower():
                             continue
 
+                        if collection_name is None and "name" in collection and collection["name"]:
+                            collection_name = collection["name"]
+
                         transaction_kind = (item.get("kind") or "").lower()
                         old_owner = item.get("oldOwner") or ""
                         new_owner = item.get("newOwner") or ""
+
+                        if transaction_kind not in [k.lower() for k in tx_kinds]:
+                            continue
                         
-                        # For ordinals, quantity is always 1.0
-                        quantity = 1.0
+                        # For ordinals, quantity is always 1
+                        quantity = 1
                         
                         # Use txValue for transaction value (in sats)
                         tx_value = item.get("txValue")
@@ -1605,21 +1616,36 @@ async def profit(
                         if price_sats <= 0:
                             listed_price = item.get("listedPrice")
                             price_sats = float(listed_price or 0)
-                        
-                        if price_sats <= 0:
-                            continue
 
-                        # BUY: Current wallet is the new owner and not the old owner
-                        if new_owner == wallet_address and old_owner != wallet_address:
-                            total_quantity_bought += quantity
-                            total_bought_sats += price_sats
-
-                        # SELL: Current wallet is the old owner and not the new owner
-                        elif old_owner == wallet_address and new_owner != wallet_address:
-                            total_quantity_sold += quantity
-                            total_sold_sats += price_sats
+                        # Special handling for mint_broadcasted - always counts as a sell
+                        if transaction_kind == "mint_broadcasted":
+                            if old_owner == wallet_address or new_owner == wallet_address:
+                                total_quantity_sold += 1
+                                total_sold_sats += price_sats
+                        # Special handling for offer_accepted_broadcasted - always counts as a buy
+                        elif transaction_kind == "offer_accepted_broadcasted":
+                            if old_owner == wallet_address or new_owner == wallet_address:
+                                total_quantity_sold += 1
+                                total_sold_sats += price_sats
+                        # Standard logic for buying_broadcasted and buy_broadcasted
+                        elif transaction_kind == "buying_broadcasted" or transaction_kind == "buy_broadcasted":
+                            # BUY: Current wallet is the new owner and not the old owner
+                            if new_owner == wallet_address and old_owner != wallet_address:
+                                total_quantity_bought += 1
+                                total_bought_sats += price_sats
+                            # SELL: Current wallet is the old owner and not the new owner
+                            elif old_owner == wallet_address and new_owner != wallet_address:
+                                total_quantity_sold += 1
+                                total_sold_sats += price_sats
 
                     offset += step
+
+
+
+    
+    # Use collection name if we found it, otherwise use the provided slug
+    if asset_type == "ordinal" and collection_name:
+        spaced_rune = collection_name
 
     # Convert to BTC
     total_bought_btc = total_bought_sats / 1e8
@@ -1659,7 +1685,7 @@ async def profit(
                     if "tokens" in holdings_data and holdings_data["tokens"] is not None:
                         leftover_units += len(holdings_data["tokens"])
 
-    holding_quantity = leftover_units
+    holding_quantity = int(leftover_units)  # Convert to integer for ordinals
 
     # -------------------------------------------------------------------------
     # 4) PnL Calculations
@@ -1723,12 +1749,23 @@ async def profit(
     has_sold = total_quantity_sold > 0
     has_holdings = holding_quantity > 0
 
-    text_values = [
-        f"{spaced_rune}",  # e.g. "TEST RUNE" or "experiment_9"
-        f"{total_bought_btc:.4f} (${total_bought_btc * btc_price_usd:.2f})",
-        f"{total_sold_btc:.4f} (${total_sold_btc * btc_price_usd:.2f})",
-        f"{holding_btc:.4f} (${holding_usd:.2f})",
-    ]
+    # Format display values differently based on asset type
+    if asset_type == "rune":
+        # For runes: display BTC amounts
+        text_values = [
+            f"{spaced_rune}",  # e.g. "TEST RUNE"
+            f"{total_bought_btc:.4f} (${total_bought_btc * btc_price_usd:.2f})",
+            f"{total_sold_btc:.4f} (${total_sold_btc * btc_price_usd:.2f})",
+            f"{holding_btc:.4f} (${holding_usd:.2f})",
+        ]
+    else:
+        # For ordinals: display counts of instances
+        text_values = [
+            f"{spaced_rune}",  # Now using collection name if available
+            f"{total_quantity_bought} (${total_bought_btc * btc_price_usd:.2f})",
+            f"{total_quantity_sold} (${total_sold_btc * btc_price_usd:.2f})",
+            f"{holding_quantity} (${holding_usd:.2f})",
+        ]
 
     text_keys = [
         "Asset",
@@ -1756,7 +1793,7 @@ async def profit(
         if i < len(text_coordinates):
             coord_cfg = text_coordinates[i]
             texts_with_coordinates.append({
-                "text": f"{label}: {text_values[i]}",
+                "text": f"{text_values[i]}",
                 "coordinates": tuple(coord_cfg["coordinates"]),
                 "color": tuple(coord_cfg["color"]),
                 "font_size": coord_cfg["font_size"],
@@ -1788,6 +1825,7 @@ async def profit(
         await ctx.respond(file=file)
     else:
         await ctx.respond("Failed to generate the overlay image.")
+
 
 """
 USER WALLET LOGIC FOR PnL - END
