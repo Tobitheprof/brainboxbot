@@ -6,7 +6,7 @@ import json
 import logging
 import aiohttp
 import discord
-from discord import Option
+from discord import Option, ApplicationContext
 from discord.ext import commands
 from discord.ext import commands, tasks
 from collections import defaultdict
@@ -1400,14 +1400,184 @@ async def viewwallets(
     embed.set_footer(text="Powered by Brain Box Intel", icon_url="https://www.brainboxintel.xyz/static/assets/img/brainboxintel.jpg")
     await ctx.respond(embed=embed, ephemeral=True)
 
+
+# Cache for collection data
+collection_cache = {}
+
+async def cache_collection_data(collection_data):
+    """Store collection data in cache for later use"""
+    # Handle Magic Eden format
+    if "symbol" in collection_data:
+        symbol = collection_data.get("symbol")
+        if not symbol:
+            return
+        
+        collection_cache[symbol.lower()] = {
+            "name": collection_data.get("name", ""),
+            "image": collection_data.get("image", ""),
+            "floorPrice": collection_data.get("floorPrice", 0),
+            "totalVol": collection_data.get("totalVol", "0")
+        }
+    # Handle Best in Slot format
+    elif "slug" in collection_data:
+        slug = collection_data.get("slug")
+        if not slug:
+            return
+        
+        collection_cache[slug.lower()] = {
+            "name": collection_data.get("collection_name", ""),
+            "image": collection_data.get("inscription_icon_id", ""),
+            "floorPrice": collection_data.get("floor_price_magiceden", 0),
+            "supply": collection_data.get("supply", "0"),
+            "owners": collection_data.get("owners", 0),
+            "me_symbol": None  # Will be filled if/when we find the Magic Eden symbol
+        }
+
+async def get_cached_collection(symbol):
+    """Get collection data from cache"""
+    return collection_cache.get(symbol.lower())
+
+# Function to fetch ordinal collection suggestions from Best in Slot API
+async def get_ordinal_suggestions(ctx: discord.AutocompleteContext):
+    """Fetch ordinal collection suggestions based on user input"""
+    query = ctx.value
+    if not query or len(query) < 2:
+        return []  # Don't search for very short queries
+    
+    try:
+        async with httpx.AsyncClient() as client:
+            url = f"https://v2api.bestinslot.xyz/search?term={query}"
+            response = await client.get(url, timeout=10.0)
+            
+            if response.status_code != 200:
+                return []
+                
+            data = response.json()
+            collections = data.get("collections", [])
+            
+            # Format suggestions for Discord's autocomplete
+            # Discord autocomplete expects a list of string values
+            suggestions = []
+            for collection in collections:
+                name = collection.get("collection_name", "")
+                slug = collection.get("slug", "")
+                
+                if name and slug:
+                    # Format: "Name [slug]"
+                    display_name = f"{name} [{slug}]"
+                    suggestions.append(display_name)
+                    
+                    # Cache the collection data for future use
+                    await cache_collection_data(collection)
+            
+            return suggestions[:25]  # Discord limits to 25 choices
+    except Exception as e:
+        print(f"Error fetching ordinal suggestions: {e}")
+        return []
+
+# Function to fetch rune suggestions
+async def get_rune_suggestions(ctx: discord.AutocompleteContext):
+    """Fetch rune suggestions based on user input"""
+    query = ctx.value
+    if not query or len(query) < 2:
+        return []  # Don't search for very short queries
+    
+    # Currently not implemented - you'd need a similar API endpoint for runes
+    # For now, just return an empty list
+    return []
+
+# Dynamic autocomplete that chooses between rune or ordinal based on the context
+async def asset_slug_autocomplete(ctx: discord.AutocompleteContext):
+    """Dynamically choose autocomplete based on the asset_type parameter"""
+    # Get the options that have been input so far
+    options = {}
+    for option in ctx.interaction.data.get("options", []):
+        options[option["name"]] = option["value"]
+    
+    # Get the asset_type if it's been selected
+    asset_type = options.get("asset_type")
+    
+    # Choose the appropriate autocomplete function based on asset_type
+    if asset_type == "ordinal":
+        return await get_ordinal_suggestions(ctx)
+    elif asset_type == "rune":
+        return await get_rune_suggestions(ctx)
+    else:
+        # Default to no suggestions if asset_type hasn't been selected yet
+        return []
+
+# Function to extract slug from the formatted string
+def extract_slug_from_selection(selected_value):
+    """Extract the slug from a string like 'Collection Name [slug]'"""
+    if not selected_value:
+        return ""
+        
+    # Check if it has the pattern Name [slug]
+    if "[" in selected_value and selected_value.endswith("]"):
+        slug = selected_value.split("[")[-1].rstrip("]")
+        return slug
+    
+    # Otherwise, just return the original value
+    return selected_value
+
+# In-memory image processing function
+async def overlay_with_user_info_in_memory(
+    image_path,
+    texts_with_coordinates,
+    default_font_path,
+    username,
+    avatar_url,
+    avatar_coordinates,
+    username_coordinates,
+    avatar_size=(100, 100),  # Default size
+):
+    try:
+        img = Image.open(image_path)
+        draw = ImageDraw.Draw(img)
+
+        for entry in texts_with_coordinates:
+            text = entry["text"]
+            coordinates = entry["coordinates"]
+            color = entry["color"]
+            font_size = entry.get("font_size", 40)
+
+            font = ImageFont.truetype(default_font_path, font_size)
+            draw.text(coordinates, text, fill=color, font=font)
+
+        # Create and resize the avatar based on the config
+        circular_avatar = await create_circular_avatar(avatar_url)
+        circular_avatar = circular_avatar.resize(avatar_size)
+
+        # Paste the avatar onto the image
+        img.paste(circular_avatar, avatar_coordinates, circular_avatar)
+
+        # Draw the username
+        font = ImageFont.truetype(default_font_path, 50)
+        draw.text(username_coordinates, username, fill=(0, 0, 0), font=font)
+
+        # Save to BytesIO instead of file
+        img_byte_arr = io.BytesIO()
+        img.save(img_byte_arr, format='JPEG')
+        img_byte_arr.seek(0)
+        
+        return img_byte_arr.getvalue()
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+# Modify the existing profit command to include autocomplete
 @bot.command(
     name="profit",
     description="Calculate collective profits of every wallet that took part in a trade",
 )
 async def profit(
-    ctx: discord.ApplicationContext,
-    asset_type: Option(str, "Select asset type", choices=["rune", "ordinal"]),  # type: ignore
-    asset_slug: Option(str, "Enter the asset slug (rune name or ordinal collection symbol)"),  # type: ignore
+    ctx: ApplicationContext,
+    asset_type: Option(str, "Select asset type", choices=["ordinal"]),  # type: ignore
+    asset_name: Option(
+        str, 
+        "Enter the asset name (ordinal collection)",
+        autocomplete=asset_slug_autocomplete
+    ),  # type: ignore
 ):
     await ctx.defer()
 
@@ -1419,13 +1589,26 @@ async def profit(
         "Authorization": "Bearer 4a02b503-2fdc-4cd3-a053-9d06e81f1c8e",
     }
 
+    # Extract the slug if the selected value is a formatted string from BIS
+    if asset_type == "ordinal":
+        selected_slug = extract_slug_from_selection(asset_name)
+    else:
+        selected_slug = asset_name
+
     # Normalize the asset slug for runes and ordinals 
     if asset_type == "rune":
-        spaced_rune = asset_slug
-        clean_slug = asset_slug.replace("•", "").upper() if asset_slug else ""
+        spaced_rune = selected_slug
+        clean_slug = selected_slug.replace("•", "").upper() if selected_slug else ""
     else:
-        spaced_rune = asset_slug  # Default display name (will be updated if collection name is found)
-        clean_slug = asset_slug.lower() if asset_slug else ""  # Ordinal collection symbols are lowercase
+        # Try to get cached collection data first
+        collection_data = await get_cached_collection(selected_slug)
+        
+        if collection_data and "name" in collection_data:
+            spaced_rune = collection_data["name"]  # Use the collection name from cache
+        else:
+            spaced_rune = selected_slug  # Default to the slug if no cached name
+            
+        clean_slug = selected_slug.lower() if selected_slug else ""  # Ordinal collection symbols are lowercase
 
     guild_id = str(ctx.guild.id)
     user_id = str(ctx.author.id)
@@ -1454,6 +1637,43 @@ async def profit(
     # -------------------------------------------------------------------------
     # 2) Calculate total buys & sells (with pagination)
     # -------------------------------------------------------------------------
+    
+    # For ordinals, we need to convert from BIS slug to Magic Eden symbol
+    # This is because BIS uses slugs like "honey-badgers" while Magic Eden uses symbols like "honeybadgers"
+    
+    if asset_type == "ordinal" and collection_data and not collection_data.get("me_symbol"):
+        try:
+            # Use Magic Eden's search API to find the collection by name
+            async with httpx.AsyncClient() as client:
+                search_url = f"https://api-mainnet.magiceden.dev/v3/search/search?pattern={clean_slug.replace('-', '')}&chains[]=bitcoin&limit=10"
+                search_response = await client.get(search_url, headers=headers, timeout=3.0)
+                
+                if search_response.status_code == 200:
+                    search_data = search_response.json()
+                    bitcoin_collections = search_data.get("collections", {}).get("bitcoin", [])
+                    
+                    # Look for a collection with a matching slug or similar name
+                    for collection in bitcoin_collections:
+                        me_symbol = collection.get("symbol", "")
+                        me_name = collection.get("name", "")
+                        
+                        # Try to find the most similar collection
+                        if clean_slug.lower().replace("-", "") == me_symbol.lower() or \
+                           clean_slug.lower().replace("-", "") in me_symbol.lower() or \
+                           me_name.lower() in spaced_rune.lower() or \
+                           spaced_rune.lower() in me_name.lower():
+                            # Found a match, update clean_slug to use Magic Eden's symbol
+                            clean_slug = me_symbol.lower()
+                            # Update the cache with the ME symbol
+                            collection_cache[selected_slug.lower()]["me_symbol"] = me_symbol.lower()
+                            break
+        except Exception as e:
+            print(f"Error mapping BIS slug to Magic Eden symbol: {e}")
+    
+    # If we already have the ME symbol in cache, use it
+    elif asset_type == "ordinal" and collection_data and collection_data.get("me_symbol"):
+        clean_slug = collection_data["me_symbol"]
+    
     total_bought_sats = 0
     total_sold_sats = 0
     total_quantity_bought = 0
@@ -1492,6 +1712,8 @@ async def profit(
             # For ordinals, also try to get the collection name from the price data
             if "name" in price_data:
                 collection_name = price_data["name"]
+                # Also cache this data for future use
+                await cache_collection_data(price_data)
 
         current_price_btc = current_price_sats / 1e8
 
@@ -1617,11 +1839,12 @@ async def profit(
                             listed_price = item.get("listedPrice")
                             price_sats = float(listed_price or 0)
 
-                        # Special handling for mint_broadcasted - always counts as a sell
+                        # Special handling for mint_broadcasted - always counts as a buy
                         if transaction_kind == "mint_broadcasted":
                             if old_owner == wallet_address or new_owner == wallet_address:
-                                total_quantity_sold += 1
-                                total_sold_sats += price_sats
+                                total_quantity_bought += 1
+                                total_bought_sats += price_sats
+
                         # Special handling for offer_accepted_broadcasted - always counts as a buy
                         elif transaction_kind == "offer_accepted_broadcasted":
                             if old_owner == wallet_address or new_owner == wallet_address:
@@ -1640,9 +1863,6 @@ async def profit(
 
                     offset += step
 
-
-
-    
     # Use collection name if we found it, otherwise use the provided slug
     if asset_type == "ordinal" and collection_name:
         spaced_rune = collection_name
@@ -1745,7 +1965,7 @@ async def profit(
     holding_btc = holding_quantity * current_price_btc
     holding_usd = holding_btc * btc_price_usd
 
-    # Determine which PnL to display based on trading pattern
+    # Determine which PnL to display
     has_sold = total_quantity_sold > 0
     has_holdings = holding_quantity > 0
 
@@ -1754,17 +1974,17 @@ async def profit(
         # For runes: display BTC amounts
         text_values = [
             f"{spaced_rune}",  # e.g. "TEST RUNE"
-            f"{total_bought_btc:.4f} (${total_bought_btc * btc_price_usd:.2f})",
-            f"{total_sold_btc:.4f} (${total_sold_btc * btc_price_usd:.2f})",
-            f"{holding_btc:.4f} (${holding_usd:.2f})",
+            f"{total_bought_btc:.4f} BTC (${total_bought_btc * btc_price_usd:.2f})",
+            f"{total_sold_btc:.4f} BTC (${total_sold_btc * btc_price_usd:.2f})",
+            f"{holding_btc:.4f} BTC (${holding_usd:.2f})",
         ]
     else:
-        # For ordinals: display counts of instances
+        # For ordinals: display counts of instances with BTC values
         text_values = [
             f"{spaced_rune}",  # Now using collection name if available
-            f"{total_quantity_bought} (${total_bought_btc * btc_price_usd:.2f})",
-            f"{total_quantity_sold} (${total_sold_btc * btc_price_usd:.2f})",
-            f"{holding_quantity} (${holding_usd:.2f})",
+            f"{total_quantity_bought} ({total_bought_btc:.4f} BTC)",
+            f"{total_quantity_sold} ({total_sold_btc:.4f} BTC)",
+            f"{holding_quantity} ({holding_btc:.4f} BTC)",
         ]
 
     text_keys = [
@@ -1774,18 +1994,19 @@ async def profit(
         "Holdings (Value)",
     ]
 
-    # Add the appropriate PnL line based on trading pattern
-    if not has_sold and has_holdings:
-        # Never sold, only show potential PnL
-        pnl_label = "Potential PnL"
-        pnl_value = f"{potential_profit_btc:.4f} (${potential_profit_usd:.2f}) ({potential_roi_percentage:.2f}%)"
-    else:
-        # Has sold or partially sold, show total PnL (which includes both realized and potential)
-        pnl_label = "Total PnL"
-        pnl_value = f"{total_pnl_btc:.4f} (${total_pnl_usd:.2f}) ({total_roi_percentage:.2f}%)"
+    # Always show potential PnL if there are holdings
+    if has_holdings:
+        potential_pnl_label = "Potential PnL"
+        potential_pnl_value = f"{potential_profit_btc:.4f} BTC (${potential_profit_usd:.2f}) ({potential_roi_percentage:.2f}%)"
+        text_keys.append(potential_pnl_label)
+        text_values.append(potential_pnl_value)
 
-    text_keys.append(pnl_label)
-    text_values.append(pnl_value)
+    # Add total PnL if sales have occurred
+    if has_sold:
+        total_pnl_label = "Total PnL"
+        total_pnl_value = f"{total_pnl_btc:.4f} BTC (${total_pnl_usd:.2f}) ({total_roi_percentage:.2f}%)"
+        text_keys.append(total_pnl_label)
+        text_values.append(total_pnl_value)
 
     # Map text_keys/values onto overlay coordinates
     texts_with_coordinates = []
@@ -1826,7 +2047,7 @@ async def profit(
     else:
         await ctx.respond("Failed to generate the overlay image.")
 
-
+        
 """
 USER WALLET LOGIC FOR PnL - END
 """
